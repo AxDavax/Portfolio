@@ -37,7 +37,7 @@ namespace Portfolio.ECommerce.Blazor.ViewModels
             set => SetProperty(ref _orderHeader, value);
         }
 
-        public Task InitializedAsync() => Task.CompletedTask;
+        public Task InitializeAsync() => Task.CompletedTask;
 
         public async Task AfterRenderAsync(bool firstRender)
         {
