@@ -1,6 +1,88 @@
-﻿namespace Portfolio.ECommerce.Blazor.ViewModels
+﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
+using Portfolio.ECommerce.Blazor.Data;
+using Portfolio.ECommerce.Blazor.Repository.IRepository;
+using Portfolio.ECommerce.Blazor.Utility;
+using System.Security.Claims;
+
+namespace Portfolio.ECommerce.Blazor.ViewModels
 {
-    public class OrderListVM
+    public class OrderListVM : BaseVM
     {
+        private readonly IOrderRepository _orderRepository;
+        private readonly NavigationManager _navigation;
+        private readonly AuthenticationStateProvider _authProvider;
+
+        public OrderListVM(IOrderRepository orderRepository, 
+                           NavigationManager navigation,
+                           AuthenticationStateProvider authProvider)
+        {
+            _orderRepository = orderRepository;
+            _navigation = navigation;
+            _authProvider = authProvider;
+        }
+
+        private bool _isProcessing = true;
+        public bool IsProcessing
+        {
+            get => _isProcessing;
+            set => SetProperty(ref _isProcessing, value);
+        }
+
+        private IEnumerable<OrderHeader> _orderHeaders = new List<OrderHeader>();
+        public IEnumerable<OrderHeader> OrderHeaders
+        {
+            get => _orderHeaders;
+            set => SetProperty(ref _orderHeaders, value);
+        }
+
+        private bool _isAdmin;
+        public bool IsAdmin
+        {
+            get => _isAdmin;
+            set => SetProperty(ref _isAdmin, value);
+        }
+
+        private string? _userId;
+        public string? UserId
+        {
+            get => _userId;
+            set => SetProperty(ref _userId, value);
+        }
+
+        public Task InitializeAsync() => Task.CompletedTask;
+
+        public async Task AfterRenderAsync(bool firstRender)
+        {
+            if (firstRender)
+                await LoadOrderHeadersAsync();
+        }
+
+        public async Task LoadOrderHeadersAsync()
+        {
+            await RunCommandAsync(() => IsProcessing, async () =>
+            {
+                await CheckAuthorizationAsync();
+
+                if (IsAdmin)
+                    OrderHeaders = await _orderRepository.GetAllAsync();
+                else
+                    OrderHeaders = await _orderRepository.GetAllAsync(UserId);
+            });
+        }
+
+        private async Task CheckAuthorizationAsync()
+        {
+            var authState = await _authProvider.GetAuthenticationStateAsync();
+            var user = authState.User;
+
+            IsAdmin = user?.IsInRole(SD.Role_Admin) == true;
+            UserId = user?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        }
+
+        public void NavigateToDetails(int id)
+        {
+            _navigation.NavigateTo($"order/details/{id}");
+        }
     }
 }
