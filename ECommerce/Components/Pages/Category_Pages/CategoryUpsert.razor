@@ -1,10 +1,8 @@
 ﻿@page "/category/create"
 @page "/category/update/{id:int}"
-@inject ICategoryRepository _categoryRepository
-@inject NavigationManager _navigationManager
-@inject IJSRuntime _JS
+@inject CategoryUpsertVM VM
 
-@if (IsProcessing)
+@if (VM.IsProcessing)
 {
     <div class="position-absolute w-75 h-75 d-flex flex-column align-items-center bg-white justify-content-center">
         <img src="/images/loading.gif" alt="loading" />
@@ -21,22 +19,22 @@ else
             </div>
         </div>
         <div class="card-body p-4">
-            <EditForm Model="Category" FormName="CategoryUpsertForm" OnValidSubmit="UpsertCategory">
+            <EditForm Model="VM.Category" FormName="CategoryUpsertForm" OnValidSubmit="VM.UpsertCategoryAsync">
                 <DataAnnotationsValidator />
                 <div class="border p-3 mt-4">
                     <div class="form-floating py-3 col-12">
-                        <InputText @bind-Value="Category.Name" class="form-control" id="Name" placeholder="Name" />
+                        <InputText @bind-Value="VM.Category.Name" class="form-control" id="Name" placeholder="Name" />
                         <label for="Name">Name</label>
-                        <ValidationMessage For="@(() => Category.Name)" />
+                        <ValidationMessage For="@(() => VM.Category.Name)" />
                     </div>
                     <div class="row mt-3">
                         <div class="col-6 col-md-3">
-                            <button type="submit" class="btn btn-primary form-control" disabled="@IsProcessing">
+                            <button type="submit" class="btn btn-primary form-control" disabled="@VM.IsProcessing">
                                 <i class="bi bi-floppy2-fill"></i> @(Id > 0 ? "Update" : "Create")
                             </button>
                         </div>
                         <div class="col-6 col-md-3">
-                            <a href="category" class="btn btn-secondary form-control" disabled="@IsProcessing">
+                            <a href="category" class="btn btn-secondary form-control" disabled="@VM.IsProcessing">
                                 <i class="bi bi-arrow-bar-left"></i> Back to List
                             </a>
                         </div>
@@ -52,48 +50,19 @@ else
     [Parameter]
     public int Id { get; set; }
 
-    [SupplyParameterFromForm]
-    private Category Category { get; set; } = new Category();
+    protected override void OnInitialized()
+    {
+        VM.StateChanged = StateHasChanged;
+        VM.Id = Id;
+    }
 
-    private bool IsProcessing { get; set; } = true;
+    protected override async Task OnInitializedAsync()
+    {
+        await VM.InitializeAsync();
+    }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (firstRender)
-        {
-            await LoadCategory();
-            IsProcessing = false;
-            StateHasChanged();
-        }
-        //return base.OnAfterRenderAsync(firstRender);
-    }
-
-    private async Task LoadCategory()
-    {
-        if(Id > 0)
-        {
-            Category = await _categoryRepository.GetAsync(Id);   
-        }
-    }
-
-    private async Task UpsertCategory()
-    {
-        IsProcessing = true;
-
-        if(Category.Id == 0)
-        {
-            // create
-            await _categoryRepository.CreateAsync(Category);
-            await _JS.ToastrSuccess("Category Created Successfully");
-        }
-        else
-        {
-            // update
-            await _categoryRepository.UpdateAsync(Category);
-            await _JS.ToastrSuccess("Category Updated Successfully");
-        }
-
-        IsProcessing = false;
-        _navigationManager.NavigateTo("category");
+        await VM.AfterRenderAsync(firstRender);
     }
 }
