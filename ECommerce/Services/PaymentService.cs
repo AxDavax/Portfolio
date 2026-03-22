@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Portfolio.ECommerce.Blazor.Data;
+using Portfolio.ECommerce.Blazor.Repository.IRepository;
+using Portfolio.ECommerce.Blazor.Utility;
 using Stripe;
 using Stripe.Checkout;
-using YumBlazor.Data;
-using YumBlazor.Repository.IRepository;
-using YumBlazor.Utility;
 
-namespace YumBlazor.Services
+namespace Portfolio.ECommerce.Blazor.Services
 {
     public class PaymentService
     {

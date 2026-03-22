@@ -3,12 +3,12 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Radzen;
 using Stripe;
-using YumBlazor.Components;
-using YumBlazor.Components.Account;
-using YumBlazor.Data;
-using YumBlazor.Repository;
-using YumBlazor.Repository.IRepository;
-using YumBlazor.Services;
+using Portfolio.ECommerce.Blazor.Components.Account;
+using Portfolio.ECommerce.Blazor.Data;
+using Portfolio.ECommerce.Blazor.Repository;
+using Portfolio.ECommerce.Blazor.Repository.IRepository;
+using Portfolio.ECommerce.Blazor.Services;
+using Portfolio.ECommerce.Blazor.Components;
 
 var builder = WebApplication.CreateBuilder(args);
 

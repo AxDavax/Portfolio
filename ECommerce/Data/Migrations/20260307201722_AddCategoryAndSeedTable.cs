@@ -4,7 +4,7 @@
 
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 
-namespace YumBlazor.Migrations
+namespace Portfolio.ECommerce.Blazor.Migrations
 {
     /// <inheritdoc />
     public partial class AddCategoryAndSeedTable : Migration

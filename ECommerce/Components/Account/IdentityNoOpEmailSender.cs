@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
-using YumBlazor.Data;
+using Portfolio.ECommerce.Blazor.Data;
 
-namespace YumBlazor.Components.Account
+namespace Portfolio.ECommerce.Blazor.Components.Account
 {
     // Remove the "else if (EmailSender is IdentityNoOpEmailSender)" block from RegisterConfirmation.razor after updating with a real implementation.
     internal sealed class IdentityNoOpEmailSender : IEmailSender<ApplicationUser>

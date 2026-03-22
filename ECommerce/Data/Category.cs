@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace YumBlazor.Data
+namespace Portfolio.ECommerce.Blazor.Data
 {
     public class Category
     {

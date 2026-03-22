@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using YumBlazor.Data;
-using YumBlazor.Repository.IRepository;
+using Portfolio.ECommerce.Blazor.Data;
+using Portfolio.ECommerce.Blazor.Repository.IRepository;
 
-namespace YumBlazor.Repository
+namespace Portfolio.ECommerce.Blazor.Repository
 {
     public class OrderRepository : IOrderRepository
     {

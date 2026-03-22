@@ -1,6 +1,6 @@
-﻿using YumBlazor.Data;
+﻿using Portfolio.ECommerce.Blazor.Data;
 
-namespace YumBlazor.Repository.IRepository
+namespace Portfolio.ECommerce.Blazor.Repository.IRepository
 {
     public interface IShoppingCartRepository
     {

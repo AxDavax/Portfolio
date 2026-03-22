@@ -1,4 +1,4 @@
-﻿namespace YumBlazor.Services
+﻿namespace Portfolio.ECommerce.Blazor.Services
 {
     public class SharedStateService
     {

@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace YumBlazor.Migrations
+namespace Portfolio.ECommerce.Blazor.Migrations
 {
     /// <inheritdoc />
     public partial class addProductToDb : Migration

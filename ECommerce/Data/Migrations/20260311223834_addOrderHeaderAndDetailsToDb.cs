@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace YumBlazor.Migrations
+namespace Portfolio.ECommerce.Blazor.Migrations
 {
     /// <inheritdoc />
     public partial class addOrderHeaderAndDetailsToDb : Migration

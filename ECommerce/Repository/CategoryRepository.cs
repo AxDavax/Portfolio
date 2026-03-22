@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using YumBlazor.Data;
-using YumBlazor.Repository.IRepository;
+using Portfolio.ECommerce.Blazor.Data;
+using Portfolio.ECommerce.Blazor.Repository.IRepository;
 
-namespace YumBlazor.Repository
+namespace Portfolio.ECommerce.Blazor.Repository
 {
     public class CategoryRepository : ICategoryRepository
     {
@@ -26,7 +26,7 @@ namespace YumBlazor.Repository
             if (obj != null)
             {
                 _db.Category.Remove(obj);
-                return (await _db.SaveChangesAsync()) > 0;
+                return await _db.SaveChangesAsync() > 0;
             }
             return false;
         }

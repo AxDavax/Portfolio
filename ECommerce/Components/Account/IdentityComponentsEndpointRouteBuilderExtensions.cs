@@ -6,9 +6,9 @@ using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
-using YumBlazor.Components.Account.Pages;
-using YumBlazor.Components.Account.Pages.Manage;
-using YumBlazor.Data;
+using Portfolio.ECommerce.Blazor.Data;
+using Portfolio.ECommerce.Blazor.Components.Account.Pages;
+using Portfolio.ECommerce.Blazor.Components.Account.Pages.Manage;
 
 namespace Microsoft.AspNetCore.Routing
 {

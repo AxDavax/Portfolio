@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace YumBlazor.Data
+namespace Portfolio.ECommerce.Blazor.Data
 {
     public class OrderDetail
     {
@@ -18,6 +18,6 @@ namespace YumBlazor.Data
         public double Price { get; set; }
         
         [Required]
-        public String ProductName { get; set; }
+        public string ProductName { get; set; }
     }
 }

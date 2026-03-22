@@ -1,8 +1,8 @@
-﻿using System.Net.NetworkInformation;
-using YumBlazor.Components.Pages.Cart_Pages;
-using YumBlazor.Data;
+﻿using Portfolio.ECommerce.Blazor.Data;
+using System.Net.NetworkInformation;
+using Portfolio.ECommerce.Blazor.Components.Pages.Cart_Pages;
 
-namespace YumBlazor.Utility
+namespace Portfolio.ECommerce.Blazor.Utility
 {
     public static class SD
     {
