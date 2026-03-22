@@ -45,15 +45,15 @@ namespace Portfolio.ECommerce.Blazor.ViewModels
         public async Task AfterRenderAsync(bool firstRender)
         {
             if (firstRender)
-            {
-                await LoadCategories();
-                IsProcessing = false;
-            }
+                await LoadCategoriesAsync();
         }
 
-        public async Task LoadCategories()
+        public async Task LoadCategoriesAsync()
         {
-            Categories = await _categoryRepository.GetAllAsync();
+            await RunCommandAsync(() => IsProcessing, async () =>
+            {
+                Categories = await _categoryRepository.GetAllAsync();
+            });
         }
 
         public void HandleDelete(int id)
@@ -64,23 +64,24 @@ namespace Portfolio.ECommerce.Blazor.ViewModels
 
         public async Task ConfirmDeleteAsync(bool isConfirmed)
         {
-            IsProcessing = true;
-            await _js.InvokeVoidAsync("HideConfirmationModal");
-
-            if (isConfirmed && DeleteCategoryID != 0)
+            await RunCommandAsync(() => IsProcessing, async () =>
             {
-                var result = await _categoryRepository.DeleteAsync(DeleteCategoryID);
+                await _js.InvokeVoidAsync("HideConfirmationModal");
 
-                if (result)
-                    _js?.ToastrSuccess("Category deleted successfully");
-                else
-                    _js?.ToastrError("Error deleting category");
+                if (isConfirmed && DeleteCategoryID != 0)
+                {
+                    var result = await _categoryRepository.DeleteAsync(DeleteCategoryID);
 
-                await LoadCategories();
-            }
+                    if (result)
+                        _js?.ToastrSuccess("Category deleted successfully");
+                    else
+                        _js?.ToastrError("Error deleting category");
 
-            DeleteCategoryID = 0;
-            IsProcessing = false;
+                    await LoadCategoriesAsync();
+                }
+
+                DeleteCategoryID = 0;
+            });
         }
     }
 }
