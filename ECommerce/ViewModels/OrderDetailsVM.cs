@@ -3,6 +3,7 @@ using Microsoft.JSInterop;
 using Portfolio.ECommerce.Blazor.Data;
 using Portfolio.ECommerce.Blazor.Repository.IRepository;
 using Portfolio.ECommerce.Blazor.Services.Extensions;
+using Portfolio.ECommerce.Blazor.Utility;
 
 namespace Portfolio.ECommerce.Blazor.ViewModels
 {
@@ -33,6 +34,13 @@ namespace Portfolio.ECommerce.Blazor.ViewModels
             set => SetProperty(ref _id, value);
         }
 
+        private bool _isAdmin;
+        public bool IsAdmin
+        {
+            get => _isAdmin;
+            set => SetProperty(ref _isAdmin, value);
+        }
+
         private OrderHeader? _orderHeader = null;
         public OrderHeader? OrderHeader
         {
@@ -40,7 +48,13 @@ namespace Portfolio.ECommerce.Blazor.ViewModels
             set => SetProperty(ref _orderHeader, value);
         }
 
-        public Task InitializeAsync() => Task.CompletedTask;
+        public async Task InitializeAsync()
+        {
+            var authState = await _authenticationStateProvider.GetAuthenticationStateAsync();
+            var user = authState.User;
+
+            IsAdmin = user?.IsInRole(SD.Role_Admin) == true;
+        }
 
         public async Task AfterRenderAsync(bool firstRender)
         {
@@ -61,6 +75,8 @@ namespace Portfolio.ECommerce.Blazor.ViewModels
             {
                 await _orderRepository.UpdateStatusAsync(Id, newStatus, "");
                 _js?.ToastrSuccess($"Status updated successfully to {newStatus}");
+
+                await LoadOrderAsync();
             });
         }
     }
