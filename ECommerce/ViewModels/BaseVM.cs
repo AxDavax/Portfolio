@@ -16,12 +16,19 @@ namespace Portfolio.ECommerce.Blazor.ViewModels
         public event PropertyChangedEventHandler? PropertyChanged;
 
         /// <summary>
+        /// Let's razor component to be notify of stateChanged
+        /// </summary>
+        public Action? StateChanged { get; set; }
+
+        /// <summary>
         /// Called to fire a <see cref="PropertyChanged"/> event
         /// </summary>
         /// <param name="propertyName">The name of the property that changed</param>
         public void OnPropertyChanged([CallerMemberName] string propertyName = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
+            StateChanged?.Invoke();
         }
 
         /// <summary>

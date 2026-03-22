@@ -1,15 +1,15 @@
 ﻿@page "/category"
-@inject ICategoryRepository _categoryRepository
-@inject IJSRuntime _JS
+@using Portfolio.ECommerce.Blazor.ViewModels
+@inject CategoryListVM VM
 
-<BsModal OnModalConfirmation="ConfirmDelete_Click"
+<BsModal OnModalConfirmation="VM.ConfirmDeleteAsync"
          ButtonBootstrapStyle="btn-danger"
          ButtonText="Delete"
          Title="Are you sure you want to delete this Category?">
 
 </BsModal>
 
-@if(IsProcessing)
+@if(VM.IsProcessing)
 {
     <div class="position-absolute w-75 h-75 d-flex flex-column align-items-center bg-white justify-content-center">
         <img src="/images/loading.gif" alt="loading" />
@@ -33,7 +33,7 @@ else
                       </a>
                   </div>
               </div>
-              @if(Categories.Any())
+              @if(VM.Categories.Any())
               {
                   <table class="table table-bordered table-striped">
                       <thead>
@@ -43,7 +43,7 @@ else
                           </tr>
                       </thead>
                       <tbody>
-                          @foreach(var obj in Categories)
+                          @foreach(var obj in VM.Categories)
                           {
                               <tr>
                                   <td>@obj.Name</td>
@@ -51,7 +51,7 @@ else
                                       <a href="@($"category/update/{obj.Id}")" class="btn btn-primary">
                                          <i class="bi bi-pencil-square"></i> Edit
                                       </a>
-                                      <button class="btn btn-danger" @onclick="() => HandleDelete(obj.Id)">
+                                      <button class="btn btn-danger" @onclick="() => VM.HandleDelete(obj.Id)">
                                          <i class="bi bi-trash3"></i> Delete
                                       </button>        
                                   </td>
@@ -65,54 +65,14 @@ else
 }
 
 @code {
-    private bool IsProcessing { get; set; } = true;
-    private IEnumerable<Category> Categories { get; set; } = new List<Category>();
-    private int DeleteCategoryID { get; set; } = 0;
-
     protected override async Task OnInitializedAsync()
     {
-        await Task.Delay(5000);
+        VM.StateChanged = StateHasChanged;
+        await VM.InitializeAsync();
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if(firstRender)
-        {
-            await LoadCategories();
-            IsProcessing = false;
-            StateHasChanged();
-        }
-        //return base.OnAfterRenderAsync(firstRender);
-    }
-
-    private async Task LoadCategories()
-    {
-        Categories = await _categoryRepository.GetAllAsync();
-    }
-
-    private void HandleDelete(int id)
-    {
-        DeleteCategoryID = id;
-        _JS.InvokeVoidAsync("ShowConfirmationModal");
-    }
-
-    private async Task ConfirmDelete_Click(bool isConfirmed)
-    {
-        IsProcessing = true;
-        await _JS.InvokeVoidAsync("HideConfirmationModal");
-
-        if(isConfirmed && DeleteCategoryID != 0)
-        {
-            var result = await _categoryRepository.DeleteAsync(DeleteCategoryID);
-            if(result)
-                _JS?.ToastrSuccess("Category Delete Successfully");
-            else
-                _JS?.ToastrError("Error Encountered while deleting");
-
-            await LoadCategories();
-        }
-
-        DeleteCategoryID = 0;
-        IsProcessing = false;
+        await VM.AfterRenderAsync(firstRender);
     }
 }

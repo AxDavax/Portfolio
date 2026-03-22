@@ -1,0 +1,86 @@
+﻿using Microsoft.JSInterop;
+using Portfolio.ECommerce.Blazor.Data;
+using Portfolio.ECommerce.Blazor.Repository.IRepository;
+using Portfolio.ECommerce.Blazor.Services.Extensions;
+
+namespace Portfolio.ECommerce.Blazor.ViewModels
+{
+    public class CategoryListVM : BaseVM
+    {
+        private readonly ICategoryRepository _categoryRepository;
+        private readonly IJSRuntime _js;
+
+        public CategoryListVM(ICategoryRepository categoryRepository, IJSRuntime js)
+        {
+            _categoryRepository = categoryRepository;
+            _js = js;
+        }
+
+        private bool _isProcessing = true;
+        public bool IsProcessing
+        {
+            get => _isProcessing;
+            set => SetProperty(ref _isProcessing, value);
+        }
+
+        private IEnumerable<Category> _categories = new List<Category>();
+        public IEnumerable<Category> Categories
+        {
+            get => _categories;
+            set => SetProperty(ref _categories, value);
+        }
+
+        private int _deleteCategoryID;
+        public int DeleteCategoryID
+        {
+            get => _deleteCategoryID;
+            set => SetProperty(ref _deleteCategoryID, value);
+        }
+
+        public async Task InitializeAsync()
+        {
+            await Task.Delay(5000);
+        }
+
+        public async Task AfterRenderAsync(bool firstRender)
+        {
+            if (firstRender)
+            {
+                await LoadCategories();
+                IsProcessing = false;
+            }
+        }
+
+        public async Task LoadCategories()
+        {
+            Categories = await _categoryRepository.GetAllAsync();
+        }
+
+        public void HandleDelete(int id)
+        {
+            DeleteCategoryID = id;
+            _js.InvokeVoidAsync("ShowConfirmationModal");
+        }
+
+        public async Task ConfirmDeleteAsync(bool isConfirmed)
+        {
+            IsProcessing = true;
+            await _js.InvokeVoidAsync("HideConfirmationModal");
+
+            if (isConfirmed && DeleteCategoryID != 0)
+            {
+                var result = await _categoryRepository.DeleteAsync(DeleteCategoryID);
+
+                if (result)
+                    _js?.ToastrSuccess("Category deleted successfully");
+                else
+                    _js?.ToastrError("Error deleting category");
+
+                await LoadCategories();
+            }
+
+            DeleteCategoryID = 0;
+            IsProcessing = false;
+        }
+    }
+}
