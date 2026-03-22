@@ -1,8 +1,7 @@
 ﻿@page "/order/confirmation/{session_id}"
-@inject PaymentService _paymentService
-@inject IShoppingCartRepository _cartRepository
+@inject OrderConfirmationVM VM
 
-@if (IsProcessing)
+@if (VM.IsProcessing)
 {
 	<div class="position-absolute w-100 vh-100 d-flex flex-column align-items-center bg-white justify-content-center">
 		<img src="/images/loading.gif" alt="loading" />
@@ -13,7 +12,7 @@ else
 	<div class="text-center">
 		<h1 class="pt-4 text-success">You are one stop closer to delicious food!</h1>
 		<p>Your order is confirmed! Please note your order ID for any questions.</p>
-		<p>Order ID: <b>@orderHeader.Id</b></p>
+		<p>Order ID: <b>@VM.OrderHeader.Id</b></p>
 		<hr />
 		<img src="/images/lawn_leaf.jpg" width="40%" />
 		<hr />
@@ -24,17 +23,19 @@ else
 	[Parameter]
 	public string session_id { get; set; }
 
-	private bool IsProcessing { get; set; } = true;
-	private OrderHeader orderHeader { get; set; }
+	protected override void OnInitialized()
+	{
+		VM.StateChanged = StateHasChanged;
+		VM.SessionId = session_id;
+	}
 
 	protected override async Task OnInitializedAsync()
 	{
-		orderHeader = await _paymentService.CheckPaymentStatusAndUpdateOrder(session_id);
-		if(orderHeader.Status == SD.StatusApproved)
-		{
-			await _cartRepository.ClearCartAsync(orderHeader.UserId);
-		}
+		await VM.InitializedAsync();
+	}
 
-		IsProcessing = false;
+	protected override async Task OnAfterRenderAsync(bool firstRender)
+	{
+		await VM.AfterRenderAsync(firstRender);
 	}
 }
