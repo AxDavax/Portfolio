@@ -1,14 +1,15 @@
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Radzen;
-using Stripe;
+using Portfolio.ECommerce.Blazor.Components;
 using Portfolio.ECommerce.Blazor.Components.Account;
 using Portfolio.ECommerce.Blazor.Data;
 using Portfolio.ECommerce.Blazor.Repository;
 using Portfolio.ECommerce.Blazor.Repository.IRepository;
 using Portfolio.ECommerce.Blazor.Services;
-using Portfolio.ECommerce.Blazor.Components;
+using Portfolio.ECommerce.Blazor.ViewModels;
+using Radzen;
+using Stripe;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,6 +27,20 @@ builder.Services.AddScoped<IdentityUserAccessor>();
 builder.Services.AddScoped<IdentityRedirectManager>();
 builder.Services.AddScoped<SharedStateService>();
 builder.Services.AddScoped<PaymentService>();
+
+//var vmTypes = typeof(BaseVM).Assembly.GetTypes().Where(t => t.Name.EndsWith("VM") && t.IsClass);
+
+//foreach (var vm in vmTypes)
+builder.Services.AddScoped<CartVM>();
+builder.Services.AddScoped<CategoryListVM>();
+builder.Services.AddScoped<CategoryUpsertVM>();
+builder.Services.AddScoped<HomeVM>();
+builder.Services.AddScoped<OrderConfirmationVM>();
+builder.Services.AddScoped<OrderDetailsVM>();
+builder.Services.AddScoped<OrderListVM>();
+builder.Services.AddScoped<ProductListVM>();
+builder.Services.AddScoped<ProductUpsertVM>();
+
 builder.Services.AddScoped<AuthenticationStateProvider, IdentityRevalidatingAuthenticationStateProvider>();
 builder.Services.AddRadzenComponents();
 builder.Services.AddAuthentication(options =>
@@ -49,6 +64,7 @@ builder.Services.AddAuthentication(options =>
         options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"]!;
     })
     .AddIdentityCookies();
+
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>

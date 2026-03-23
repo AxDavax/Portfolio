@@ -6,7 +6,7 @@ using Portfolio.ECommerce.Blazor.Services.Extensions;
 
 namespace Portfolio.ECommerce.Blazor.ViewModels
 {
-    public class CategoryUpsertVM : BaseVM
+    public class CategoryUpsertVM : ProcessingVM
     {
         private readonly ICategoryRepository _categoryRepository;
         private readonly IJSRuntime _js;
@@ -33,13 +33,6 @@ namespace Portfolio.ECommerce.Blazor.ViewModels
             set => SetProperty(ref _category, value);
         }
 
-        private bool _isProcessing = true;
-        public bool IsProcessing
-        {
-            get => _isProcessing;
-            set => SetProperty(ref _isProcessing, value);
-        }
-
         public async Task InitializeAsync()
         {
         
@@ -47,8 +40,10 @@ namespace Portfolio.ECommerce.Blazor.ViewModels
 
         public async Task AfterRenderAsync(bool firstRender)
         {
-            if (firstRender) 
+            if (firstRender)
+            {
                 await LoadCategoryAsync();
+            }
         }
 
         public async Task LoadCategoryAsync()

@@ -7,7 +7,7 @@ using System.Security.Claims;
 
 namespace Portfolio.ECommerce.Blazor.ViewModels
 {
-    public class OrderListVM : BaseVM
+    public class OrderListVM : ProcessingVM
     {
         private readonly IOrderRepository _orderRepository;
         private readonly NavigationManager _navigation;
@@ -20,13 +20,6 @@ namespace Portfolio.ECommerce.Blazor.ViewModels
             _orderRepository = orderRepository;
             _navigation = navigation;
             _authProvider = authProvider;
-        }
-
-        private bool _isProcessing = true;
-        public bool IsProcessing
-        {
-            get => _isProcessing;
-            set => SetProperty(ref _isProcessing, value);
         }
 
         private IEnumerable<OrderHeader> _orderHeaders = new List<OrderHeader>();
@@ -55,7 +48,9 @@ namespace Portfolio.ECommerce.Blazor.ViewModels
         public async Task AfterRenderAsync(bool firstRender)
         {
             if (firstRender)
+            {
                 await LoadOrderHeadersAsync();
+            }
         }
 
         public async Task LoadOrderHeadersAsync()

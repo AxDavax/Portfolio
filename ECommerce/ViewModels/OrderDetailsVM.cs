@@ -7,7 +7,7 @@ using Portfolio.ECommerce.Blazor.Utility;
 
 namespace Portfolio.ECommerce.Blazor.ViewModels
 {
-    public class OrderDetailsVM : BaseVM
+    public class OrderDetailsVM : ProcessingVM
     {
         private readonly IOrderRepository _orderRepository;
         private readonly IJSRuntime _js;
@@ -18,13 +18,6 @@ namespace Portfolio.ECommerce.Blazor.ViewModels
             _orderRepository = orderRepository;
             _js = js;
             _authenticationStateProvider = authenticationStateProvider;
-        }
-
-        private bool _isProcessing = true;
-        public bool IsProcessing
-        {
-            get => _isProcessing;
-            set => SetProperty(ref _isProcessing, value);
         }
 
         private int _id;
@@ -58,7 +51,10 @@ namespace Portfolio.ECommerce.Blazor.ViewModels
 
         public async Task AfterRenderAsync(bool firstRender)
         {
-            if (firstRender) await LoadOrderAsync();
+            if (firstRender)
+            {
+                await LoadOrderAsync();
+            } 
         }
 
         public async Task LoadOrderAsync()

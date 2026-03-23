@@ -7,7 +7,7 @@ using Portfolio.ECommerce.Blazor.Services.Extensions;
 
 namespace Portfolio.ECommerce.Blazor.ViewModels
 {
-    public class ProductUpsertVM : BaseVM
+    public class ProductUpsertVM : ProcessingVM
     {
         private readonly ICategoryRepository _categoryRepository;
         private readonly IProductRepository _productRepository;
@@ -55,14 +55,6 @@ namespace Portfolio.ECommerce.Blazor.ViewModels
             set => SetProperty(ref _directoryPath, value);
         }
 
-        private bool _isProcessing = true;
-        public bool IsProcessing
-        {
-            get => _isProcessing;
-            set => SetProperty(ref _isProcessing, value);
-        }
-
-
         public Task InitializeAsync()
         {
             DirectoryPath = Path.Combine(_webHostEnvironment.WebRootPath, "images", "product");
@@ -72,7 +64,9 @@ namespace Portfolio.ECommerce.Blazor.ViewModels
         public async Task AfterRenderAsync(bool firstRender)
         {
             if (firstRender)
+            {
                 await LoadProductAndCategoryListAsync();
+            }
         }
 
         private async Task LoadProductAndCategoryListAsync()

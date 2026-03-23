@@ -7,7 +7,7 @@ using Portfolio.ECommerce.Blazor.Utility;
 
 namespace Portfolio.ECommerce.Blazor.ViewModels
 {
-    public class CartVM : BaseVM
+    public class CartVM : ProcessingVM
     {
         private readonly IShoppingCartRepository _cartRepository;
         private readonly IOrderRepository _orderRepository;
@@ -29,13 +29,6 @@ namespace Portfolio.ECommerce.Blazor.ViewModels
             _sharedStateService = sharedStateService;
             _paymentService = paymentService;
             _authStateProvider = authStateProvider;
-        }
-
-        private bool _isProcessing = true;
-        public bool IsProcessing
-        {
-            get => _isProcessing;
-            set => SetProperty(ref _isProcessing, value);
         }
 
         private IEnumerable<ShoppingCart> _shoppingCarts = new List<ShoppingCart>();
@@ -72,7 +65,9 @@ namespace Portfolio.ECommerce.Blazor.ViewModels
         public async Task AfterRenderAsync(bool firstRender)
         {
             if (firstRender)
+            {
                 await LoadCartAsync();
+            }
         }
 
         public async Task LoadCartAsync()

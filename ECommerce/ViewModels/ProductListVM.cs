@@ -5,7 +5,7 @@ using Portfolio.ECommerce.Blazor.Services.Extensions;
 
 namespace Portfolio.ECommerce.Blazor.ViewModels
 {
-    public class ProductListVM : BaseVM
+    public class ProductListVM : ProcessingVM
     {
         private readonly IProductRepository _productRepository;
         private readonly IJSRuntime _js;
@@ -14,13 +14,6 @@ namespace Portfolio.ECommerce.Blazor.ViewModels
         {
             _productRepository = productRepository;
             _js = js;
-        }
-
-        private bool _isProcessing = true;
-        public bool IsProcessing
-        {
-            get => _isProcessing;
-            set => SetProperty(ref _isProcessing, value);
         }
 
         private IEnumerable<Product> _products = new List<Product>();
@@ -45,7 +38,9 @@ namespace Portfolio.ECommerce.Blazor.ViewModels
         public async Task AfterRenderAsync(bool firstRender)
         {
             if (firstRender)
+            {
                 await LoadProductsAsync();
+            }
         }
 
         private async Task LoadProductsAsync()

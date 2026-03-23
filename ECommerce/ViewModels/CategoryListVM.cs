@@ -5,7 +5,7 @@ using Portfolio.ECommerce.Blazor.Services.Extensions;
 
 namespace Portfolio.ECommerce.Blazor.ViewModels
 {
-    public class CategoryListVM : BaseVM
+    public class CategoryListVM : ProcessingVM
     {
         private readonly ICategoryRepository _categoryRepository;
         private readonly IJSRuntime _js;
@@ -14,13 +14,6 @@ namespace Portfolio.ECommerce.Blazor.ViewModels
         {
             _categoryRepository = categoryRepository;
             _js = js;
-        }
-
-        private bool _isProcessing = true;
-        public bool IsProcessing
-        {
-            get => _isProcessing;
-            set => SetProperty(ref _isProcessing, value);
         }
 
         private IEnumerable<Category> _categories = new List<Category>();
@@ -45,7 +38,9 @@ namespace Portfolio.ECommerce.Blazor.ViewModels
         public async Task AfterRenderAsync(bool firstRender)
         {
             if (firstRender)
+            {
                 await LoadCategoriesAsync();
+            }
         }
 
         public async Task LoadCategoriesAsync()

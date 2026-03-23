@@ -8,7 +8,7 @@ using Portfolio.ECommerce.Blazor.Services.Extensions;
 
 namespace Portfolio.ECommerce.Blazor.ViewModels
 {
-    public class HomeVM : BaseVM
+    public class HomeVM : ProcessingVM
     {
         private readonly IShoppingCartRepository _cartRepository;
         private readonly IProductRepository _productRepository;
@@ -70,18 +70,14 @@ namespace Portfolio.ECommerce.Blazor.ViewModels
             set => SetProperty(ref _searchText, value);
         }
 
-        private bool _isProcessing = true;
-        public bool IsProcessing
-        {
-            get => _isProcessing;
-            set => SetProperty(ref _isProcessing, value);
-        }
-
         public Task InitializeAsync() => Task.CompletedTask;
 
         public async Task AfterRenderAsync(bool firstRender)
         {
-            if (firstRender) await LoadProductsAsync();
+            if (firstRender)
+            {
+                await LoadProductsAsync();
+            } 
         }
 
         public async Task LoadProductsAsync()

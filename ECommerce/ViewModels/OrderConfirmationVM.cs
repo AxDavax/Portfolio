@@ -5,7 +5,7 @@ using Portfolio.ECommerce.Blazor.Utility;
 
 namespace Portfolio.ECommerce.Blazor.ViewModels
 {
-    public class OrderConfirmationVM : BaseVM
+    public class OrderConfirmationVM : ProcessingVM
     {
         private readonly PaymentService _paymentService;
         private readonly IShoppingCartRepository _cartRepository;
@@ -23,13 +23,6 @@ namespace Portfolio.ECommerce.Blazor.ViewModels
             set => SetProperty(ref _sessionId, value);
         }
 
-        private bool _isProcessing = true;
-        public bool IsProcessing
-        {
-            get => _isProcessing;
-            set => SetProperty(ref _isProcessing, value);
-        }
-
         private OrderHeader _orderHeader = new();
         public OrderHeader OrderHeader
         {
@@ -41,7 +34,10 @@ namespace Portfolio.ECommerce.Blazor.ViewModels
 
         public async Task AfterRenderAsync(bool firstRender)
         {
-            if (firstRender) await LoadOrderAsync();
+            if (firstRender)
+            {
+                await LoadOrderAsync();
+            } 
         }
 
         public async Task LoadOrderAsync()
