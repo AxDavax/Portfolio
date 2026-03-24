@@ -65,7 +65,7 @@ namespace Portfolio.ECommerce.Blazor.ViewModels
         {
             if (firstRender)
             {
-                await LoadProductAndCategoryListAsync();
+                await LoadProductAndCategoryListAsync();   
             }
         }
 
