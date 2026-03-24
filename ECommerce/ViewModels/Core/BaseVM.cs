@@ -3,7 +3,7 @@ using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
 using Portfolio.ECommerce.Blazor.Expressions;
 
-namespace Portfolio.ECommerce.Blazor.ViewModels
+namespace Portfolio.ECommerce.Blazor.ViewModels.Core
 {
     /// <summary>
     /// A base view model that fires Property Changed events as needed

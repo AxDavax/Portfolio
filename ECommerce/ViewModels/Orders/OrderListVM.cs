@@ -2,9 +2,10 @@
 using Portfolio.ECommerce.Blazor.Data;
 using Portfolio.ECommerce.Blazor.Repository.IRepository;
 using Portfolio.ECommerce.Blazor.Utility;
+using Portfolio.ECommerce.Blazor.ViewModels.Core;
 using System.Security.Claims;
 
-namespace Portfolio.ECommerce.Blazor.ViewModels
+namespace Portfolio.ECommerce.Blazor.ViewModels.Orders
 {
     public class OrderListVM : ProcessingVM
     {

@@ -4,8 +4,9 @@ using Portfolio.ECommerce.Blazor.Data;
 using Portfolio.ECommerce.Blazor.Repository.IRepository;
 using Portfolio.ECommerce.Blazor.Services;
 using Portfolio.ECommerce.Blazor.Services.Extensions;
+using Portfolio.ECommerce.Blazor.ViewModels.Core;
 
-namespace Portfolio.ECommerce.Blazor.ViewModels
+namespace Portfolio.ECommerce.Blazor.ViewModels.Home
 {
     public class HomeVM : ProcessingVM
     {
@@ -101,7 +102,7 @@ namespace Portfolio.ECommerce.Blazor.ViewModels
             {
                 FilteredProducts = Products.Where(u => u.CategoryId == categoryId).ToList();
                 SelectedCategoryId = categoryId;
-                SearchText = String.Empty;
+                SearchText = string.Empty;
             }
         }
 

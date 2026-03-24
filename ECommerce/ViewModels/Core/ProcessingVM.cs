@@ -1,4 +1,4 @@
-﻿namespace Portfolio.ECommerce.Blazor.ViewModels
+﻿namespace Portfolio.ECommerce.Blazor.ViewModels.Core
 {
     public abstract class ProcessingVM : BaseVM
     {

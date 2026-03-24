@@ -4,8 +4,9 @@ using Microsoft.JSInterop;
 using Portfolio.ECommerce.Blazor.Data;
 using Portfolio.ECommerce.Blazor.Repository.IRepository;
 using Portfolio.ECommerce.Blazor.Services.Extensions;
+using Portfolio.ECommerce.Blazor.ViewModels.Core;
 
-namespace Portfolio.ECommerce.Blazor.ViewModels
+namespace Portfolio.ECommerce.Blazor.ViewModels.Products
 {
     public class ProductUpsertVM : ProcessingVM
     {
@@ -102,7 +103,7 @@ namespace Portfolio.ECommerce.Blazor.ViewModels
             await RunCommandAsync(() => IsProcessing, async () =>
             {
                 var file = e.File;
-                System.IO.FileInfo fileInfo = new(file.Name);
+                FileInfo fileInfo = new(file.Name);
                 var newFileName = $"{Guid.NewGuid()}.{fileInfo.Extension}";
                 if (!Directory.Exists(DirectoryPath))
                     Directory.CreateDirectory(DirectoryPath);

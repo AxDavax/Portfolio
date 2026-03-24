@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components.Authorization;
 using System.Security.Claims;
 
-namespace Portfolio.ECommerce.Blazor.ViewModels
+namespace Portfolio.ECommerce.Blazor.ViewModels.Core
 {
     public class AuthUserVM : BaseVM
     {

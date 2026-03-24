@@ -2,8 +2,9 @@
 using Portfolio.ECommerce.Blazor.Data;
 using Portfolio.ECommerce.Blazor.Repository.IRepository;
 using Portfolio.ECommerce.Blazor.Services.Extensions;
+using Portfolio.ECommerce.Blazor.ViewModels.Core;
 
-namespace Portfolio.ECommerce.Blazor.ViewModels
+namespace Portfolio.ECommerce.Blazor.ViewModels.Products
 {
     public class ProductListVM : ProcessingVM
     {
@@ -32,7 +33,7 @@ namespace Portfolio.ECommerce.Blazor.ViewModels
 
         public async Task InitializeAsync()
         {
-            
+            await Task.Delay(1000);
         }
 
         public async Task AfterRenderAsync(bool firstRender)

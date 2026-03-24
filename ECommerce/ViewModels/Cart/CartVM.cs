@@ -3,8 +3,9 @@ using Portfolio.ECommerce.Blazor.Data;
 using Portfolio.ECommerce.Blazor.Repository.IRepository;
 using Portfolio.ECommerce.Blazor.Services;
 using Portfolio.ECommerce.Blazor.Utility;
+using Portfolio.ECommerce.Blazor.ViewModels.Core;
 
-namespace Portfolio.ECommerce.Blazor.ViewModels
+namespace Portfolio.ECommerce.Blazor.ViewModels.Cart
 {
     public class CartVM : ProcessingVM
     {
@@ -53,6 +54,7 @@ namespace Portfolio.ECommerce.Blazor.ViewModels
 
         public async Task InitializeAsync()
         {
+            await Task.Delay(1000);
             var user = _authUser.User;
             
             OrderHeader.Email = user.FindFirst(u => u.Type.Contains("email"))?.Value;
@@ -84,7 +86,7 @@ namespace Portfolio.ECommerce.Blazor.ViewModels
 
             foreach (var cart in ShoppingCarts)
             {
-                OrderHeader.OrderTotal += (Convert.ToDouble(cart.Product.Price) * cart.Count);
+                OrderHeader.OrderTotal += Convert.ToDouble(cart.Product.Price) * cart.Count;
                 TotalItems += cart.Count;
             }
 

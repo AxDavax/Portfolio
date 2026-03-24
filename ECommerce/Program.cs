@@ -7,7 +7,12 @@ using Portfolio.ECommerce.Blazor.Data;
 using Portfolio.ECommerce.Blazor.Repository;
 using Portfolio.ECommerce.Blazor.Repository.IRepository;
 using Portfolio.ECommerce.Blazor.Services;
-using Portfolio.ECommerce.Blazor.ViewModels;
+using Portfolio.ECommerce.Blazor.ViewModels.Core;
+using Portfolio.ECommerce.Blazor.ViewModels.Cart;
+using Portfolio.ECommerce.Blazor.ViewModels.Categories;
+using Portfolio.ECommerce.Blazor.ViewModels.Home;
+using Portfolio.ECommerce.Blazor.ViewModels.Orders;
+using Portfolio.ECommerce.Blazor.ViewModels.Products;
 using Radzen;
 using Stripe;
 
@@ -31,6 +36,7 @@ builder.Services.AddScoped<PaymentService>();
 //var vmTypes = typeof(BaseVM).Assembly.GetTypes().Where(t => t.Name.EndsWith("VM") && t.IsClass);
 
 //foreach (var vm in vmTypes)
+builder.Services.AddScoped<AuthUserVM>();
 builder.Services.AddScoped<CartVM>();
 builder.Services.AddScoped<CategoryListVM>();
 builder.Services.AddScoped<CategoryUpsertVM>();

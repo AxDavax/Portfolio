@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
-using Portfolio.ECommerce.Blazor.Data;
 using Portfolio.ECommerce.Blazor.Repository.IRepository;
 using Portfolio.ECommerce.Blazor.Services.Extensions;
+using Portfolio.ECommerce.Blazor.Data;
+using Portfolio.ECommerce.Blazor.ViewModels.Core;
 
-namespace Portfolio.ECommerce.Blazor.ViewModels
+namespace Portfolio.ECommerce.Blazor.ViewModels.Categories
 {
     public class CategoryUpsertVM : ProcessingVM
     {
@@ -26,7 +27,7 @@ namespace Portfolio.ECommerce.Blazor.ViewModels
             set => SetProperty(ref _id, value);
         }
 
-        private Category _category = new();
+        private Portfolio.ECommerce.Blazor.Data.Category _category = new();
         public Category Category
         {
             get => _category;
@@ -35,7 +36,7 @@ namespace Portfolio.ECommerce.Blazor.ViewModels
 
         public async Task InitializeAsync()
         {
-        
+            await Task.Delay(1000);
         }
 
         public async Task AfterRenderAsync(bool firstRender)
