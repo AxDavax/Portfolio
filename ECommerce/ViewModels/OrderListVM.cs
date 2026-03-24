@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Authorization;
 using Portfolio.ECommerce.Blazor.Data;
 using Portfolio.ECommerce.Blazor.Repository.IRepository;
 using Portfolio.ECommerce.Blazor.Utility;
@@ -11,15 +10,15 @@ namespace Portfolio.ECommerce.Blazor.ViewModels
     {
         private readonly IOrderRepository _orderRepository;
         private readonly NavigationManager _navigation;
-        private readonly AuthenticationStateProvider _authProvider;
+        private readonly AuthUserVM _authUser;
 
         public OrderListVM(IOrderRepository orderRepository, 
                            NavigationManager navigation,
-                           AuthenticationStateProvider authProvider)
+                           AuthUserVM authUser)
         {
             _orderRepository = orderRepository;
             _navigation = navigation;
-            _authProvider = authProvider;
+            _authUser = authUser;
         }
 
         private IEnumerable<OrderHeader> _orderHeaders = new List<OrderHeader>();
@@ -57,7 +56,7 @@ namespace Portfolio.ECommerce.Blazor.ViewModels
         {
             await RunCommandAsync(() => IsProcessing, async () =>
             {
-                await CheckAuthorizationAsync();
+                CheckAuthorization();
 
                 if (IsAdmin)
                     OrderHeaders = await _orderRepository.GetAllAsync();
@@ -66,10 +65,9 @@ namespace Portfolio.ECommerce.Blazor.ViewModels
             });
         }
 
-        private async Task CheckAuthorizationAsync()
+        private void CheckAuthorization()
         {
-            var authState = await _authProvider.GetAuthenticationStateAsync();
-            var user = authState.User;
+            var user = _authUser.User;
 
             IsAdmin = user?.IsInRole(SD.Role_Admin) == true;
             UserId = user?.FindFirst(ClaimTypes.NameIdentifier)?.Value;

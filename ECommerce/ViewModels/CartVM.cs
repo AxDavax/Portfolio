@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Authorization;
 using Portfolio.ECommerce.Blazor.Data;
 using Portfolio.ECommerce.Blazor.Repository.IRepository;
 using Portfolio.ECommerce.Blazor.Services;
@@ -14,21 +13,21 @@ namespace Portfolio.ECommerce.Blazor.ViewModels
         private readonly NavigationManager _navigation;
         private readonly SharedStateService _sharedStateService;
         private readonly PaymentService _paymentService;
-        private readonly AuthenticationStateProvider _authStateProvider;
+        private readonly AuthUserVM _authUser;
 
         public CartVM(IShoppingCartRepository cartRepository, 
                       IOrderRepository orderRepository, 
                       NavigationManager navigation, 
                       SharedStateService sharedStateService, 
-                      PaymentService paymentService, 
-                      AuthenticationStateProvider authStateProvider)
+                      PaymentService paymentService,
+                      AuthUserVM authUser)
         {
             _cartRepository = cartRepository;
             _orderRepository = orderRepository;
             _navigation = navigation;
             _sharedStateService = sharedStateService;
             _paymentService = paymentService;
-            _authStateProvider = authStateProvider;
+            _authUser = authUser;
         }
 
         private IEnumerable<ShoppingCart> _shoppingCarts = new List<ShoppingCart>();
@@ -54,8 +53,7 @@ namespace Portfolio.ECommerce.Blazor.ViewModels
 
         public async Task InitializeAsync()
         {
-            var authState = await _authStateProvider.GetAuthenticationStateAsync();
-            var user = authState.User;
+            var user = _authUser.User;
             
             OrderHeader.Email = user.FindFirst(u => u.Type.Contains("email"))?.Value;
             OrderHeader.UserId = user.FindFirst(u => u.Type.Contains("nameidentifier"))?.Value;

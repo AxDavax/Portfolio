@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.JSInterop;
+﻿using Microsoft.JSInterop;
 using Portfolio.ECommerce.Blazor.Data;
 using Portfolio.ECommerce.Blazor.Repository.IRepository;
 using Portfolio.ECommerce.Blazor.Services.Extensions;
@@ -11,13 +10,15 @@ namespace Portfolio.ECommerce.Blazor.ViewModels
     {
         private readonly IOrderRepository _orderRepository;
         private readonly IJSRuntime _js;
-        private readonly AuthenticationStateProvider _authenticationStateProvider;
+        private readonly AuthUserVM _authUser;
 
-        public OrderDetailsVM(IOrderRepository orderRepository, IJSRuntime js, AuthenticationStateProvider authenticationStateProvider)
+        public OrderDetailsVM(IOrderRepository orderRepository, 
+                              IJSRuntime js,
+                              AuthUserVM authUser)
         {
             _orderRepository = orderRepository;
             _js = js;
-            _authenticationStateProvider = authenticationStateProvider;
+            _authUser = authUser;
         }
 
         private int _id;
@@ -43,8 +44,7 @@ namespace Portfolio.ECommerce.Blazor.ViewModels
 
         public async Task InitializeAsync()
         {
-            var authState = await _authenticationStateProvider.GetAuthenticationStateAsync();
-            var user = authState.User;
+            var user = _authUser.User;
 
             IsAdmin = user?.IsInRole(SD.Role_Admin) == true;
         }

@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.JSInterop;
 using Portfolio.ECommerce.Blazor.Data;
 using Portfolio.ECommerce.Blazor.Repository.IRepository;
@@ -16,7 +15,7 @@ namespace Portfolio.ECommerce.Blazor.ViewModels
         private readonly NavigationManager _navigation;
         private readonly SharedStateService _sharedStateService;
         private readonly IJSRuntime _js;
-        private readonly AuthenticationStateProvider _authStateProvider;
+        private readonly AuthUserVM _authUser;
 
         public HomeVM(IShoppingCartRepository cartRepository, 
                       IProductRepository productRepository, 
@@ -24,7 +23,7 @@ namespace Portfolio.ECommerce.Blazor.ViewModels
                       NavigationManager navigation, 
                       SharedStateService sharedStateService, 
                       IJSRuntime js, 
-                      AuthenticationStateProvider authStateProvider)
+                      AuthUserVM authUser)
         {
             _cartRepository = cartRepository;
             _productRepository = productRepository;
@@ -32,7 +31,7 @@ namespace Portfolio.ECommerce.Blazor.ViewModels
             _navigation = navigation;
             _sharedStateService = sharedStateService;
             _js = js;
-            _authStateProvider = authStateProvider;
+            _authUser = authUser;
         }
 
         private IEnumerable<Product> _products = new List<Product>();
@@ -128,8 +127,7 @@ namespace Portfolio.ECommerce.Blazor.ViewModels
         {
             await RunCommandAsync(() => IsProcessing, async () =>
             {
-                var authState = await _authStateProvider.GetAuthenticationStateAsync();
-                var user = authState.User;
+                var user = _authUser.User;
                 var authenticated = user.Identity is not null && user.Identity.IsAuthenticated;
 
                 if (!authenticated)
