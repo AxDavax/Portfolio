@@ -36,6 +36,13 @@ namespace Portfolio.ECommerce.Blazor.ViewModels.Orders
             set => SetProperty(ref _isAdmin, value);
         }
 
+        private bool _isLoaded;
+        public bool IsLoaded
+        {
+            get => _isLoaded;
+            set => SetProperty(ref _isLoaded, value);
+        }
+
         private OrderHeader? _orderHeader = null;
         public OrderHeader? OrderHeader
         {
@@ -64,6 +71,7 @@ namespace Portfolio.ECommerce.Blazor.ViewModels.Orders
             await RunCommandAsync(() => IsProcessing, async () =>
             {
                 OrderHeader = await _orderRepository.GetAsync(Id);
+                IsLoaded = true;
             });
         }
 

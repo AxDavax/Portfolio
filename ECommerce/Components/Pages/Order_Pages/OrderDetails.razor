@@ -3,6 +3,14 @@
 @using Portfolio.ECommerce.Blazor.ViewModels.Orders
 @inject OrderDetailsVM VM
 
+@if (!VM.IsLoaded)
+{
+    <div class="position-absolute w-100 vh-100 d-flex flex-column align-items-center bg-white justify-content-center">
+        <img src="/images/loading.gif" alt="loading" />
+    </div>
+    return;
+}
+
 @if (VM.IsProcessing)
 {
     <div class="position-absolute w-100 vh-100 d-flex flex-column align-items-center bg-white justify-content-center">
