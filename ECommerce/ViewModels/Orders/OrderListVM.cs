@@ -69,6 +69,7 @@ namespace Portfolio.ECommerce.Blazor.ViewModels.Orders
         private void CheckAuthorization()
         {
             var user = _authUser.User;
+            if (user is null) return;
 
             IsAdmin = user?.IsInRole(SD.Role_Admin) == true;
             UserId = user?.FindFirst(ClaimTypes.NameIdentifier)?.Value;

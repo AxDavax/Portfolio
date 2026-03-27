@@ -129,6 +129,8 @@ namespace Portfolio.ECommerce.Blazor.ViewModels.Home
             await RunCommandAsync(() => IsProcessing, async () =>
             {
                 var user = _authUser.User;
+                if (user is null) return;
+
                 var authenticated = user.Identity is not null && user.Identity.IsAuthenticated;
 
                 if (!authenticated)

@@ -56,6 +56,8 @@ namespace Portfolio.ECommerce.Blazor.ViewModels.Cart
         {
             await Task.Delay(1000);
             var user = _authUser.User;
+
+            if (user is null) return;
             
             OrderHeader.Email = user.FindFirst(u => u.Type.Contains("email"))?.Value;
             OrderHeader.UserId = user.FindFirst(u => u.Type.Contains("nameidentifier"))?.Value;

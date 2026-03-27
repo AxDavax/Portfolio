@@ -55,6 +55,8 @@ namespace Portfolio.ECommerce.Blazor.ViewModels.Orders
             await Task.Delay(1000);
             var user = _authUser.User;
 
+            if (user is null) return;
+
             IsAdmin = user?.IsInRole(SD.Role_Admin) == true;
         }
 
