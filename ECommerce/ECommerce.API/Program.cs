@@ -1,5 +1,6 @@
 using ECommerce.Domain.Interfaces;
 using ECommerce.Infrastructure.Data;
+using ECommerce.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +10,7 @@ builder.Services.AddOpenApi();
 
 builder.Services.AddSingleton<DapperContext>();
 builder.Services.AddSingleton<ISqlDataAccess, SqlDataAccess>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 
 var app = builder.Build();
 
