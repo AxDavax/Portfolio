@@ -31,6 +31,14 @@ public class SqlDataAccess : ISqlDataAccess
         return await connection.QueryAsync<T>(sql, parameters);
     }
 
+    public async Task<IEnumerable<TReturn>> QueryAsync<TFirst, TSecond, TReturn, U>(
+        string sql, Func<TFirst, TSecond, TReturn> map, U parameters, string splitOn = "Id")
+    {
+        using IDbConnection connection = _context.CreateConnection();
+        return await connection.QueryAsync<TFirst, TSecond, TReturn>(
+            sql, map, parameters, splitOn: splitOn);
+    }
+
     public async Task<T?> QuerySingleOrDefaultAsync<T, U>(string sql, U parameters)
     {
         using IDbConnection connection = _context.CreateConnection();

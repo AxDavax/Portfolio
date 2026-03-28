@@ -1,5 +1,4 @@
-﻿
-using ECommerce.Domain.Interfaces;
+﻿using ECommerce.Domain.Interfaces;
 using ECommerce.Domain.Models;
 
 namespace ECommerce.Infrastructure.Repositories;
@@ -34,16 +33,8 @@ public class ProductRepository : IProductRepository
             obj.ImageUrl
         });
 
-        return new Product
-        {
-            Id = newId,
-            Name = obj.Name,
-            Price = obj.Price,
-            Description = obj.Description,
-            SpecialTag = obj.SpecialTag,
-            CategoryId = obj.CategoryId,
-            ImageUrl = obj.ImageUrl
-        };
+        obj.Id = newId;
+        return obj;
     }
 
     
@@ -52,29 +43,57 @@ public class ProductRepository : IProductRepository
         const string sql = """
 
             SELECT 
-                Id, Name, Price, Description, SpecialFlag, ImageUrl, CategoryId
+                p.Id, p.Name, p.Price, p.Description, p.SpecialFlag, p.ImageUrl, p.CategoryId,
+                c.Id, c.Name
             FROM 
-                Product 
+                Product p
+            INNER JOIN
+                Category c
+            ON
+                p.CategoryId = c.Id
                
             """;
 
-        return _db.QueryAsync<Product, dynamic>(sql, new { });
+        return _db.QueryAsync<Product, Category, Product, dynamic>(
+            sql, 
+            (product, category) =>
+            {
+                product.Category = category;
+                return product;
+            },
+            new { }
+        );
     }
 
-    public Task<Product?> GetByIdAsync(int id)
+    public async Task<Product?> GetByIdAsync(int id)
     {
         const string sql = """
              
             SELECT 
-                Id, Name, Price, Description, SpecialFlag, CategoryId, ImageUrl
+                p.Id, p.Name, p.Price, p.Description, p.SpecialFlag, p.CategoryId, p.ImageUrl,
+                c.Id, c.Name
             FROM 
-                Product 
+                Product p
+            INNER JOIN 
+                Category c
+            ON
+                p.CategoryId = c.Id
             WHERE 
                 Id = @Id
                         
             """;
 
-        return _db.QuerySingleOrDefaultAsync<Product, dynamic>(sql, new { Id = id });
+        var result = await _db.QueryAsync<Product, Category, Product, dynamic>(
+            sql,
+            (product, category) =>
+            {
+                product.Category = category;
+                return product;
+            },
+            new { Id = id }
+        );
+
+        return result.FirstOrDefault();
     }
 
     public async Task<Product> UpdateAsync(Product obj)
@@ -96,7 +115,9 @@ public class ProductRepository : IProductRepository
 
         if(rows == 0) throw new KeyNotFoundException($"Product with Id {obj.Id} not found.");
 
-        return obj;
+
+        return await GetByIdAsync(obj.Id) ?? 
+            throw new Exception("Unexpected error: product updated but not found.");
     }
 
     public async Task<bool> DeleteAsync(int id)

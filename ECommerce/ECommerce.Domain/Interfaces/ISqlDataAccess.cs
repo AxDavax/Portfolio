@@ -6,4 +6,10 @@ public interface ISqlDataAccess
     Task<T?> QuerySingleOrDefaultAsync<T, U>(string sql, U parameters);
     Task<int> ExecuteAsync<T>(string sql, T parameters);
     Task<T> ExecuteScalarAsync<T, U>(string sql, U parameters);
+    Task<IEnumerable<TReturn>> QueryAsync<TFirst, TSecond, TReturn, U>(
+        string sql, 
+        Func<TFirst, TSecond, TReturn> map, 
+        U parameters, 
+        string splitOn = "Id"
+    );
 }
