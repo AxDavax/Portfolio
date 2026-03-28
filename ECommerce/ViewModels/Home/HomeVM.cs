@@ -128,6 +128,9 @@ namespace Portfolio.ECommerce.Blazor.ViewModels.Home
         {
             await RunCommandAsync(() => IsProcessing, async () =>
             {
+                while (_authUser.IsReady)
+                    await Task.Delay(50);
+
                 var user = _authUser.User;
                 if (user is null) return;
 
@@ -138,22 +141,20 @@ namespace Portfolio.ECommerce.Blazor.ViewModels.Home
                     _navigation.NavigateTo("/Account/Login", forceLoad: true);
                     return;
                 }
+                
+                var userId = user.FindFirst(u => u.Type.Contains("nameidentifier"))?.Value;
+                  
+                var result = await
+                _cartRepository.UpdateCartAsync(userId, product.Id, 1);
+                _sharedStateService.TotalCartCount = await _cartRepository.GetTotalCartCountAsync(userId);
+
+                if (result)
+                {
+                    _js?.ToastrSuccess("Product added to cart successfully");
+                }
                 else
                 {
-                    var userId = user.FindFirst(u => u.Type.Contains("nameidentifier"))?.Value;
-                  
-                    var result = await
-                    _cartRepository.UpdateCartAsync(userId, product.Id, 1);
-                    _sharedStateService.TotalCartCount = await _cartRepository.GetTotalCartCountAsync(userId);
-
-                    if (result)
-                    {
-                        _js?.ToastrSuccess("Product added to cart successfully");
-                    }
-                    else
-                    {
-                        _js?.ToastrError("Error encountered");
-                    }
+                    _js?.ToastrError("Error encountered");
                 }
             });
         }
