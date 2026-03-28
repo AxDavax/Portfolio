@@ -1,6 +1,4 @@
 ﻿using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.AspNetCore.Components.Server;
-using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 
 namespace Portfolio.ECommerce.Blazor.ViewModels.Core
