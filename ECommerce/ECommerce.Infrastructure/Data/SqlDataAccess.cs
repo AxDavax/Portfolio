@@ -22,7 +22,7 @@ public class SqlDataAccess : ISqlDataAccess
     public async Task<T> ExecuteScalarAsync<T, U>(string sql, U parameters)
     {
         using IDbConnection connection = _context.CreateConnection();
-        return await connection.ExecuteScalarAsync<T>(sql, parameters);
+        return await connection.ExecuteScalarAsync<T?>(sql, parameters);
     }
 
     public async Task<IEnumerable<T>> QueryAsync<T, U>(string sql, U parameters)
@@ -31,7 +31,7 @@ public class SqlDataAccess : ISqlDataAccess
         return await connection.QueryAsync<T>(sql, parameters);
     }
 
-    public async Task<T?> QuerySingleAsync<T, U>(string sql, U parameters)
+    public async Task<T?> QuerySingleOrDefaultAsync<T, U>(string sql, U parameters)
     {
         using IDbConnection connection = _context.CreateConnection();
         return await connection.QueryFirstOrDefaultAsync<T>(sql, parameters);
