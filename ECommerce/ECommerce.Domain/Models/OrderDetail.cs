@@ -1,0 +1,21 @@
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace ECommerce.Domain.Models;
+
+public class OrderDetail
+{
+    public int Id { get; set; }
+
+    public int OrderHeaderId { get; set; }
+
+    public int ProductId { get; set; }
+
+    [Required]
+    public int Count { get; set; }
+    
+    [Required]
+    public double Price { get; set; }
+    
+    [Required]
+    public string ProductName { get; set; }
+}
