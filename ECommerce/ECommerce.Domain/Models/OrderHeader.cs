@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using ECommerce.Domain.DTO;
+using System.ComponentModel.DataAnnotations;
 
 namespace ECommerce.Domain.Models;
 
@@ -34,4 +35,6 @@ public class OrderHeader
     public string? SessionId { get; set; }
 
     public string? PaymentIntentId { get; set; }
+
+    public List<OrderDetail> OrderDetails { get; set; } = new();
 }
