@@ -12,4 +12,10 @@ public interface ISqlDataAccess
         U parameters, 
         string splitOn = "Id"
     );
+    Task<IEnumerable<TReturn>> QueryAsync<TFirst, TSecond, TThird, TReturn, U>(
+        string sql,
+        Func<TFirst, TSecond, TThird, TReturn> map,
+        U parameters,
+        string splitOn = "Id"
+    );
 }
