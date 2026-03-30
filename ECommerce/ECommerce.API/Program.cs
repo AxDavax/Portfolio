@@ -1,6 +1,7 @@
 using ECommerce.Domain.Interfaces;
 using ECommerce.Infrastructure.Data;
 using ECommerce.Infrastructure.Repositories;
+using Stripe;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +17,8 @@ builder.Services.AddScoped<IShoppingCartRepository, ShoppingCartRepository>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 
 var app = builder.Build();
+
+StripeConfiguration.ApiKey = builder.Configuration["Stripe:ApiKey"]!;
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
