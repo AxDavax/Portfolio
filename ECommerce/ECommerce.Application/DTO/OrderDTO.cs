@@ -1,4 +1,4 @@
-﻿namespace ECommerce.Domain.DTO;
+﻿namespace ECommerce.Application.DTO;
 
 public class OrderDTO
 {

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ECommerce.Domain.DTO;
+namespace ECommerce.Application.DTO;
 
 public class OrderHeaderDTO
 {

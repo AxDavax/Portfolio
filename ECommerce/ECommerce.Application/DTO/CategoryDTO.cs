@@ -1,8 +1,8 @@
-﻿namespace ECommerce.Domain.DTO;
+﻿namespace ECommerce.Application.DTO;
 
 public class CategoryDTO
 {
     public int Id { get; set; }
 
-    public string Name { get; set; }
+    public string Name { get; set; } = string.Empty;
 }
