@@ -1,6 +1,7 @@
-﻿using ECommerce.Domain.Constants;
+﻿using ECommerce.Application.DTO;
+using ECommerce.Application.Interfaces;
+using ECommerce.Domain.Constants;
 using ECommerce.Domain.Interfaces;
-using ECommerce.Domain.Models;
 using Microsoft.Extensions.Configuration;
 using Stripe.Checkout;
 
@@ -20,8 +21,11 @@ public class PaymentService : IPaymentService
         _cancelUrl = config["Stripe:CancelUrl"]!;
     }
 
-    public async Task<string> CreateCheckoutSessionAsync(OrderHeader orderHeader)
+    public async Task<string> CreateCheckoutSessionAsync(OrderHeaderDTO orderHeader)
     {
+        if (orderHeader.OrderDetails == null || !orderHeader.OrderDetails.Any())
+            throw new InvalidOperationException("Order must contain at least one item.");
+
         var lineItems = orderHeader.OrderDetails
             .Select(order => new SessionLineItemOptions
             {
@@ -31,7 +35,7 @@ public class PaymentService : IPaymentService
                     UnitAmountDecimal = (decimal?)order.Price * 100,
                     ProductData = new SessionLineItemPriceDataProductDataOptions
                     {
-                        Name = order.ProductName,
+                        Name = order.ProductName ?? "Product"
                     }
                 },
                 Quantity = order.Count
@@ -46,22 +50,30 @@ public class PaymentService : IPaymentService
         };
 
         var service = new SessionService();
-        var session = service.Create(options);
+        var session = await service.CreateAsync(options);
 
         await _orderRepository.UpdateStatusAsync(orderHeader.Id, OrderStatus.StatusPending, session.Id);
+        
         return session.Url;
     }
 
     public async Task<bool> VerifyPaymentAsync(string sessionId)
     {
         var service = new SessionService();
-        var session = service.Get(sessionId);
+        var session = await service.GetAsync(sessionId);
 
         if (session.PaymentStatus?.ToLower() == "paid")
         {
-            OrderHeader? orderHeader = await _orderRepository.GetOrderBySessionIdAsync(sessionId);
+            var orderHeader = await _orderRepository.GetOrderBySessionIdAsync(sessionId);
+            if (orderHeader == null)
+                return false;
 
-            await _orderRepository.UpdateStatusAsync(orderHeader!.Id, OrderStatus.StatusApproved, session.PaymentIntentId);
+            await _orderRepository.UpdateStatusAsync(
+                orderHeader!.Id, 
+                OrderStatus.StatusApproved, 
+                session.PaymentIntentId
+            );
+            
             return true;
         }
 

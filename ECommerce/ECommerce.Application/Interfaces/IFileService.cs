@@ -1,4 +1,4 @@
-﻿namespace ECommerce.Domain.Interfaces;
+﻿namespace ECommerce.Application.Interfaces;
 
 public interface IFileService
 {

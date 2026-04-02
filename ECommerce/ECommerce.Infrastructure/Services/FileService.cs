@@ -1,4 +1,4 @@
-﻿using ECommerce.Domain.Interfaces;
+﻿using ECommerce.Application.Interfaces;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 
