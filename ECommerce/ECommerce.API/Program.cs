@@ -26,7 +26,9 @@ builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IShoppingCartRepository, ShoppingCartRepository>();
+builder.Services.AddScoped<IShoppingCartService, ShoppingCartService>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IFileService, FileService>();
 builder.Services.AddScoped<IPaymentService, PaymentService>();
 
