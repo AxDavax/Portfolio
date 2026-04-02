@@ -23,7 +23,7 @@ public class ShoppingCartRepository : IShoppingCartRepository
             WHERE
                 UserId = @UserId AND ProductId = @ProductId
 
-            """;
+        """;
 
         return await _db.QuerySingleOrDefaultAsync<ShoppingCart, dynamic>
                          (sql, new { UserId = userId, ProductId = productId });
@@ -39,7 +39,7 @@ public class ShoppingCartRepository : IShoppingCartRepository
             WHERE
                 UserId = @UserId;
 
-            """;
+        """;
 
         int rows = await _db.ExecuteAsync(sql, new { UserId = userId });
         return rows > 0;
@@ -89,9 +89,25 @@ public class ShoppingCartRepository : IShoppingCartRepository
             WHERE
                 UserId = @UserId
 
-            """;
+        """;
         
         return _db.ExecuteScalarAsync<int, dynamic>(sql, new { UserId = userId });
+    }
+
+    public async Task<bool> DeleteAsync(int id)
+    {
+        const string sql = """
+
+            DELETE 
+            FROM 
+                ShoppingCart
+            WHERE 
+                Id = @Id
+
+        """;
+
+        int rows = await _db.ExecuteAsync(sql, new { Id = id });
+        return rows > 0;
     }
 
     public async Task<bool> UpdateCartAsync(string userId, int productId, int updateBy)
@@ -107,27 +123,17 @@ public class ShoppingCartRepository : IShoppingCartRepository
         {
             int newCount = existing.Count + updateBy;
 
-            if (newCount <= 0)
-            {
-                const string deleteSql = """
-                    DELETE 
-                    FROM 
-                        ShoppingCart
-                    WHERE 
-                        Id = @Id
-                """;
-
-                int rowsDeleted = await _db.ExecuteAsync(deleteSql, new { existing.Id });
-                return rowsDeleted > 0;
-            }
-
+            if (newCount <= 0) return await DeleteAsync(existing.Id);
+            
             const string updateSql = """
+                
                 UPDATE 
                     ShoppingCart
                 SET 
                     Count = @Count
                 WHERE 
                     Id = @Id
+            
             """;
 
             int rowsUpdated = await _db.ExecuteAsync(updateSql, new { Id = existing.Id, Count = newCount });
@@ -141,7 +147,7 @@ public class ShoppingCartRepository : IShoppingCartRepository
             VALUES 
                 (@UserId, @ProductId, @Count)
 
-            """;
+        """;
 
         int rowInserted = await _db.ExecuteAsync(insertSql,
             new
