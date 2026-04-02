@@ -4,7 +4,7 @@ public class OrderDetail
 {
     public int Id { get; set; }
 
-    public int OrderHeaderId { get; set; }
+    public int? OrderHeaderId { get; set; }
 
     public int ProductId { get; set; }
 
