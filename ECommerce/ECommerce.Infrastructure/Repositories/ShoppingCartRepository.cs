@@ -120,11 +120,7 @@ public class ShoppingCartRepository : IShoppingCartRepository
         var existing = await GetItemAsync(userId, productId);
 
         if(existing is not null)
-        {
-            int newCount = existing.Count + updateBy;
-
-            if (newCount <= 0) return await DeleteAsync(existing.Id);
-            
+        {   
             const string updateSql = """
                 
                 UPDATE 
