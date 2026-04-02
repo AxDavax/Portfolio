@@ -6,6 +6,7 @@ using ECommerce.Infrastructure.Repositories;
 using ECommerce.Infrastructure.Services;
 using Stripe;
 using FileService = ECommerce.Infrastructure.Services.FileService;
+using ProductService = ECommerce.Application.Services.ProductService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +24,7 @@ builder.Services.AddSingleton<ISqlDataAccess, SqlDataAccess>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IShoppingCartRepository, ShoppingCartRepository>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IFileService, FileService>();
