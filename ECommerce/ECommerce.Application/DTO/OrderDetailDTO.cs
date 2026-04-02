@@ -11,9 +11,12 @@ public class OrderDetailDTO
         
     [Required]
     public double Price { get; set; }
-        
-    [Required]
-    public string ProductName { get; set; }
 
-    public ProductDTO Product { get; set; }
+    public int? OrderHeaderId { get; set; }
+
+    [Required]
+
+    public int ProductId { get; set; }
+    public ProductDTO? Product { get; set; }
+    public string? ProductName { get; set; }
 }
