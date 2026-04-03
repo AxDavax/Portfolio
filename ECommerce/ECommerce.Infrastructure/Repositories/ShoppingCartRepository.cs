@@ -132,6 +132,7 @@ public class ShoppingCartRepository : IShoppingCartRepository
             
             """;
 
+            var newCount = existing.Count + updateBy;
             int rowsUpdated = await _db.ExecuteAsync(updateSql, new { Id = existing.Id, Count = newCount });
             return rowsUpdated > 0;
         }
