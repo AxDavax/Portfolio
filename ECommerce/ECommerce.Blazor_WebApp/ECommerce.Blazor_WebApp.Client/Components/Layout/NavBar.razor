@@ -1,8 +1,9 @@
-﻿@using ECommerce.Blazor_WebApp.Client.Services.State
+﻿@using ECommerce.Blazor_WebApp.Client.Services.API.Implementations
+@using ECommerce.Blazor_WebApp.Client.Services.State
 @using Microsoft.AspNetCore.Components.Authorization
 @inject SharedStateService _sharedStateService
 @inject AuthenticationStateProvider _authStateProvider
-@*@inject IShoppingCartRepository _shoppingCartRepository*@
+@inject ShoppingCartApi _shoppingCartApi
 
 <nav class="navbar navbar-expand-md navbar-dark bg-dark pb-4 pt-4">
 	<div class="container-fluid">
@@ -87,12 +88,8 @@
 		var authState = await _authStateProvider.GetAuthenticationStateAsync();
 		var user = authState.User;
 
-		_sharedStateService.TotalCartCount = 0;
-		/*
-		 * 
 		_sharedStateService.TotalCartCount = await
-		_shoppingCartRepository.GetTotalCartCountAsync(user?.FindFirst(u => u.Type.Contains("nameidentifier"))?.Value);
-		 */
+		_shoppingCartApi.GetTotalCountAsync(user?.FindFirst(u => u.Type.Contains("nameidentifier"))?.Value);
 	}
 
 	public void Dispose()
