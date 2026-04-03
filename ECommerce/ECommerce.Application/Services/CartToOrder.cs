@@ -1,4 +1,4 @@
-﻿using ECommerce.Domain.Interfaces;
+﻿using ECommerce.Application.Interfaces;
 using ECommerce.Domain.Models;
 
 namespace ECommerce.Application.Services;
