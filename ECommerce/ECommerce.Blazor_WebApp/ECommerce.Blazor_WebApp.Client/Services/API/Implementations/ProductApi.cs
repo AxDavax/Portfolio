@@ -21,7 +21,7 @@ public class ProductApi : IProductApi
 
     public async Task<bool> DeleteAsync(int id)
     {
-        var response = await _http.DeleteAsync($"api/product/{id}", dto);
+        var response = await _http.DeleteAsync($"api/product/{id}");
         return response.IsSuccessStatusCode;
     }
 
