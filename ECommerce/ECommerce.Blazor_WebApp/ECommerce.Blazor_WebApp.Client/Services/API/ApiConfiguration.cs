@@ -12,5 +12,6 @@ public static class ApiConfiguration
         services.AddScoped<IShoppingCartApi, ShoppingCartApi>();
         services.AddScoped<IOrderApi, OrderApi>();
         services.AddScoped<ICartApi, CartApi>();
+        services.AddScoped<IPaymentApi, PaymentApi>();
     }
 }
