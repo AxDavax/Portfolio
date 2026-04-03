@@ -1,4 +1,4 @@
-﻿using ECommerce.Application.DTO;
+﻿using ECommerce.Contracts.DTO;
 using ECommerce.Application.Mappings;
 using ECommerce.Domain.Interfaces;
 using Microsoft.AspNetCore.Mvc;

@@ -1,4 +1,4 @@
-﻿using ECommerce.Application.DTO;
+﻿using ECommerce.Contracts.DTO;
 using ECommerce.Application.Interfaces;
 using ECommerce.Domain.Interfaces;
 using ECommerce.Domain.Models;

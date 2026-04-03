@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ECommerce.Application.DTO;
+namespace ECommerce.Contracts.DTO;
 
 public class OrderDetailDTO
 {
