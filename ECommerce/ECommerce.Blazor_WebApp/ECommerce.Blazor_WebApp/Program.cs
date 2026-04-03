@@ -1,5 +1,6 @@
 using ECommerce.Blazor_WebApp.Client.Services.State;
 using ECommerce.Blazor_WebApp.Components;
+using ECommerce.Blazor_WebApp.Client.Services.API;
 using Radzen;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,6 +11,7 @@ builder.Services.AddRazorComponents()
     .AddInteractiveWebAssemblyComponents();
 
 builder.Services.AddScoped<SharedStateService>();
+builder.Services.AddApiServices();
 
 builder.Services.AddRadzenComponents();
 
