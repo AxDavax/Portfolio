@@ -1,8 +1,10 @@
-using ECommerce.Blazor_WebApp.Client.Services;
+using ECommerce.Blazor_WebApp.Client.Services.API;
+using ECommerce.Blazor_WebApp.Client.Services.State;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
+builder.Services.AddApiServices();
 builder.Services.AddScoped<SharedStateService>();
 builder.Services.AddAuthorizationCore();
 await builder.Build().RunAsync();
