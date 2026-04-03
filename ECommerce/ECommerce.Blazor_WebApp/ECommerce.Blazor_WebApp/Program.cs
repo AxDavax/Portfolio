@@ -1,5 +1,7 @@
-using ECommerce.Blazor_WebApp.Client.Pages;
+using ECommerce.Blazor_WebApp.Client.Components.Layout;
+using ECommerce.Blazor_WebApp.Client.Services;
 using ECommerce.Blazor_WebApp.Components;
+using Radzen;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,6 +9,15 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents()
     .AddInteractiveWebAssemblyComponents();
+
+builder.Services.AddScoped<SharedStateService>();
+
+builder.Services.AddRadzenComponents();
+
+builder.Services.AddAuthentication();
+builder.Services.AddAuthorization();
+builder.Services.AddCascadingAuthenticationState();
+builder.Services.AddAuthenticationCore();
 
 var app = builder.Build();
 
