@@ -1,9 +1,9 @@
-﻿@using ECommerce.Blazor_WebApp.Client.Services.API.Implementations
+﻿@using ECommerce.Blazor_WebApp.Client.Services.API.Interfaces
 @using ECommerce.Blazor_WebApp.Client.Services.State
 @using Microsoft.AspNetCore.Components.Authorization
 @inject SharedStateService _sharedStateService
 @inject AuthenticationStateProvider _authStateProvider
-@inject ShoppingCartApi _shoppingCartApi
+@inject IShoppingCartApi? _shoppingCartApi
 
 <nav class="navbar navbar-expand-md navbar-dark bg-dark pb-4 pt-4">
 	<div class="container-fluid">
@@ -87,6 +87,12 @@
 	{
 		var authState = await _authStateProvider.GetAuthenticationStateAsync();
 		var user = authState.User;
+
+		if (_shoppingCartApi is null)
+		{
+			_sharedStateService.TotalCartCount = 0;
+			return;
+		}
 
 		_sharedStateService.TotalCartCount = await
 		_shoppingCartApi.GetTotalCountAsync(user?.FindFirst(u => u.Type.Contains("nameidentifier"))?.Value);
