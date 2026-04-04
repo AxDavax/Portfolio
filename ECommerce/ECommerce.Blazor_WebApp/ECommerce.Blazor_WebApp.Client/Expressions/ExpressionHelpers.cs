@@ -1,7 +1,7 @@
 ﻿using System.Linq.Expressions;
 using System.Reflection;
 
-namespace Portfolio.ECommerce.Blazor.Expressions
+namespace ECommerce.Blazor_WebApp.Client.Expressions
 {
     /// <summary>
     /// A helper for expressions
