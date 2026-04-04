@@ -4,7 +4,9 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
-builder.Services.AddApiServices();
+builder.Services.AddHttpClient();
+builder.Services.AddApiServices(builder.Configuration);
+
 builder.Services.AddScoped<SharedStateService>();
 builder.Services.AddAuthorizationCore();
 await builder.Build().RunAsync();
