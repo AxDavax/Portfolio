@@ -47,7 +47,6 @@ StripeConfiguration.ApiKey = builder.Configuration["Stripe:ApiKey"]!;
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
     app.UseSwagger();
     app.UseSwaggerUI();
 }
