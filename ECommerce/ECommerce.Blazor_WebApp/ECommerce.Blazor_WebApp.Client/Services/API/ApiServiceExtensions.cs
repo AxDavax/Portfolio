@@ -1,7 +1,4 @@
-﻿using ECommerce.Blazor_WebApp.Client.Services.API.Implementations;
-using ECommerce.Blazor_WebApp.Client.Services.API.Interfaces;
-
-namespace ECommerce.Blazor_WebApp.Client.Services.API;
+﻿namespace ECommerce.Blazor_WebApp.Client.Services.API;
 
 public static class ApiServiceExtensions
 {
@@ -16,13 +13,7 @@ public static class ApiServiceExtensions
             return client;
         });
 
-        services.AddScoped<ICategoryApi, CategoryApi>();
-        services.AddScoped<IProductApi, ProductApi>();
-        services.AddScoped<IShoppingCartApi, ShoppingCartApi>();
-        services.AddScoped<IOrderApi, OrderApi>();
-        services.AddScoped<ICartApi, CartApi>();
-        services.AddScoped<IPaymentApi, PaymentApi>();
-        services.AddScoped<IFileApi, FileApi>();
+        ApiConfiguration.AddApiServices(services);
 
         return services;
     }
