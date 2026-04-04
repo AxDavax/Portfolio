@@ -1,3 +1,5 @@
+using ECommerce.Blazor_WebApp.Client.Services.API.Implementations;
+using ECommerce.Blazor_WebApp.Client.Services.API.Interfaces;
 using ECommerce.Blazor_WebApp.Client.Services.State;
 using ECommerce.Blazor_WebApp.Components;
 using Radzen;
@@ -17,6 +19,11 @@ builder.Services.AddAuthentication();
 builder.Services.AddAuthorization();
 builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddAuthenticationCore();
+
+builder.Services.AddHttpClient<IShoppingCartApi, ShoppingCartApi>(client =>
+{
+    client.BaseAddress = new Uri(builder.Configuration["Api:BaseUrl"]!);
+});
 
 var app = builder.Build();
 
