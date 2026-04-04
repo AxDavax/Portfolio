@@ -32,6 +32,17 @@ builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IFileService, FileService>();
 builder.Services.AddScoped<IPaymentService, PaymentService>();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowBlazorWebApp", policy =>
+    {
+        policy.WithOrigins("https://localhost:7179")
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials();
+    });
+});
+
 var app = builder.Build();
 
 StripeConfiguration.ApiKey = builder.Configuration["Stripe:ApiKey"]!;
@@ -43,6 +54,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors("AllowBlazorWebApp");
 
 app.UseHttpsRedirection();
 
