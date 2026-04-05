@@ -3,6 +3,7 @@
 @using Microsoft.AspNetCore.Components.Authorization
 @inherits LayoutComponentBase
 @inject AuthenticationStateProvider _AuthenticationStateProvider
+@rendermode InteractiveWebAssembly
 
 <div class="page">
     <AuthorizeView Roles="@SD.Role_Admin">

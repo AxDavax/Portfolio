@@ -1,7 +1,5 @@
 ﻿@page "/"
+@rendermode InteractiveWebAssembly
+@using ECommerce.Blazor_WebApp.Client.Components.Home
 
-<PageTitle>Home</PageTitle>
-
-<h1>Hello, world!</h1>
-
-Welcome to your new app.
+<HomePageComponent @rendermode="InteractiveWebAssembly" />
