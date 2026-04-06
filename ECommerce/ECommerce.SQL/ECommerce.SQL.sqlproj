@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectVersion>4.1</ProjectVersion>
     <ProjectGuid>{c24a26c4-3a91-487b-9e4d-08b375a84bb1}</ProjectGuid>
-    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql160DatabaseSchemaProvider</DSP>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql150DatabaseSchemaProvider</DSP>
     <OutputType>Database</OutputType>
     <RootPath>
     </RootPath>
@@ -64,6 +64,5 @@
     <Build Include="Database\Auth\02_Create_Roles.sql" />
     <Build Include="Database\Auth\03_Create_UserRoles.sql" />
     <Build Include="Database\Auth\04_Create_RefreshTokens.sql" />
-    <Build Include="Database\Auth\05_Seed_Roles.sql" />
   </ItemGroup>
 </Project>
