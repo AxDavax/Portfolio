@@ -56,5 +56,14 @@
   <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
   <ItemGroup>
     <Folder Include="Properties" />
+    <Folder Include="Database" />
+    <Folder Include="Database\Auth" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="Database\Auth\01_Create_Users.sql" />
+    <Build Include="Database\Auth\02_Create_Roles.sql" />
+    <Build Include="Database\Auth\03_Create_UserRoles.sql" />
+    <Build Include="Database\Auth\04_Create_RefreshTokens.sql" />
+    <Build Include="Database\Auth\05_Seed_Roles.sql" />
   </ItemGroup>
 </Project>
