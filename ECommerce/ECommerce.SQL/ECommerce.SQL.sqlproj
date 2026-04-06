@@ -58,11 +58,19 @@
     <Folder Include="Properties" />
     <Folder Include="Database" />
     <Folder Include="Database\Auth" />
+    <Folder Include="Database\ECommerce" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Database\Auth\01_Create_Users.sql" />
     <Build Include="Database\Auth\02_Create_Roles.sql" />
     <Build Include="Database\Auth\03_Create_UserRoles.sql" />
     <Build Include="Database\Auth\04_Create_RefreshTokens.sql" />
+    <Build Include="Database\ECommerce\10_Create_Category.sql" />
+    <Build Include="Database\ECommerce\11_Create_Product.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Database\ECommerce\12_Create_OrderHeader.sql" />
+    <None Include="Database\ECommerce\13_Create_OrderDetails.sql" />
+    <None Include="Database\ECommerce\14_Create_ShoppingCart.sql" />
   </ItemGroup>
 </Project>
