@@ -1,10 +1,11 @@
 ﻿using ECommerce.Domain.Interfaces;
 using ECommerce.Domain.Models;
 using ECommerce.Application.Models;
+using ECommerce.Application.Interfaces;
 
 namespace ECommerce.Infrastructure.Repositories;
 
-public class UserRepository : IUserRepository
+public class UserRepository : IUserRepository, IUserAuthRepository
 {
     private readonly ISqlDataAccess _db;
 
@@ -121,5 +122,22 @@ public class UserRepository : IUserRepository
             LastName = sqlUser.LastName,
             IsActive = sqlUser.IsActive
         };
+    }
+
+    public async Task<SqlUser?> GetSqlUserByEmailAsync(string email)
+    {
+        const string sql = """
+
+            SELECT
+                *
+            FROM
+                Users
+            WHERE
+                Email = @Email
+
+        """;
+
+        return await _db.QuerySingleOrDefaultAsync<SqlUser, dynamic>(
+            sql, new { Email = email });
     }
 }
