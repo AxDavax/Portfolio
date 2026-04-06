@@ -1,4 +1,5 @@
 ﻿using ECommerce.Application.Interfaces;
+using ECommerce.Application.Models;
 using ECommerce.Domain.Interfaces;
 using Microsoft.Extensions.Configuration;
 using System.Security.Cryptography;
@@ -34,6 +35,23 @@ public class RefreshTokenService : IRefreshTokenService
         return token;
     }
 
+    public async Task<RefreshToken?> GetRefreshTokenAsync(string token)
+    {
+        const string sql = """
+
+            SELECT
+                UserId, Token, ExpiryDate
+            FROM
+                RefreshTokens
+            WHERE
+                Token = @Token
+
+        """;
+
+        return await _db.QuerySingleOrDefaultAsync<RefreshToken, dynamic>(
+            sql, new { Token = token });
+    }
+
     public async Task ReplaceRefreshTokenAsync(Guid userId, string oldToken, string newToken)
     {
         const string sql = """
@@ -58,6 +76,35 @@ public class RefreshTokenService : IRefreshTokenService
             OldToken = oldToken, 
             NewToken = newToken 
         });
+    }
+
+    public async Task<string> RotateRefreshTokenAsync(RefreshToken oldToken)
+    {
+        var newToken = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64));
+
+        const string sql = """
+
+            DELETE 
+            FROM 
+                RefreshTokens
+            WHERE 
+                Token = @OldToken;
+
+            INSERT INTO 
+                RefreshTokens (UserId, Token, ExpiryDate)
+            VALUES 
+                (@UserId, @NewToken, DATEADD(day, 7, GETUTCDATE()));
+
+        """;
+
+        await _db.ExecuteAsync(sql, new
+        {
+            UserId = oldToken.UserId,
+            OldToken = oldToken.Token,
+            NewToken = newToken
+        });
+
+        return newToken;
     }
 
     public async Task<bool> ValidateRefreshTokenAsync(Guid userId, string refreshToken)
