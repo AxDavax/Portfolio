@@ -1,4 +1,4 @@
-﻿namespace ECommerce.Infrastructure.Models;
+﻿namespace ECommerce.Application.Models;
 
 public class SqlUser
 {

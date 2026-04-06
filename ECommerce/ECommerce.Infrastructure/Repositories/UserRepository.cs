@@ -1,6 +1,6 @@
 ﻿using ECommerce.Domain.Interfaces;
 using ECommerce.Domain.Models;
-using ECommerce.Infrastructure.Models;
+using ECommerce.Application.Models;
 
 namespace ECommerce.Infrastructure.Repositories;
 
