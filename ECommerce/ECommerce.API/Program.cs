@@ -31,6 +31,7 @@ builder.Services.AddScoped<IFileService, FileService>();
 builder.Services.AddScoped<IPaymentService, PaymentService>();
 builder.Services.AddSingleton<IPasswordService, PasswordService>();
 builder.Services.AddSingleton<IJwtService, JwtService>();
+builder.Services.AddScoped<IRefreshTokenService, RefreshTokenService>();
 
 builder.Services.AddCors(options =>
 {
