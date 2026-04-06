@@ -1,3 +1,4 @@
+using ECommerce.Application;
 using ECommerce.Application.Interfaces;
 using ECommerce.Application.Services;
 using ECommerce.Domain.Interfaces;
@@ -33,6 +34,7 @@ builder.Services.AddSingleton<IPasswordService, PasswordService>();
 builder.Services.AddSingleton<IJwtService, JwtService>();
 builder.Services.AddScoped<IRefreshTokenService, RefreshTokenService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddApplication();
 
 builder.Services.AddCors(options =>
 {
