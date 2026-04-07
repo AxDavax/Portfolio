@@ -2,101 +2,49 @@
 using ECommerce.Application.Interfaces;
 using ECommerce.Domain.Interfaces;
 using ECommerce.Domain.Models;
+using AutoMapper;
 
 namespace ECommerce.Application.Services;
 
 public class OrderService : IOrderService
 {
     private readonly IOrderRepository _repo;
+    private readonly IMapper _mapper;
 
-    public OrderService(IOrderRepository repo)
+    public OrderService(IOrderRepository repo, IMapper mapper)
     {
         _repo = repo;
+        _mapper = mapper;
     }
 
     public async Task<OrderHeaderDTO> CreateAsync(OrderHeaderDTO dto)
     {
-        var domain = MapToDomain(dto);
+        var domain = _mapper.Map<OrderHeader>(dto);
         var created = await _repo.CreateAsync(domain);
-
-        return MapToDTO(created);
+        return _mapper.Map<OrderHeaderDTO>(created);
     }
 
     public async Task<IEnumerable<OrderHeaderDTO>> GetAllAsync(string? userId = null)
     {
         var orders = await _repo.GetAllAsync(userId);
-        return orders.Select(MapToDTO);
+        return _mapper.Map<IEnumerable<OrderHeaderDTO>>(orders);
     }
 
     public async Task<OrderHeaderDTO?> GetByIdAsync(int id)
     {
         var order = await _repo.GetByIdAsync(id);
-        return order == null ? null : MapToDTO(order);
+        return order == null ? null : _mapper.Map<OrderHeaderDTO>(order);
     }
 
     public async Task<OrderHeaderDTO?> GetOrderBySessionIdAsync(string sessionId)
     {
         var order = await _repo.GetOrderBySessionIdAsync(sessionId);
-        return order == null ? null : MapToDTO(order);
+        return order == null ? null : _mapper.Map<OrderHeaderDTO>(order);
     }
 
     public async Task<OrderHeaderDTO?> UpdateStatusAsync(int orderId, string status, string? paymentIntentId)
     {
         var updated = await _repo.UpdateStatusAsync(orderId, status, paymentIntentId ?? "");
-        return updated == null ? null : MapToDTO(updated);
-    }
-
-
-    private OrderHeaderDTO MapToDTO(OrderHeader header)
-    {
-        return new OrderHeaderDTO
-        {
-            Id = header.Id,
-            UserId = header.UserId,
-            OrderTotal = header.OrderTotal,
-            OrderDate = header.OrderDate,
-            Status = header.Status,
-            Name = header.Name,
-            Email = header.Email,
-            PhoneNumber = header.PhoneNumber,
-            SessionId = header.SessionId,
-            PaymentIntentId = header.PaymentIntentId,
-            OrderDetails = header.OrderDetails?.Select(d => new OrderDetailDTO
-            {
-                Id = d.Id,
-                OrderHeaderId = d.OrderHeaderId,
-                ProductId = d.ProductId,
-                Count = d.Count,
-                Price = d.Price,
-                ProductName = d.ProductName
-            }).ToList()!
-        };
-    }
-
-
-    private OrderHeader MapToDomain(OrderHeaderDTO dto)
-    {
-        return new OrderHeader
-        {
-            Id = dto.Id,
-            UserId = dto.UserId,
-            OrderTotal = dto.OrderTotal,
-            OrderDate = dto.OrderDate,
-            Status = dto.Status,
-            Name = dto.Name,
-            Email = dto.Email,
-            PhoneNumber = dto.PhoneNumber,
-            SessionId = dto.SessionId,
-            PaymentIntentId = dto.PaymentIntentId,
-            OrderDetails = dto.OrderDetails?.Select(d => new OrderDetail
-            {
-                Id = d.Id,
-                OrderHeaderId = d.OrderHeaderId,
-                ProductId = d.ProductId,
-                Count = d.Count,
-                Price = d.Price,
-                ProductName = d.ProductName!
-            }).ToList()!
-        };
+        return updated == null ? null : _mapper.Map<OrderHeaderDTO>(updated);
     }
 }
