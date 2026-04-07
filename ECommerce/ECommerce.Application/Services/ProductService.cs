@@ -2,6 +2,7 @@
 using ECommerce.Application.Interfaces;
 using ECommerce.Domain.Interfaces;
 using ECommerce.Domain.Models;
+using AutoMapper;
 
 namespace ECommerce.Application.Services
 {
@@ -9,11 +10,16 @@ namespace ECommerce.Application.Services
     {
         private readonly IProductRepository _repo;
         private readonly ICategoryRepository _categoryRepo;
+        private readonly IMapper _mapper;
 
-        public ProductService(IProductRepository repo, ICategoryRepository categoryRepo)
+        public ProductService(
+            IProductRepository repo, 
+            ICategoryRepository categoryRepo,
+            IMapper mapper)
         {
             _repo = repo;
             _categoryRepo = categoryRepo;
+            _mapper = mapper;
         }
 
         public async Task<ProductDTO> CreateAsync(ProductDTO dto)
@@ -22,76 +28,35 @@ namespace ECommerce.Application.Services
             if (category == null)
                 throw new KeyNotFoundException("Category not found");
 
-            var product = new Product
-            {
-                Name = dto.Name,
-                Price = dto.Price,
-                Description = dto.Description,
-                SpecialTag = dto.SpecialTag,
-                ImageUrl = dto.ImageUrl,
-                CategoryId = dto.CategoryId
-            };
-
+            var product = _mapper.Map<Product>(dto);
             var created = await _repo.CreateAsync(product);
 
-            dto.Id = created.Id;
-            dto.CategoryName = category.Name;
+            var result = _mapper.Map<ProductDTO>(created);
+            result.CategoryName = category.Name;
 
-            return dto;
+            return result;
         }
 
-        public async Task<bool> DeleteAsync(int id)
-        {
-            return await _repo.DeleteAsync(id);
-        }
+        public async Task<bool> DeleteAsync(int id) => await _repo.DeleteAsync(id);
 
         public async Task<IEnumerable<ProductDTO>> GetAllAsync()
         {
             var products = await _repo.GetAllAsync();
-
-            return products.Select(p => new ProductDTO
-            {
-                Id = p.Id,
-                Name = p.Name,
-                Price = p.Price,
-                Description = p.Description,
-                SpecialTag = p.SpecialTag,
-                ImageUrl = p.ImageUrl,
-                CategoryId = p.CategoryId,
-                CategoryName = p.Category?.Name!
-            });
+            return _mapper.Map<IEnumerable<ProductDTO>>(products);
         }
 
         public async Task<ProductDTO?> GetByIdAsync(int id)
         {
-            var p = await _repo.GetByIdAsync(id);
-            if (p == null) return null;
-
-            return new ProductDTO
-            {
-                Id = p.Id,
-                Name = p.Name,
-                Price = p.Price,
-                Description = p.Description,
-                SpecialTag = p.SpecialTag,
-                ImageUrl = p.ImageUrl,
-                CategoryId = p.CategoryId,
-                CategoryName = p.Category?.Name!
-            };
+            var product = await _repo.GetByIdAsync(id);
+            return (product == null) ? null : _mapper.Map<ProductDTO?>(product);
         }
 
         public async Task<bool> UpdateAsync(int id, ProductDTO dto)
         {
             var existing = await _repo.GetByIdAsync(id);
-            if (existing == null)
-                return false;
+            if (existing == null) return false;
 
-            existing.Name = dto.Name;
-            existing.Price = dto.Price;
-            existing.Description = dto.Description;
-            existing.SpecialTag = dto.SpecialTag;
-            existing.ImageUrl = dto.ImageUrl;
-            existing.CategoryId = dto.CategoryId;
+            _mapper.Map(existing, dto);   
 
             await _repo.UpdateAsync(existing);
             return true;
