@@ -1,7 +1,7 @@
 ﻿using ECommerce.Contracts.DTO;
 using ECommerce.Application.Interfaces;
 using ECommerce.Domain.Interfaces;
-using ECommerce.Domain.Models;
+using AutoMapper;
 
 namespace ECommerce.Application.Services;
 
@@ -9,32 +9,30 @@ public class ShoppingCartService : IShoppingCartService
 {
     private readonly IShoppingCartRepository _repo;
     private readonly IProductRepository _productRepo;
+    private readonly IMapper _mapper;
 
     public ShoppingCartService(
         IShoppingCartRepository repo,
-        IProductRepository productRepo)
+        IProductRepository productRepo,
+        IMapper mapper)
     {
         _repo = repo;
         _productRepo = productRepo;
+        _mapper = mapper;
     }
 
-    public async Task<bool> ClearCartAsync(string userId)
-    {
-        return await _repo.ClearCartAsync(userId);
-    }
+    public async Task<bool> ClearCartAsync(string userId) => await _repo.ClearCartAsync(userId);
 
     public async Task<IEnumerable<ShoppingCartDTO>> GetAllAsync(string userId)
     {
         var items = await _repo.GetAllAsync(userId);
-        return items.Select(MapToDTO);
+        return _mapper.Map<IEnumerable<ShoppingCartDTO>>(items);
     }
 
     public async Task<ShoppingCartDTO?> GetItemAsync(string userId, int productId)
     {
         var cartItem = await _repo.GetItemAsync(userId, productId);
-        if (cartItem == null) return null;
-
-        return MapToDTO(cartItem);
+        return (cartItem == null) ? null : _mapper.Map<ShoppingCartDTO>(cartItem);
     }
 
     public async Task<int> GetTotalCartCountAsync(string userId)
@@ -57,28 +55,5 @@ public class ShoppingCartService : IShoppingCartService
         }
 
         return await _repo.UpdateCartAsync(userId, productId, updateBy);
-    }
-
-
-    private ShoppingCartDTO MapToDTO(ShoppingCart cart)
-    {
-        return new ShoppingCartDTO
-        {
-            Id = cart.Id,
-            UserId = cart.UserId,
-            Count = cart.Count,
-            ProductId = cart.ProductId,
-            Product = cart.Product == null ? null : new ProductDTO
-            {
-                Id = cart.Product.Id,
-                Name = cart.Product.Name,
-                Price = cart.Product.Price,
-                Description = cart.Product.Description,
-                SpecialTag = cart.Product.SpecialTag,
-                ImageUrl = cart.Product.ImageUrl,
-                CategoryId = cart.Product.CategoryId,
-                CategoryName = cart.Product.Category?.Name!
-            }
-        };
     }
 }
