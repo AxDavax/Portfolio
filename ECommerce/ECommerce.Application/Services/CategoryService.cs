@@ -2,52 +2,46 @@
 using ECommerce.Application.Interfaces;
 using ECommerce.Domain.Interfaces;
 using ECommerce.Domain.Models;
+using AutoMapper;
 
 namespace ECommerce.Application.Services;
 
 public class CategoryService : ICategoryService
 {
     private readonly ICategoryRepository _repo;
+    private readonly IMapper _mapper;
 
-    public CategoryService(ICategoryRepository repo)
+    public CategoryService(ICategoryRepository repo, IMapper mapper)
     {
         _repo = repo;
+        _mapper = mapper;
     }
 
     public async Task<CategoryDTO> CreateAsync(CategoryDTO dto)
     {
-        var category = new Category { Name = dto.Name };
+        var category = _mapper.Map<Category>(dto);
         var created = await _repo.CreateAsync(category);
 
-        return new CategoryDTO
-        {
-            Id = created.Id,
-            Name = created.Name
-        };
+        return _mapper.Map<CategoryDTO>(created);
     }
 
-    public Task<bool> DeleteAsync(int id)
-    {
-        return _repo.DeleteAsync(id);
-    }
+    public Task<bool> DeleteAsync(int id) => _repo.DeleteAsync(id);
 
     public async Task<IEnumerable<CategoryDTO>> GetAllAsync()
     {
         var categories = await _repo.GetAllAsync();
-        return categories.Select(c => new CategoryDTO { Id = c.Id, Name = c.Name });
+        return _mapper.Map<IEnumerable<CategoryDTO>>(categories);
     }
 
     public async Task<CategoryDTO?> GetByIdAsync(int id)
     {
         var category = await _repo.GetByIdAsync(id);
-        if(category == null) return null;
-
-        return new CategoryDTO { Id = category.Id, Name = category.Name };
+        return (category == null) ? null : _mapper.Map<CategoryDTO>(category);
     }
 
     public async Task<bool> UpdateAsync(int id, CategoryDTO dto)
     {
-        var category = new Category { Id = id, Name = dto.Name };
+        var category = _mapper.Map<Category>(dto);
 
         try
         {
