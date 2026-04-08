@@ -1,17 +1,20 @@
-﻿using ECommerce.Domain.Interfaces;
-using ECommerce.Domain.Models;
-using ECommerce.Application.Models;
+﻿using AutoMapper;
 using ECommerce.Application.Interfaces;
+using ECommerce.Application.Models;
+using ECommerce.Domain.Interfaces;
+using ECommerce.Domain.Models;
 
 namespace ECommerce.Infrastructure.Repositories;
 
 public class UserRepository : IUserRepository, IUserAuthRepository
 {
     private readonly ISqlDataAccess _db;
+    private readonly IMapper _mapper;
 
-    public UserRepository(ISqlDataAccess db)
+    public UserRepository(ISqlDataAccess db, IMapper mapper)
     {
         _db = db;
+        _mapper = mapper;
     }
 
     public Task CreateAsync(User user)
@@ -19,20 +22,29 @@ public class UserRepository : IUserRepository, IUserAuthRepository
         const string sql = """
 
             INSERT INTO 
-                Users (Id, Email, FirstName, LastName, IsActive, CreatedAt)
+                Users (Id, Email, FirstName, LastName, IsActive)
             VALUES 
-                (@Id, @Email, @FirstName, @LastName, @IsActive, GETUTCDATE())
+                (@Id, @Email, @FirstName, @LastName, @IsActivea)
 
         """;
 
-        return _db.ExecuteAsync(sql, new
-        {
-            user.Id,
-            user.Email,
-            user.FirstName,
-            user.LastName,
-            user.IsActive
-        });
+        return _db.ExecuteAsync(sql, user);
+    }
+
+    public async Task<User> CreateAuthAsync(SqlUser user)
+    {
+        const string sql = """
+            
+            INSERT INTO Users 
+                (Id, Email, FirstName, LastName, PasswordHash, PasswordSalt, IsActive)
+            VALUES 
+                (@Id, @Email, @FirstName, @LastName, @PasswordHash, @PasswordSalt, @IsActive);
+            
+        """;
+
+        await _db.ExecuteAsync(sql, user);
+
+        return _mapper.Map<User>(user);
     }
 
     public async Task<bool> EmailExistsAsync(string email)
@@ -67,10 +79,10 @@ public class UserRepository : IUserRepository, IUserAuthRepository
 
         """;
 
-        var sqlUser = await _db.QuerySingleOrDefaultAsync<SqlUser, dynamic>(
+        var user = await _db.QuerySingleOrDefaultAsync<User, dynamic>(
             sql, new { Email = email });
 
-        return sqlUser == null ? null : MapToDomain(sqlUser);
+        return user ?? null;
     }
 
     public async Task<User?> GetByIdAsync(Guid id)
@@ -86,10 +98,10 @@ public class UserRepository : IUserRepository, IUserAuthRepository
 
         """;
 
-        var sqlUser = await _db.QuerySingleOrDefaultAsync<SqlUser, dynamic>(
+        var user = await _db.QuerySingleOrDefaultAsync<User, dynamic>(
             sql, new { Id = id });
 
-        return sqlUser == null ? null : MapToDomain(sqlUser);
+        return user ?? null;
     }
 
     public Task<IEnumerable<string>> GetRolesAsync(Guid userId)
@@ -110,18 +122,6 @@ public class UserRepository : IUserRepository, IUserAuthRepository
         """;
 
         return _db.QueryAsync<string, dynamic>(sql, new { UserId = userId });
-    }
-
-    private static User MapToDomain(SqlUser sqlUser)
-    {
-        return new User
-        {
-            Id = sqlUser.Id,
-            Email = sqlUser.Email,
-            FirstName = sqlUser.FirstName,
-            LastName = sqlUser.LastName,
-            IsActive = sqlUser.IsActive
-        };
     }
 
     public async Task<SqlUser?> GetSqlUserByEmailAsync(string email)
