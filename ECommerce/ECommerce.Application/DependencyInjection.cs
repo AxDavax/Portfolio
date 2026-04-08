@@ -3,6 +3,7 @@ using ECommerce.Application.Services;
 using ECommerce.Application.UseCases.Auth.Login;
 using ECommerce.Application.UseCases.Auth.Me;
 using ECommerce.Application.UseCases.Auth.Refresh;
+using ECommerce.Application.UseCases.Auth.Register;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ECommerce.Application;
@@ -15,6 +16,7 @@ public static class DependencyInjection
         services.AddScoped<LoginHandler>();
         services.AddScoped<RefreshHandler>();
         services.AddScoped<MeHandler>();
+        services.AddScoped<RegisterHandler>();
 
         // Services
         services.AddScoped<ICartToOrder, CartToOrder>();
