@@ -1,4 +1,4 @@
-﻿namespace ECommerce.Application.UseCases.Auth.Logout;
+﻿namespace ECommerce.Contracts.Auth.Logout;
 
 public class LogoutResponse
 {

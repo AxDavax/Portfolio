@@ -1,4 +1,4 @@
-﻿namespace ECommerce.Application.UseCases.Auth.Login;
+﻿namespace ECommerce.Contracts.Auth.Login;
 
 public class LoginResponse
 {

@@ -1,4 +1,5 @@
 ﻿using ECommerce.Application.Interfaces;
+using ECommerce.Contracts.Auth.Logout;
 
 namespace ECommerce.Application.UseCases.Auth.Logout
 {

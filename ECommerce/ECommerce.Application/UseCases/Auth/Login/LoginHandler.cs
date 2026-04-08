@@ -1,4 +1,5 @@
 ﻿using ECommerce.Application.Interfaces;
+using ECommerce.Contracts.Auth.Login;
 using ECommerce.Domain.Interfaces;
 
 namespace ECommerce.Application.UseCases.Auth.Login;

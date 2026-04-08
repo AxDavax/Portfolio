@@ -1,4 +1,4 @@
-﻿namespace ECommerce.Application.UseCases.Auth.Register;
+﻿namespace ECommerce.Contracts.Auth.Register;
 
 public class RegisterRequest
 {
