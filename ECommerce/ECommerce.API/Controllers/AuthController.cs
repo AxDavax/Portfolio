@@ -2,6 +2,7 @@
 using ECommerce.Application.UseCases.Auth.Login;
 using ECommerce.Application.UseCases.Auth.Me;
 using ECommerce.Application.UseCases.Auth.Refresh;
+using ECommerce.Application.UseCases.Auth.Register;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,17 +15,27 @@ public class AuthController : ControllerBase
     private readonly LoginHandler _loginHandler;
     private readonly RefreshHandler _refreshHandler;
     private readonly MeHandler _meHandler;
+    private readonly RegisterHandler _registerHandler;
 
     public AuthController(
         LoginHandler loginHandler, 
         RefreshHandler refreshHandler, 
-        MeHandler meHandler)
+        MeHandler meHandler, 
+        RegisterHandler registerHandler)
     {
         _loginHandler = loginHandler;
         _refreshHandler = refreshHandler;
         _meHandler = meHandler;
+        _registerHandler = registerHandler;
     }
 
+    [AllowAnonymous]
+    [HttpPost("register")]
+    public async Task<IActionResult> Register([FromBody] RegisterRequest request)
+    {
+        var result = await _registerHandler.HandleAsync(request);
+        return Ok(result);
+    }
 
     [AllowAnonymous]
     [HttpPost("login")]
