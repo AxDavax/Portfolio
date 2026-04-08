@@ -23,6 +23,25 @@ public class AuthService
         _authStateProvider = authStateProvider;
     }
 
+    public async Task InitializeAsync()
+    {
+        var token = await _tokenStorage.GetTokenAsync();
+
+        if (string.IsNullOrWhiteSpace(token)) return;
+
+        var isExpired = await _tokenStorage.IsExpiredAsync();
+        if (isExpired)
+        {
+            await Logout();
+            return;
+        }
+
+        _http.DefaultRequestHeaders.Authorization = 
+            new AuthenticationHeaderValue("Bearer", token);
+        
+        await _authStateProvider.MarkUserAsAuthenticated(token);
+    }
+
     public async Task<bool> Login(LoginRequest request)
     {
         var response = await _http.PostAsJsonAsync("api/auth/login", request);
