@@ -1,5 +1,6 @@
 ﻿using ECommerce.API.Extensions;
 using ECommerce.Application.UseCases.Auth.Login;
+using ECommerce.Application.UseCases.Auth.Logout;
 using ECommerce.Application.UseCases.Auth.Me;
 using ECommerce.Application.UseCases.Auth.Refresh;
 using ECommerce.Application.UseCases.Auth.Register;
@@ -16,17 +17,20 @@ public class AuthController : ControllerBase
     private readonly RefreshHandler _refreshHandler;
     private readonly MeHandler _meHandler;
     private readonly RegisterHandler _registerHandler;
+    private readonly LogoutHandler _logoutHandler;
 
     public AuthController(
         LoginHandler loginHandler, 
         RefreshHandler refreshHandler, 
         MeHandler meHandler, 
-        RegisterHandler registerHandler)
+        RegisterHandler registerHandler,
+        LogoutHandler logoutHandler)
     {
         _loginHandler = loginHandler;
         _refreshHandler = refreshHandler;
         _meHandler = meHandler;
         _registerHandler = registerHandler;
+        _logoutHandler = logoutHandler;
     }
 
     [AllowAnonymous]
@@ -65,5 +69,13 @@ public class AuthController : ControllerBase
         });
 
         return Ok(response);
+    }
+
+    [Authorize]
+    [HttpPost("logout")]
+    public async Task<IActionResult> Logout([FromBody] LogoutRequest request)
+    {
+        var result = await _logoutHandler.HandleAsync(request);
+        return Ok(result);
     }
 }
