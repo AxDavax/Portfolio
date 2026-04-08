@@ -2,6 +2,7 @@
 using ECommerce.Contracts.Auth.Login;
 using ECommerce.Contracts.Auth.Logout;
 using ECommerce.Contracts.Auth.Register;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 
 namespace ECommerce.ClientPortal.Services.Auth;
@@ -31,6 +32,10 @@ public class AuthService
         var result = await response.Content.ReadFromJsonAsync<LoginResponse>();
 
         await _tokenStorage.SaveAsync(result.Token, result.RefreshToken, result.Expiration);
+
+        _http.DefaultRequestHeaders.Authorization =
+            new AuthenticationHeaderValue("Bearer", result.Token);
+
         await _authStateProvider.MarkUserAsAuthenticated(result.Token);
 
         return true;
@@ -45,6 +50,10 @@ public class AuthService
         var result = await response.Content.ReadFromJsonAsync<RegisterResponse>();
 
         await _tokenStorage.SaveAsync(result.Token, result.RefreshToken, result.Expiration);
+
+        _http.DefaultRequestHeaders.Authorization =
+            new AuthenticationHeaderValue("Bearer", result.Token);
+
         await _authStateProvider.MarkUserAsAuthenticated(result.Token);
 
         return true;
@@ -61,5 +70,7 @@ public class AuthService
 
         await _tokenStorage.ClearAsync();
         _authStateProvider.MarkUserAsLoggedOut();
+
+        _http.DefaultRequestHeaders.Authorization = null;
     }
 }
