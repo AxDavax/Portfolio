@@ -4,6 +4,9 @@ using ECommerce.Application.UseCases.Auth.Logout;
 using ECommerce.Application.UseCases.Auth.Me;
 using ECommerce.Application.UseCases.Auth.Refresh;
 using ECommerce.Application.UseCases.Auth.Register;
+using ECommerce.Contracts.Auth.Login;
+using ECommerce.Contracts.Auth.Logout;
+using ECommerce.Contracts.Auth.Register;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
