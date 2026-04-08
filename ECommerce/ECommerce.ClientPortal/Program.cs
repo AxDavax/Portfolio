@@ -1,6 +1,6 @@
 using ECommerce.ClientPortal;
+using ECommerce.ClientPortal.Providers;
 using ECommerce.ClientPortal.Services.API;
-using ECommerce.ClientPortal.Services.Auth;
 using ECommerce.ClientPortal.Services.State;
 using ECommerce.ClientPortal.Services.Storage;
 using ECommerce.ClientPortal.ViewModels;
@@ -23,6 +23,6 @@ builder.Services.AddScoped<SharedStateService>();
 builder.Services.AddScoped<LocalStorageService>();
 builder.Services.AddViewModels();
 builder.Services.AddAuthorizationCore();
-builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
+builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
 
 await builder.Build().RunAsync();
