@@ -127,4 +127,19 @@ public class RefreshTokenService : IRefreshTokenService
 
         return result != null;
     }
+
+    public async Task DeleteRefreshTokenAsync(string refreshToken)
+    {
+        const string sql = """
+
+            DELETE
+            FROM
+                RefreshTokens
+            WHERE
+                Token = @Token
+
+        """;
+
+        await _db.ExecuteAsync(sql, new { Token = refreshToken });
+    }
 }

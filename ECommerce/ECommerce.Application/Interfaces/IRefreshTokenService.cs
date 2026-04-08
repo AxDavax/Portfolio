@@ -9,4 +9,5 @@ public interface IRefreshTokenService
     Task ReplaceRefreshTokenAsync(Guid userId, string oldToken, string newToken);
     Task<RefreshToken?> GetRefreshTokenAsync(string token);
     Task<string> RotateRefreshTokenAsync(RefreshToken oldToken);
+    Task DeleteRefreshTokenAsync(string refreshToken);
 }
