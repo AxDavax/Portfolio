@@ -1,6 +1,7 @@
 ﻿using ECommerce.Application.Interfaces;
 using ECommerce.Contracts.Auth.Login;
 using ECommerce.Domain.Interfaces;
+using Microsoft.Extensions.Configuration;
 
 namespace ECommerce.Application.UseCases.Auth.Login;
 
@@ -11,19 +12,22 @@ public class LoginHandler
     private readonly IPasswordService _passwords;
     private readonly IJwtService _jwt;
     private readonly IRefreshTokenService _refreshToken;
+    private readonly IConfiguration _config;
 
     public LoginHandler(
         IUserRepository users,
         IUserAuthRepository authUsers,
         IPasswordService passwords,
         IJwtService jwt,
-        IRefreshTokenService refreshToken)
+        IRefreshTokenService refreshToken,
+        IConfiguration config)
     {
         _users = users;
         _authUsers = authUsers;
         _passwords = passwords;
         _jwt = jwt;
         _refreshToken = refreshToken;
+        _config = config;
     }
 
     public async Task<LoginResponse> Handle(LoginRequest request)
@@ -57,14 +61,20 @@ public class LoginHandler
         // 6. Generating RefreshToken
         var refreshToken = await _refreshToken.GenerateRefreshTokenAsync(user.Id);
 
-        // 7. Returning response
+        // 7. Calculates the expiration
+        var expiration = DateTime.UtcNow.AddMinutes(
+            int.Parse(_config["Jwt:ExpiresInMinutes"]!)
+        );
+
+        // 8. Returning response
         return new LoginResponse
         {
             Token = token,
             RefreshToken = refreshToken,
             UserId = user.Id,
             Email = user.Email,
-            Roles = roles
+            Roles = roles,
+            Expiration = expiration
         };
     }
 }
