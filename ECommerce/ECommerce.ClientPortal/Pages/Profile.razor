@@ -1,0 +1,35 @@
+﻿@page "/profile"
+@using ECommerce.ClientPortal.ViewModels.Auth
+@using Microsoft.AspNetCore.Components.Authorization
+@inject ProfileVM VM
+
+<AuthorizeView>
+    <Authorized>
+        <h3>My Profile</h3>
+
+        <div class="card p-3 mt-3">
+            <p><strong>First Name:</strong> @VM.FirstName</p>
+            <p><strong>Last Name:</strong> @VM.LastName</p>
+            <p><strong>Email:</strong> @VM.Email</p>
+        </div>
+
+        <h5 class="mt-4">Claims</h5>
+        <ul>
+            @foreach (var claim in VM.Claims)
+            {
+                <li>@claim.Type : @claim.Value</li>
+            }
+        </ul>
+    </Authorized>
+
+    <NotAuthorized>
+        <p>You must be logged in to view your profile.</p>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        await VM.LoadAsync();
+    }
+}
