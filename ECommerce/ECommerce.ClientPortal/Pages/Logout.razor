@@ -1,0 +1,19 @@
+﻿@page "/logout"
+@using ECommerce.ClientPortal.ViewModels.Auth
+@inject LogoutVM VM
+
+@if (VM.IsProcessing)
+{
+    <div class="position-absolute w-100 vh-100 d-flex flex-column align-items-center bg-white justify-content-center">
+        <img src="/images/loading.gif" alt="loading" />
+    </div>
+}
+
+<h3>Signing out...</h3>
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        await VM.LogoutAsync();
+    }
+}
