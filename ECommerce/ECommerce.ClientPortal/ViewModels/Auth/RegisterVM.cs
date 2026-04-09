@@ -28,7 +28,7 @@ public class RegisterVM : ProcessingVM
 
             if (!success)
             {
-                ErrorMessage = "Impossible to create the account";
+                ErrorMessage = "Unable to create the account";
                 return;
             }
 
