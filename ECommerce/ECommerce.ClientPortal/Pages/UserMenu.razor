@@ -1,0 +1,27 @@
+﻿@using ECommerce.ClientPortal.ViewModels.Auth
+@using Microsoft.AspNetCore.Components.Authorization
+@inject UserMenuVM VM
+
+<AuthorizeView>
+    <Authorized>
+        <div class="dropdown">
+            <button class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown">
+                @context.User.Identity?.Name
+            </button>
+
+            <ul class="dropdown-menu dropdown-menu-end">
+                <li>
+                    <a class="dropdown-item" @onclick="VM.GoToProfile">Profile</a>
+                </li>
+                <li>
+                    <a class="dropdown-item" @onclick="VM.Logout">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </Authorized>
+
+    <NotAuthorized>
+        <button class="btn btn-outline-primary me-2" @onclick="VM.GoToLogin">Login</button>
+        <button class="btn btn-primary" @onclick="VM.GoToRegister">Sign up</button>
+    </NotAuthorized>
+</AuthorizeView>
