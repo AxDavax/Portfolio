@@ -1,0 +1,51 @@
+﻿@page "/register"
+@using ECommerce.ClientPortal.ViewModels.Auth
+@inject RegisterVM VM
+
+<h3>Sign Up</h3>
+
+@if (VM.IsProcessing)
+{
+    <div class="position-absolute w-100 vh-100 d-flex flex-column align-items-center bg-white justify-content-center">
+        <img src="/images/loading.gif" alt="loading" />
+    </div>
+}
+
+@if (!string.IsNullOrEmpty(VM.ErrorMessage))
+{
+    <div class="alert alert-danger">@VM.ErrorMessage</div>
+}
+
+<EditForm Model="VM.Model" OnValidSubmit="VM.RegisterAsync">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="mb-3">
+        <label>First Name</label>
+        <InputText class="form-control" @bind-Value="VM.Model.FirstName" />
+    </div>
+
+    <div class="mb-3">
+        <label>Last Name</label>
+        <InputText class="form-control" @bind-Value="VM.Model.LastName" />
+    </div>
+
+    <div class="mb-3">
+        <label>Email</label>
+        <InputText class="form-control" @bind-Value="VM.Model.Email" />
+    </div>
+
+    <div class="mb-3">
+        <label>Password</label>
+        <InputText class="form-control" @bind-Value="VM.Model.Password" type="password" />
+    </div>
+
+    <div class="mb-3">
+        <label>Confirm password</label>
+        <InputText class="form-control" @bind-Value="VM.Model.ConfirmPassword" type="password" />
+    </div>
+
+    <button class="btn btn-primary" type="submit" disabled="@VM.IsProcessing">
+        @(VM.IsProcessing ? "Processing..." : "Register")
+    </button>
+</EditForm>
