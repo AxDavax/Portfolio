@@ -1,4 +1,5 @@
-﻿using ECommerce.ClientPortal.ViewModels.Core;
+﻿using ECommerce.ClientPortal.ViewModels.Auth;
+using ECommerce.ClientPortal.ViewModels.Core;
 using ECommerce.ClientPortal.ViewModels.Home;
 
 namespace ECommerce.ClientPortal.ViewModels;
@@ -9,5 +10,11 @@ public static class VMsConfiguration
     {
         services.AddScoped<AuthUserVM>();
         services.AddScoped<HomeVM>();
+
+        services.AddScoped<LoginVM>();
+        services.AddScoped<RegisterVM>();
+        services.AddScoped<LogoutVM>();
+        services.AddScoped<UserMenuVM>();
+        services.AddScoped<ProfileVM>();
     }
 }
