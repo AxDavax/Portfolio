@@ -1,4 +1,5 @@
 ﻿using ECommerce.API.Extensions;
+using ECommerce.Application.UseCases.Auth.ForgotPassword;
 using ECommerce.Application.UseCases.Auth.Login;
 using ECommerce.Application.UseCases.Auth.Logout;
 using ECommerce.Application.UseCases.Auth.Me;
@@ -21,19 +22,22 @@ public class AuthController : ControllerBase
     private readonly MeHandler _meHandler;
     private readonly RegisterHandler _registerHandler;
     private readonly LogoutHandler _logoutHandler;
+    private readonly ForgotPasswordHandler _forgotPwdHandler;
 
     public AuthController(
         LoginHandler loginHandler, 
         RefreshHandler refreshHandler, 
         MeHandler meHandler, 
         RegisterHandler registerHandler,
-        LogoutHandler logoutHandler)
+        LogoutHandler logoutHandler,
+        ForgotPasswordHandler forgotPwdHandler)
     {
         _loginHandler = loginHandler;
         _refreshHandler = refreshHandler;
         _meHandler = meHandler;
         _registerHandler = registerHandler;
         _logoutHandler = logoutHandler;
+        _forgotPwdHandler = forgotPwdHandler;
     }
 
     [AllowAnonymous]
@@ -79,6 +83,13 @@ public class AuthController : ControllerBase
     public async Task<IActionResult> Logout([FromBody] LogoutRequest request)
     {
         var result = await _logoutHandler.HandleAsync(request);
+        return Ok(result);
+    }
+
+    [HttpPost("forgot-password")]
+    public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordRequest request)
+    {
+        var result = await _forgotPwdHandler.HandleAsync(request);
         return Ok(result);
     }
 }
