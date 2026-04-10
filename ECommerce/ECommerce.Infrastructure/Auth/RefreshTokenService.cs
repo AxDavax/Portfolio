@@ -10,12 +10,9 @@ public class RefreshTokenService : IRefreshTokenService
 {
     private readonly ISqlDataAccess _db;
 
-    private readonly IConfiguration _config;
-
-    public RefreshTokenService(IConfiguration config, ISqlDataAccess db)
+    public RefreshTokenService(ISqlDataAccess db)
     {
         _db = db;
-        _config = config;
     }
 
     public async Task<string> GenerateRefreshTokenAsync(Guid userId)
