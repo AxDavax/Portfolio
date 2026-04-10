@@ -1,4 +1,5 @@
 ﻿using ECommerce.ClientPortal.Providers;
+using ECommerce.Contracts.Auth.ForgotPassword;
 using ECommerce.Contracts.Auth.Login;
 using ECommerce.Contracts.Auth.Logout;
 using ECommerce.Contracts.Auth.Register;
@@ -91,5 +92,12 @@ public class AuthService
         _authStateProvider.MarkUserAsLoggedOut();
 
         _http.DefaultRequestHeaders.Authorization = null;
+    }
+
+    public async Task<bool> ForgotPassword(ForgotPasswordRequest request)
+    {
+        var response = await _http.PostAsJsonAsync("api/auth/forgot-password", request);
+
+        return response.IsSuccessStatusCode;
     }
 }
