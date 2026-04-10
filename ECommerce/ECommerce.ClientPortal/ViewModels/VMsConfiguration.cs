@@ -17,5 +17,6 @@ public static class VMsConfiguration
         services.AddScoped<UserMenuVM>();
         services.AddScoped<ProfileVM>();
         services.AddScoped<ForgotPasswordVM>();
+        services.AddScoped<ResetPasswordVM>();
     }
 }
