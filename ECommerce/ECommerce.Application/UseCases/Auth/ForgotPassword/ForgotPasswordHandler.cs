@@ -1,5 +1,6 @@
 ﻿using ECommerce.Application.Interfaces;
 using ECommerce.Application.Models;
+using ECommerce.Contracts.Auth.ForgotPassword;
 using ECommerce.Domain.Interfaces;
 
 namespace ECommerce.Application.UseCases.Auth.ForgotPassword;

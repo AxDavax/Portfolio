@@ -6,6 +6,7 @@ using ECommerce.Application.UseCases.Auth.Me;
 using ECommerce.Application.UseCases.Auth.Refresh;
 using ECommerce.Application.UseCases.Auth.Register;
 using ECommerce.Application.UseCases.Auth.ResetPassword;
+using ECommerce.Contracts.Auth.ForgotPassword;
 using ECommerce.Contracts.Auth.Login;
 using ECommerce.Contracts.Auth.Logout;
 using ECommerce.Contracts.Auth.Register;
