@@ -5,6 +5,7 @@ using ECommerce.Application.UseCases.Auth.Logout;
 using ECommerce.Application.UseCases.Auth.Me;
 using ECommerce.Application.UseCases.Auth.Refresh;
 using ECommerce.Application.UseCases.Auth.Register;
+using ECommerce.Application.UseCases.Auth.ResetPassword;
 using ECommerce.Contracts.Auth.Login;
 using ECommerce.Contracts.Auth.Logout;
 using ECommerce.Contracts.Auth.Register;
@@ -23,6 +24,7 @@ public class AuthController : ControllerBase
     private readonly RegisterHandler _registerHandler;
     private readonly LogoutHandler _logoutHandler;
     private readonly ForgotPasswordHandler _forgotPwdHandler;
+    private readonly ResetPasswordHandler _resetPwdHandler;
 
     public AuthController(
         LoginHandler loginHandler, 
@@ -30,7 +32,8 @@ public class AuthController : ControllerBase
         MeHandler meHandler, 
         RegisterHandler registerHandler,
         LogoutHandler logoutHandler,
-        ForgotPasswordHandler forgotPwdHandler)
+        ForgotPasswordHandler forgotPwdHandler, 
+        ResetPasswordHandler resetPwdHandler)
     {
         _loginHandler = loginHandler;
         _refreshHandler = refreshHandler;
@@ -38,6 +41,7 @@ public class AuthController : ControllerBase
         _registerHandler = registerHandler;
         _logoutHandler = logoutHandler;
         _forgotPwdHandler = forgotPwdHandler;
+        _resetPwdHandler = resetPwdHandler;
     }
 
     [AllowAnonymous]
@@ -90,6 +94,13 @@ public class AuthController : ControllerBase
     public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordRequest request)
     {
         var result = await _forgotPwdHandler.HandleAsync(request);
+        return Ok(result);
+    }
+
+    [HttpPost("reset-password")]
+    public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordRequest request)
+    {
+        var result = await _resetPwdHandler.HandleAsync(request);
         return Ok(result);
     }
 }
