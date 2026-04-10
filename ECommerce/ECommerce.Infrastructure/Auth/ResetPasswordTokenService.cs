@@ -39,7 +39,7 @@ public class ResetPasswordTokenService : IResetPasswordTokenService
             
         """;
 
-        await _db.ExecuteAsync(sql, new { Token = token });
+        await _db.ExecuteAsync(sql, new { Token = token.Token });
     }
 
     public async Task<ResetPasswordToken?> GetByTokenAsync(string token)
