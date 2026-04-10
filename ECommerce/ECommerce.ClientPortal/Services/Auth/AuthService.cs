@@ -3,6 +3,7 @@ using ECommerce.Contracts.Auth.ForgotPassword;
 using ECommerce.Contracts.Auth.Login;
 using ECommerce.Contracts.Auth.Logout;
 using ECommerce.Contracts.Auth.Register;
+using ECommerce.Contracts.Auth.ResetPassword;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 
@@ -99,5 +100,18 @@ public class AuthService
         var response = await _http.PostAsJsonAsync("api/auth/forgot-password", request);
 
         return response.IsSuccessStatusCode;
+    }
+
+    public async Task<bool> ResetPassword(ResetPasswordRequest request)
+    {
+        try
+        {
+            var response = await _http.PostAsJsonAsync("api/auth/reset-password", request);
+            return response.IsSuccessStatusCode;
+        }
+        catch
+        {
+            return false;
+        }
     }
 }
