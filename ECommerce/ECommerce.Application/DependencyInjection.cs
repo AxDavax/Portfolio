@@ -1,6 +1,8 @@
 ﻿using ECommerce.Application.Interfaces;
 using ECommerce.Application.Services;
+using ECommerce.Application.UseCases.Auth.ForgotPassword;
 using ECommerce.Application.UseCases.Auth.Login;
+using ECommerce.Application.UseCases.Auth.Logout;
 using ECommerce.Application.UseCases.Auth.Me;
 using ECommerce.Application.UseCases.Auth.Refresh;
 using ECommerce.Application.UseCases.Auth.Register;
@@ -17,6 +19,8 @@ public static class DependencyInjection
         services.AddScoped<RefreshHandler>();
         services.AddScoped<MeHandler>();
         services.AddScoped<RegisterHandler>();
+        services.AddScoped<LogoutHandler>();
+        services.AddScoped<ForgotPasswordHandler>();
 
         // Services
         services.AddScoped<ICartToOrder, CartToOrder>();
