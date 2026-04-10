@@ -26,6 +26,7 @@ public static class DependencyInjection
         // Auth 
         services.AddSingleton<IJwtService, JwtService>();
         services.AddScoped<IRefreshTokenService, RefreshTokenService>();
+        services.AddScoped<IResetPasswordTokenService, ResetPasswordTokenService>();
 
         // Services
         services.AddScoped<IFileService, FileService>();
