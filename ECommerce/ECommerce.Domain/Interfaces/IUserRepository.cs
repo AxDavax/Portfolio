@@ -9,4 +9,5 @@ public interface IUserRepository
     Task<IEnumerable<string>> GetRolesAsync(Guid userId);
     Task<bool> EmailExistsAsync(string email);
     Task CreateAsync(User user);
+    Task UpdatePasswordAsync(Guid userId, string hash, string salt);
 }

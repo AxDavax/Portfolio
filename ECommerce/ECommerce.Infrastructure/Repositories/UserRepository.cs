@@ -47,6 +47,28 @@ public class UserRepository : IUserRepository, IUserAuthRepository
         return _mapper.Map<User>(user);
     }
 
+    public async Task UpdatePasswordAsync(Guid userId, string hash, string salt)
+    {
+        const string sql = """
+
+            UPDATE
+                Users
+            SET
+                PasswordHash = @Hash,
+                PasswordSalt = @Salt
+            WHERE
+                ID = @UserId
+
+        """;
+
+        await _db.ExecuteAsync(sql, new
+        {
+            UserId = userId,
+            Hash = hash,
+            Salt = salt
+        });
+    }
+
     public async Task<bool> EmailExistsAsync(string email)
     {
         const string sql = """
