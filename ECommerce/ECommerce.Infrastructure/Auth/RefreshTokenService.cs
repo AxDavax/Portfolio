@@ -1,7 +1,6 @@
 ﻿using ECommerce.Application.Interfaces;
 using ECommerce.Application.Models;
 using ECommerce.Domain.Interfaces;
-using Microsoft.Extensions.Configuration;
 using System.Security.Cryptography;
 
 namespace ECommerce.Infrastructure.Auth;
