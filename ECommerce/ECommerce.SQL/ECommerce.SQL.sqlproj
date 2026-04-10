@@ -67,6 +67,7 @@
     <Build Include="Database\Auth\04_Create_RefreshTokens.sql" />
     <Build Include="Database\ECommerce\10_Create_Category.sql" />
     <Build Include="Database\ECommerce\11_Create_Product.sql" />
+    <Build Include="Database\Auth\05_Create_ResetPasswordTokens.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Database\ECommerce\12_Create_OrderHeader.sql" />
