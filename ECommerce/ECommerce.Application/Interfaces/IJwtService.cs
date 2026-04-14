@@ -1,6 +1,8 @@
-﻿namespace ECommerce.Application.Interfaces;
+﻿using ECommerce.Domain.Models;
+
+namespace ECommerce.Application.Interfaces;
 
 public interface IJwtService
 {
-    string GenerateToken(Guid userId, string email, IEnumerable<string> roles);
+    string GenerateToken(User user, IEnumerable<string> roles);
 }

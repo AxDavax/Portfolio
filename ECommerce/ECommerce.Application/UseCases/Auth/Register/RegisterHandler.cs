@@ -60,7 +60,7 @@ public class RegisterHandler
         var roles = await _userRepo.GetRolesAsync(createdUser.Id);
 
         // 6. Generates the JWT
-        var token = _jwtService.GenerateToken(createdUser.Id, createdUser.Email, roles);
+        var token = _jwtService.GenerateToken(createdUser, roles);
 
         // 7. Generates the Refresh Token
         var refreshToken = await _refreshTokenService.GenerateRefreshTokenAsync(createdUser.Id);

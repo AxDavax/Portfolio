@@ -46,7 +46,7 @@ public class RefreshHandler
         var roles = await _users.GetRolesAsync(user.Id);
 
         // 5. Generates a new JWT
-        var newToken = _jwt.GenerateToken(user.Id, user.Email, roles);
+        var newToken = _jwt.GenerateToken(user, roles);
 
         // 6. Generates a new refresh token
         var newRefreshToken = await _refreshTokens.RotateRefreshTokenAsync(storedToken);

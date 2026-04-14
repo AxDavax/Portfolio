@@ -56,7 +56,7 @@ public class LoginHandler
         var roles = await _users.GetRolesAsync(user.Id);
 
         // 5. Generating JWT
-        var token = _jwt.GenerateToken(user.Id, user.Email, roles);
+        var token = _jwt.GenerateToken(user, roles);
 
         // 6. Generating RefreshToken
         var refreshToken = await _refreshToken.GenerateRefreshTokenAsync(user.Id);

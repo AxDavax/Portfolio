@@ -1,4 +1,5 @@
 ﻿using ECommerce.Application.Interfaces;
+using ECommerce.Domain.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -16,7 +17,7 @@ public class JwtService : IJwtService
         _config = config;
     }
 
-    public string GenerateToken(Guid userId, string email, IEnumerable<string> roles)
+    public string GenerateToken(User user, IEnumerable<string> roles)
     {
         var key = new SymmetricSecurityKey(
             Encoding.UTF8.GetBytes(_config["Jwt:Key"]!)
@@ -26,9 +27,11 @@ public class JwtService : IJwtService
 
         var claims = new List<Claim>
         {
-            new Claim(JwtRegisteredClaimNames.Sub, userId.ToString()),
-            new Claim(JwtRegisteredClaimNames.Email, email),
-            new Claim("uid", userId.ToString())
+            new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+            new Claim(JwtRegisteredClaimNames.Email, user.Email),
+            new Claim(JwtRegisteredClaimNames.GivenName, user.FirstName),
+            new Claim(JwtRegisteredClaimNames.FamilyName, user.LastName),
+            new Claim("uid", user.Id.ToString())
         };
 
         claims.AddRange(roles.Select(r => new Claim(ClaimTypes.Role, r)));
