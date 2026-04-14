@@ -1,9 +1,12 @@
 using ECommerce.Application;
+using ECommerce.Application.Interfaces;
 using ECommerce.Application.Mappings.Profiles;
 using ECommerce.Infrastructure;
+using ECommerce.Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Stripe;
+using System.Net.Http;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,6 +18,19 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure();
+
+builder.Services.AddScoped<IEmailService>(sp =>
+{
+    var config = sp.GetRequiredService<IConfiguration>();
+    var apiKey = config["Email:ApiKey"];
+
+    var httpFactory = sp.GetRequiredService<IHttpClientFactory>();
+    var http = httpFactory.CreateClient(nameof(MailTrapEmailService));
+
+    return new MailTrapEmailService(http, apiKey);
+});
+
+
 
 builder.Services.AddAutoMapper(typeof(CategoryProfile).Assembly);
 

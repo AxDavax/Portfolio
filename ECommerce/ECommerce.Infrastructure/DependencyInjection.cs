@@ -32,7 +32,8 @@ public static class DependencyInjection
         services.AddScoped<IFileService, FileService>();
         services.AddSingleton<IPasswordService, PasswordService>();
         services.AddScoped<IPaymentService, PaymentService>();
-        
+        services.AddHttpClient<MailTrapEmailService>();
+
         return services;
     }
 }
