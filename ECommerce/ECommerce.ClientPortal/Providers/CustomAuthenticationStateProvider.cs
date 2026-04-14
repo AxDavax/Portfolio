@@ -1,4 +1,6 @@
-﻿using ECommerce.ClientPortal.Services.Auth;
+﻿using ECommerce.ClientPortal.Models;
+using ECommerce.ClientPortal.Services.Auth;
+using ECommerce.ClientPortal.Services.State;
 using Microsoft.AspNetCore.Components.Authorization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -8,10 +10,31 @@ namespace ECommerce.ClientPortal.Providers;
 public class CustomAuthenticationStateProvider : AuthenticationStateProvider
 {
     private readonly TokenStorageService _tokenStorage;
+    private readonly UserSessionService _sessionService;
 
-    public CustomAuthenticationStateProvider(TokenStorageService tokenStorage)
+    public CustomAuthenticationStateProvider(TokenStorageService tokenStorage, 
+        UserSessionService sessionService)
     {
         _tokenStorage = tokenStorage;
+        _sessionService = sessionService;
+    }
+
+    private ClaimsPrincipal BuildUserFromToken(string token)
+    {
+        var identity = new ClaimsIdentity(ParseClaimsFromJwt(token), "jwt");
+        var user = new ClaimsPrincipal(identity);
+
+        var session = new UserSession
+        {
+            Email = user.FindFirst(ClaimTypes.Email)?.Value!,
+            FirstName = user.FindFirst(ClaimTypes.GivenName)?.Value!,
+            LastName = user.FindFirst(ClaimTypes.Surname)?.Value!,
+            Roles = user.FindAll(ClaimTypes.Role).Select(r => r.Value).ToList()
+        };
+
+        _sessionService.Set(session);
+
+        return user;
     }
 
     public override async Task<AuthenticationState> GetAuthenticationStateAsync()
@@ -19,24 +42,25 @@ public class CustomAuthenticationStateProvider : AuthenticationStateProvider
         var token = await _tokenStorage.GetTokenAsync();
 
         if (string.IsNullOrWhiteSpace(token))
+        {
+            _sessionService.Clear();
             return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
+        }
 
-        var identity = new ClaimsIdentity(ParseClaimsFromJwt(token), "jwt");
-        var user = new ClaimsPrincipal(identity);
-
+        var user = BuildUserFromToken(token);
         return new AuthenticationState(user);
     }
 
     public async Task MarkUserAsAuthenticated(string token)
     {
-        var identity = new ClaimsIdentity(ParseClaimsFromJwt(token), "jwt");
-        var user = new ClaimsPrincipal(identity);
-
+        var user = BuildUserFromToken(token);
         NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(user)));
     }
 
     public void MarkUserAsLoggedOut()
     {
+        _sessionService.Clear();
+        
         var anonymous = new ClaimsPrincipal(new ClaimsIdentity());
         NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(anonymous)));
     }
