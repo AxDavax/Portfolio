@@ -21,6 +21,7 @@ builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddHttpClient();
 builder.Services.AddApiServices(builder.Configuration);
 builder.Services.AddScoped<SharedStateService>();
+builder.Services.AddScoped<UserSessionService>();
 builder.Services.AddScoped<LocalStorageService>();
 
 builder.Services.AddScoped<TokenStorageService>();
