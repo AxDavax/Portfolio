@@ -6,7 +6,6 @@ using ECommerce.Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Stripe;
-using System.Net.Http;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -29,8 +28,6 @@ builder.Services.AddScoped<IEmailService>(sp =>
 
     return new MailTrapEmailService(http, apiKey);
 });
-
-
 
 builder.Services.AddAutoMapper(typeof(CategoryProfile).Assembly);
 
