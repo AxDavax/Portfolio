@@ -2,15 +2,20 @@
 
 public static class ApiServiceExtensions
 {
-    public static IServiceCollection AddApiServices(this IServiceCollection services, IConfiguration config)
+    public static IServiceCollection AddApiServices(this IServiceCollection services, 
+                                                         IConfiguration config)
     {
         var apiUrl = config["Api:BaseUrl"];
 
+        services.AddHttpClient("API", client =>
+        {
+            client.BaseAddress = new Uri(apiUrl!);
+        });
+
         services.AddScoped(sp =>
         {
-            var client = sp.GetRequiredService<HttpClient>();
-            client.BaseAddress = new Uri(apiUrl!);
-            return client;
+            var factory = sp.GetRequiredService<IHttpClientFactory>();
+            return factory.CreateClient("API");
         });
 
         ApiConfiguration.AddApiServices(services);
