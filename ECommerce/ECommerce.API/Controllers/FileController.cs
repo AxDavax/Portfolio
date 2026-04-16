@@ -14,6 +14,7 @@ namespace ECommerce.API.Controllers
             _fileService = fileService;
         }
 
+        [ApiExplorerSettings(IgnoreApi = true)]
         // POST: api/files/products
         [HttpPost("products")]
         public async Task<IActionResult> UploadProductImage([FromForm] IFormFile file)
