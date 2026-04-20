@@ -27,13 +27,13 @@
                     <ValidationSummary class="text-danger" role="alert" />
 
                     <div class="form-floating mb-3">
-                        <InputText class="form-control" @bind-Value="VM.Model.Email" />
+                        <InputText class="form-control" @bind-Value="VM.Model.Email" id="VM.Model.Email" autocomplete="username" aria-required="true" placeholder="name@example.com" />
                         <label for="VM.Model.Email" class="form-label">Email</label>
                         <ValidationMessage For="() => VM.Model.Email" class="text-danger" />
                     </div>
 
                     <div class="form-floating mb-3">
-                        <InputText class="form-control" @bind-Value="VM.Model.Password" type="password" />
+                        <InputText class="form-control" @bind-Value="VM.Model.Password" type="password" id="VM.Model.Password" autocomplete="current-password" aria-required="true" placeholder="password" />
                         <label for="VM.Model.Password" class="form-label">Password</label>
                         <ValidationMessage For="() => VM.Model.Password" class="text-danger" />
                     </div>
