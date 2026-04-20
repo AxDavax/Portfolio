@@ -43,7 +43,7 @@ public class ProductRepository : IProductRepository
         const string sql = """
 
             SELECT 
-                p.Id, p.Name, p.Price, p.Description, p.SpecialFlag, p.ImageUrl, p.CategoryId,
+                p.Id, p.Name, p.Price, p.Description, p.SpecialTag, p.ImageUrl, p.CategoryId,
                 c.Id, c.Name
             FROM 
                 Product p
@@ -70,7 +70,7 @@ public class ProductRepository : IProductRepository
         const string sql = """
              
             SELECT 
-                p.Id, p.Name, p.Price, p.Description, p.SpecialFlag, p.CategoryId, p.ImageUrl,
+                p.Id, p.Name, p.Price, p.Description, p.SpecialTag, p.CategoryId, p.ImageUrl,
                 c.Id, c.Name
             FROM 
                 Product p

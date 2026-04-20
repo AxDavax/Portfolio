@@ -27,7 +27,7 @@ public class ProductApi : IProductApi
 
     public async Task<List<ProductDTO>> GetAllAsync()
     {
-        var result = await _http.GetFromJsonAsync<List<ProductDTO>>("api/produc");
+        var result = await _http.GetFromJsonAsync<List<ProductDTO>>("api/product");
         return result ?? new List<ProductDTO>();
     }
 
