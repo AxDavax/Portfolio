@@ -16,50 +16,47 @@
     <div class="alert alert-danger">@VM.ErrorMessage</div>
 }
 
-<div class="mt-5" style="height:100%">
-    <div class="h-100 d-flex align-items-center justify-content-center">
-        <div class="card bg-light" style="min-width: 28rem;">
-            <div class="card-body">
-                <h5 class="card-title text-center display-6">Sign In</h5>
-                <EditForm Model="VM.Model" OnValidSubmit="VM.LoginAsync">
-                    <DataAnnotationsValidator />
-                    <hr />
-                    <ValidationSummary class="text-danger" role="alert" />
+<div class="d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+    <div class="card bg-light" style="min-width: 28rem;">
+        <div class="card-body">
+            <h5 class="card-title text-center display-6">Sign In</h5>
+            <EditForm Model="VM.Model" OnValidSubmit="VM.LoginAsync">
+                <DataAnnotationsValidator />
+                <hr />
 
-                    <div class="form-floating mb-3">
-                        <InputText class="form-control" @bind-Value="VM.Model.Email" id="VM.Model.Email" autocomplete="username" aria-required="true" placeholder="name@example.com" />
-                        <label for="VM.Model.Email" class="form-label">Email</label>
-                        <ValidationMessage For="() => VM.Model.Email" class="text-danger" />
+                <div class="form-floating mb-3">
+                    <InputText class="form-control" @bind-Value="VM.Model.Email" id="VM.Model.Email" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+                    <label for="VM.Model.Email" class="form-label">Email</label>
+                    <ValidationMessage For="() => VM.Model.Email" class="text-danger" />
+                </div>
+
+                <div class="form-floating mb-3">
+                    <InputText class="form-control" @bind-Value="VM.Model.Password" type="password" id="VM.Model.Password" autocomplete="current-password" aria-required="true" placeholder="password" />
+                    <label for="VM.Model.Password" class="form-label">Password</label>
+                    <ValidationMessage For="() => VM.Model.Password" class="text-danger" />
+                </div>
+
+                <button class="w-100 btn btn-lg btn-primary" type="submit" disabled="@VM.IsProcessing">
+                    @(VM.IsProcessing ? "Processing..." : "Log in")
+                </button>
+
+                <div class="row">
+                    <div class="col-6 pt-2">
+                        <a href="Auth/Forgot-password">Forgot your password?</a>
                     </div>
-
-                    <div class="form-floating mb-3">
-                        <InputText class="form-control" @bind-Value="VM.Model.Password" type="password" id="VM.Model.Password" autocomplete="current-password" aria-required="true" placeholder="password" />
-                        <label for="VM.Model.Password" class="form-label">Password</label>
-                        <ValidationMessage For="() => VM.Model.Password" class="text-danger" />
+                    <div class="col-6 pt-2 text-end">
+                        <a href="Auth/Reset-password">Resend email confirmation</a>
                     </div>
+                </div>
 
-                    <button class="btn btn-primary" type="submit" disabled="@VM.IsProcessing">
-                        @(VM.IsProcessing ? "Processing..." : "Log in")
-                    </button>
-
-                    <div class="row">
-                        <div class="col-6 pt-2">
-                            <a href="Auth/Forgot-password">Forgot your password?</a>
-                        </div>
-                        <div class="col-6 pt-2 text-end">
-                            <a href="Auth/Reset-password">Resend email confirmation</a>
-                        </div>
-                    </div>
-
-                    <hr />
-                    <p class="mt-2 text-center">
-                        <small class="text-muted text-center">
-                            Don't have an account?
-                            <a href="/Auth/register">Sign up</a>
-                        </small>
-                    </p>
-                </EditForm>
-            </div>
+                <hr />
+                <p class="mt-2 text-center">
+                    <small class="text-muted text-center">
+                        Don't have an account?
+                        <a href="/Auth/register">Sign up</a>
+                    </small>
+                </p>
+            </EditForm>
         </div>
     </div>
 </div>

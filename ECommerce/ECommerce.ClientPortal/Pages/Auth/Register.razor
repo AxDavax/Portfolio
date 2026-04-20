@@ -1,8 +1,8 @@
-﻿@page "/register"
+﻿@page "/Auth/Register"
 @using ECommerce.ClientPortal.ViewModels.Auth
 @inject RegisterVM VM
 
-<h3>Sign Up</h3>
+<PageTitle>Register</PageTitle>
 
 @if (VM.IsProcessing)
 {
@@ -16,41 +16,53 @@
     <div class="alert alert-danger">@VM.ErrorMessage</div>
 }
 
-<EditForm Model="VM.Model" OnValidSubmit="VM.RegisterAsync">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
+<div class="d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+    <div class="card bg-light" style="min-width: 28rem;">
+        <div class="card-body">
+            <h5 class="card-title text-center display-6">Sign Up</h5> 
+            <EditForm Model="VM.Model" OnValidSubmit="VM.RegisterAsync">
+                <DataAnnotationsValidator />
+                <hr />
 
-    <div class="mb-3">
-        <label>First Name</label>
-        <InputText class="form-control" @bind-Value="VM.Model.FirstName" />
+                <div class="form-floating mb-3">
+                    <InputText class="form-control" @bind-Value="VM.Model.FirstName" id="VM.Model.FirstName" autocomplete="firstname" aria-required="true" />
+                    <label for="VM.Model.FirstName">First Name</label>
+                    <ValidationMessage For="() => VM.Model.FirstName" class="text-danger" />
+                </div>
+
+                <div class="form-floating mb-3">
+                    <InputText class="form-control" @bind-Value="VM.Model.LastName" id="VM.Model.LastName" autocomplete="lastname" aria-required="true" />
+                    <label for="VM.Model.LastName">Last Name</label>
+                    <ValidationMessage For="() => VM.Model.LastName" class="text-danger" />
+                </div>
+
+                <div class="form-floating mb-3">
+                    <InputText class="form-control" @bind-Value="VM.Model.Email" id="VM.Model.Email" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+                    <label for="VM.Model.Email">Email</label>
+                    <ValidationMessage For="() => VM.Model.Email" class="text-danger" />                        
+                </div>
+
+                <div class="form-floating mb-3">
+                    <InputText class="form-control" @bind-Value="VM.Model.Password" type="password" id="VM.Model.Password" autocomplete="new-password" aria-required="true" placeholder="password" />
+                    <label for="VM.Model.Password">Password</label>
+                    <ValidationMessage For="() => VM.Model.Password" class="text-danger" />
+                </div>
+
+                <div class="form-floating mb-3">
+                    <InputText class="form-control" @bind-Value="VM.Model.ConfirmPassword" type="password" id="VM.Model.ConfirmPassword" autocomplete="new-password" aria-required="true" placeholder="confirm password" />
+                    <label for="VM.Model.ConfirmPassword">Confirm Password</label>
+                    <ValidationMessage For="() => VM.Model.ConfirmPassword" class="text-danger" />
+                </div>
+
+                <button class="w-100 btn btn-lg btn-primary" type="submit" disabled="@VM.IsProcessing">
+                    @(VM.IsProcessing ? "Processing..." : "Register")
+                </button>
+
+                <p class="mt-3 text-center">
+                    Already have an account?
+                    <a href="/Auth/login">Sign in</a>
+                </p>
+            </EditForm>
+        </div>
     </div>
-
-    <div class="mb-3">
-        <label>Last Name</label>
-        <InputText class="form-control" @bind-Value="VM.Model.LastName" />
-    </div>
-
-    <div class="mb-3">
-        <label>Email</label>
-        <InputText class="form-control" @bind-Value="VM.Model.Email" />
-    </div>
-
-    <div class="mb-3">
-        <label>Password</label>
-        <InputText class="form-control" @bind-Value="VM.Model.Password" type="password" />
-    </div>
-
-    <div class="mb-3">
-        <label>Confirm password</label>
-        <InputText class="form-control" @bind-Value="VM.Model.ConfirmPassword" type="password" />
-    </div>
-
-    <button class="btn btn-primary" type="submit" disabled="@VM.IsProcessing">
-        @(VM.IsProcessing ? "Processing..." : "Register")
-    </button>
-
-    <p class="mt-3 text-center">
-        Already have an account?
-        <a href="/login">Sign in</a>
-    </p>
-</EditForm>
+</div>
