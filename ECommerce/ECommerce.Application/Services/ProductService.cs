@@ -11,15 +11,18 @@ namespace ECommerce.Application.Services
         private readonly IProductRepository _repo;
         private readonly ICategoryRepository _categoryRepo;
         private readonly IMapper _mapper;
+        private readonly IFileService _fileService;
 
         public ProductService(
             IProductRepository repo, 
             ICategoryRepository categoryRepo,
-            IMapper mapper)
+            IMapper mapper, 
+            IFileService fileService)
         {
             _repo = repo;
             _categoryRepo = categoryRepo;
             _mapper = mapper;
+            _fileService = fileService;
         }
 
         public async Task<ProductDTO> CreateAsync(ProductDTO dto)
@@ -42,13 +45,22 @@ namespace ECommerce.Application.Services
         public async Task<IEnumerable<ProductDTO>> GetAllAsync()
         {
             var products = await _repo.GetAllAsync();
-            return _mapper.Map<IEnumerable<ProductDTO>>(products);
+            var productDTOs = _mapper.Map<IEnumerable<ProductDTO>>(products);
+
+            foreach (var productDTO in productDTOs)
+                productDTO.ImageUrl = _fileService.GetProductImageUrl(productDTO.ImageUrl!);
+
+            return productDTOs;
         }
 
         public async Task<ProductDTO?> GetByIdAsync(int id)
         {
             var product = await _repo.GetByIdAsync(id);
-            return (product == null) ? null : _mapper.Map<ProductDTO?>(product);
+            if (product == null) return null;
+            
+            var dto = _mapper.Map<ProductDTO?>(product);
+            dto!.ImageUrl = _fileService.GetProductImageUrl(dto.ImageUrl!);
+            return dto;
         }
 
         public async Task<bool> UpdateAsync(int id, ProductDTO dto)

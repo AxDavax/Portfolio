@@ -8,10 +8,25 @@ namespace ECommerce.API.Controllers
     public class FileController : ControllerBase
     {
         private readonly IFileService _fileService;
+        private readonly string _productStoragePath;
 
-        public FileController(IFileService fileService)
+        public FileController(IFileService fileService, IWebHostEnvironment env)
         {
             _fileService = fileService;
+            _productStoragePath = Path.Combine(env.ContentRootPath, "storage", "products");
+        }
+
+        // GET: api/files/products/{fileName}
+        [HttpGet("products/{fileName}")]
+        public IActionResult GetProductImage(string fileName)
+        {
+            var filePath = Path.Combine(_productStoragePath, fileName);
+
+            if (!System.IO.File.Exists(filePath))
+                return NotFound();
+
+            var mime = "image/" + Path.GetExtension(fileName).TrimStart('.');
+            return PhysicalFile(filePath, mime);
         }
 
         [ApiExplorerSettings(IgnoreApi = true)]
