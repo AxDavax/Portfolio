@@ -10,11 +10,10 @@ public class OrderApi : BaseApi, IOrderApi
 
     public Task<bool> CreateAsync(OrderHeaderDTO dto) => SafePost("api/order", dto);
 
-    public async Task<List<OrderHeaderDTO>> GetAllAsync(string? userId = null)
+    public Task<List<OrderHeaderDTO>> GetAllAsync(string? userId = null)
     {
         string url = userId is null ? "api/order" : $"api/order?userId={userId}";
-        var result = await SafeGet<List<OrderHeaderDTO>>(url);
-        return result ?? new List<OrderHeaderDTO>();
+        return SafeGetList<OrderHeaderDTO>(url);
     }
 
     public Task<OrderHeaderDTO?> GetByIdAsync(int id)

@@ -12,11 +12,8 @@ public class CategoryApi : BaseApi, ICategoryApi
 
     public Task<bool> DeleteAsync(int id) => SafeDelete($"api/category/{id}");
 
-    public async Task<List<CategoryDTO>> GetAllAsync()
-    {
-        var result = await SafeGet<List<CategoryDTO>>("api/category");
-        return result ?? new List<CategoryDTO>();
-    }
+    public Task<List<CategoryDTO>> GetAllAsync() 
+        => SafeGetList<CategoryDTO>("api/category");
 
     public Task<CategoryDTO?> GetByIdAsync(int id) 
         => SafeGet<CategoryDTO?>($"api/category/{id}");

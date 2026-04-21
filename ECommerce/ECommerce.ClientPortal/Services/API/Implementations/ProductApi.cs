@@ -11,11 +11,7 @@ public class ProductApi : BaseApi, IProductApi
 
     public Task<bool> DeleteAsync(int id) => SafeDelete($"api/product/{id}");
 
-    public async Task<List<ProductDTO>> GetAllAsync()
-    {
-        var result = await SafeGet<List<ProductDTO>>("api/product");
-        return result ?? new List<ProductDTO>();
-    }
+    public Task<List<ProductDTO>> GetAllAsync() => SafeGetList<ProductDTO>("api/product");
 
     public Task<ProductDTO?> GetByIdAsync(int id)
         => SafeGet<ProductDTO?>($"api/product/{id}");

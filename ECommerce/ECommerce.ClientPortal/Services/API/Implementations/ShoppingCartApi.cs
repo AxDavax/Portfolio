@@ -11,11 +11,8 @@ public class ShoppingCartApi : BaseApi, IShoppingCartApi
     public Task<bool> ClearAsync(string userId) 
         => SafeDelete($"api/shoppingcart/{userId}");
 
-    public async Task<List<ShoppingCartDTO>> GetAllAsync(string userId)
-    {
-        var result = await SafeGet<List<ShoppingCartDTO>>($"api/shoppingcart/{userId}");
-        return result ?? new List<ShoppingCartDTO>();
-    }
+    public Task<List<ShoppingCartDTO>> GetAllAsync(string userId)
+        => SafeGetList<ShoppingCartDTO>("api/category/{userId}");
 
     public Task<ShoppingCartDTO?> GetItemAsync(string userId, int productId)
         => SafeGet<ShoppingCartDTO?>($"api/shoppingcart/{userId}/product/{productId}")!;
