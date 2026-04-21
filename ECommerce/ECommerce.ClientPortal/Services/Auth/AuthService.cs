@@ -1,26 +1,26 @@
 ﻿using ECommerce.ClientPortal.Providers;
+using ECommerce.ClientPortal.Services.API.Implementations;
 using ECommerce.Contracts.Auth.ForgotPassword;
 using ECommerce.Contracts.Auth.Login;
 using ECommerce.Contracts.Auth.Logout;
 using ECommerce.Contracts.Auth.Register;
 using ECommerce.Contracts.Auth.ResetPassword;
+using Microsoft.AspNetCore.Components;
 using System.Net.Http.Headers;
-using System.Net.Http.Json;
 
 namespace ECommerce.ClientPortal.Services.Auth;
 
-public class AuthService
+public class AuthService : BaseApi
 {
-    private readonly HttpClient _http;
     private readonly TokenStorageService _tokenStorage;
     private readonly CustomAuthenticationStateProvider _authStateProvider;
 
     public AuthService(
         HttpClient http,
+        NavigationManager nav,
         TokenStorageService tokenStorage,
-        CustomAuthenticationStateProvider authStateProvider)
+        CustomAuthenticationStateProvider authStateProvider) : base(http, nav)
     {
-        _http = http;
         _tokenStorage = tokenStorage;
         _authStateProvider = authStateProvider;
     }
@@ -46,11 +46,9 @@ public class AuthService
 
     public async Task<bool> Login(LoginRequest request)
     {
-        var response = await _http.PostAsJsonAsync("api/auth/login", request);
+        var result = await SafePost<LoginResponse>("api/auth/login", request);
 
-        if(!response.IsSuccessStatusCode) return false;
-
-        var result = await response.Content.ReadFromJsonAsync<LoginResponse>();
+        if (result == null) return false;
 
         await _tokenStorage.SaveAsync(result.Token, result.RefreshToken, result.Expiration);
 
@@ -64,11 +62,9 @@ public class AuthService
 
     public async Task<bool> Register(RegisterRequest request) 
     {
-        var response = await _http.PostAsJsonAsync("api/auth/register", request);
-
-        if(!response.IsSuccessStatusCode) return false;
-
-        var result = await response.Content.ReadFromJsonAsync<RegisterResponse>();
+        var result = await SafePost<RegisterResponse>("api/auth/register", request);
+        
+        if (result == null) return false;
 
         await _tokenStorage.SaveAsync(result.Token, result.RefreshToken, result.Expiration);
 
@@ -84,34 +80,23 @@ public class AuthService
     {
         var refreshToken = await _tokenStorage.GetRefreshTokenAsync();
 
-        await _http.PostAsJsonAsync("api/auth/logout", new LogoutRequest
+        var result = await SafePost<bool>("api/auth/logout", new LogoutRequest
         {
             RefreshToken = refreshToken!
         });
 
-        await _tokenStorage.ClearAsync();
-        _authStateProvider.MarkUserAsLoggedOut();
+        if (result) 
+        { 
+            await _tokenStorage.ClearAsync();
+            _authStateProvider.MarkUserAsLoggedOut();
 
-        _http.DefaultRequestHeaders.Authorization = null;
-    }
-
-    public async Task<bool> ForgotPassword(ForgotPasswordRequest request)
-    {
-        var response = await _http.PostAsJsonAsync("api/auth/forgot-password", request);
-
-        return response.IsSuccessStatusCode;
-    }
-
-    public async Task<bool> ResetPassword(ResetPasswordRequest request)
-    {
-        try
-        {
-            var response = await _http.PostAsJsonAsync("api/auth/reset-password", request);
-            return response.IsSuccessStatusCode;
-        }
-        catch
-        {
-            return false;
+            _http.DefaultRequestHeaders.Authorization = null;
         }
     }
+
+    public Task<bool> ForgotPassword(ForgotPasswordRequest request)
+        => SafePost<bool>("api/auth/forgot-password", request);
+
+    public Task<bool> ResetPassword(ResetPasswordRequest request)
+        => SafePost<bool>("api/auth/reset-password", request);
 }
