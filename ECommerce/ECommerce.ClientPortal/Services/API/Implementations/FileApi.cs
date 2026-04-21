@@ -1,24 +1,17 @@
 ﻿using System.Net.Http.Headers;
 using ECommerce.ClientPortal.Services.API.Interfaces;
+using Microsoft.AspNetCore.Components;
 
 namespace ECommerce.ClientPortal.Services.API.Implementations;
 
-public class FileApi : IFileApi
+public class FileApi : BaseApi, IFileApi
 {
-    private readonly HttpClient _http;
+    public FileApi(HttpClient http, NavigationManager nav) : base(http, nav) { }
 
-    public FileApi(HttpClient http)
-    {
-        _http = http;
-    }
+    public Task<bool> DeleteProductImageAsync(string fileName)
+        => SafeDelete($"api/files/products/{fileName}");
 
-    public async Task<bool> DeleteProductImageAsync(string fileName)
-    {
-        var response = await _http.DeleteAsync($"api/files/products/{fileName}");
-        return response.IsSuccessStatusCode;
-    }
-
-    public async Task<string?> UploadProductImageAsync(Stream fileStream, string fileName)
+    public Task<string?> UploadProductImageAsync(Stream fileStream, string fileName)
     {
         using var content = new MultipartFormDataContent();
         var fileContent = new StreamContent(fileStream);
@@ -26,11 +19,6 @@ public class FileApi : IFileApi
         fileContent.Headers.ContentType = new MediaTypeHeaderValue("image/jpeg");
         content.Add(fileContent, "file", fileName);
 
-        var response = await _http.PostAsync("api/files/products", content);
-
-        if(!response.IsSuccessStatusCode) 
-            return null;
-
-        return await response.Content.ReadAsStringAsync();
+        return SafePostRaw("api/files/products", content);
     }
 }
