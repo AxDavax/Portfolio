@@ -70,11 +70,36 @@ else
                             <div class="card-body">
                                 <h5 class="card-title text-center lead text-success">@prod.Name</h5>
                                 <p class="card-text mt-2">@((MarkupString)prod.Description)</p>
-                                <h4 class="text-center">
-                                    <div class="m-lg-auto p-2" @onclick="() => VM.AddOrderItem(prod)">
-                                        <i class="bi bi-cart3 btn btn-success text-right  px-5 form-control"> Add to cart</i>
+                                <div class="text-center">
+                                    <div class="m-lg-auto p-2">
+                                        <button class="btn btn-success w-100 add-to-cart-outline"
+                                                @onclick="() => VM.AddOrderItem(prod)">
+                                            <i class="bi bi-cart3 text-right"> Add to cart</i>
+                                        </button>
                                     </div>
-                                </h4>
+                                </div>
+
+                                <style>
+                                    .add-to-cart-outline {
+                                        background: white;
+                                        border: 2px solid #28a745;
+                                        color: #28a745;
+                                        font-weight: 600;
+                                        padding: 12px 20px;
+                                        border-radius: 12px;
+                                        transition: all .2s ease;
+                                    }
+
+                                    .add-to-cart-outline:hover {
+                                        background: #28a745;
+                                        color: white;
+                                        transform: translateY(-2px);
+                                    }
+
+                                    .add-to-cart-outline:active {
+                                        transform: scale(.97);
+                                    }
+                                </style>
                             </div>
                         </div>
                     </div>
