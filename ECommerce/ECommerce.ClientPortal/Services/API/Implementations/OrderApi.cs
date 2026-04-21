@@ -1,52 +1,35 @@
 ﻿using ECommerce.ClientPortal.Services.API.Interfaces;
 using ECommerce.Contracts.DTO;
-using System.Net.Http.Json;
+using Microsoft.AspNetCore.Components;
 
 namespace ECommerce.ClientPortal.Services.API.Implementations;
 
-public class OrderApi : IOrderApi
+public class OrderApi : BaseApi, IOrderApi
 {
-    private readonly HttpClient _http;
+    public OrderApi(HttpClient http, NavigationManager nav) : base(http, nav) { }
 
-    public OrderApi(HttpClient http)
-    {
-        _http = http;
-    }
-
-    public async Task<bool> CreateAsync(OrderHeaderDTO dto)
-    {
-        var response = await _http.PostAsJsonAsync("api/order", dto);
-        return response.IsSuccessStatusCode;
-    }
+    public Task<bool> CreateAsync(OrderHeaderDTO dto) => SafePost("api/order", dto);
 
     public async Task<List<OrderHeaderDTO>> GetAllAsync(string? userId = null)
     {
-        string url = userId is null
-            ? "api/order"
-            : $"api/order?userId={userId}";
-
-        var result = await _http.GetFromJsonAsync<List<OrderHeaderDTO>>(url);
+        string url = userId is null ? "api/order" : $"api/order?userId={userId}";
+        var result = await SafeGet<List<OrderHeaderDTO>>(url);
         return result ?? new List<OrderHeaderDTO>();
     }
 
-    public async Task<OrderHeaderDTO?> GetByIdAsync(int id)
-    {
-        return await _http.GetFromJsonAsync<OrderHeaderDTO>($"api/order/{id}");
-    }
+    public Task<OrderHeaderDTO?> GetByIdAsync(int id)
+        => SafeGet<OrderHeaderDTO?>($"api/order/{id}");
 
-    public async Task<OrderHeaderDTO?> GetBySessionIdAsync(string sessionId)
-    {
-        return await _http.GetFromJsonAsync<OrderHeaderDTO>($"api/order/session/{sessionId}");
-    }
+    public Task<OrderHeaderDTO?> GetBySessionIdAsync(string sessionId)
+        => SafeGet<OrderHeaderDTO?>($"api/order/session/{sessionId}");
 
-    public async Task<bool> UpdateAsync(int orderId, string status, string? paymentIntentId = null)
+    public Task<bool> UpdateAsync(int orderId, string status, string? paymentIntentId = null)
     {
         string url = $"api/order/{orderId}/status?status={status}";
 
         if (!string.IsNullOrWhiteSpace(paymentIntentId))
             url += $"&paymentIntentId={paymentIntentId}";
 
-        var response = await _http.PutAsync(url, null);
-        return response.IsSuccessStatusCode;
+        return SafePut(url, null);
     }
 }
