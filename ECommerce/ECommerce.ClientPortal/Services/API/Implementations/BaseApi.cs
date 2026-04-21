@@ -52,7 +52,6 @@ public abstract class BaseApi
         }
     }
 
-
     protected async Task<bool> SafePost(string url, object? body = null)
     {
         try
@@ -72,6 +71,32 @@ public abstract class BaseApi
         {
             _navigation.NavigateTo("/error", true);
             return false;
+        }
+    }
+
+    protected async Task<string?> SafePostRaw(string url, object? body = null)
+    {
+        try
+        {
+            var response = await _http.PostAsJsonAsync(url, body);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                HandleHttpError(response.StatusCode);
+                return null;
+            }
+
+            return await response.Content.ReadAsStringAsync();
+        }
+        catch (HttpRequestException ex)
+        {
+            HandleHttpError(ex.StatusCode);
+            return null;
+        }
+        catch
+        {
+            _navigation.NavigateTo("/error", true);
+            return null;
         }
     }
 
