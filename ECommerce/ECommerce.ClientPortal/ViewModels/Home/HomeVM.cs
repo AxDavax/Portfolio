@@ -128,7 +128,6 @@ namespace ECommerce.ClientPortal.ViewModels.Home
         {
             await RunCommandAsync(() => IsProcessing, async () =>
             {
-                Console.WriteLine("IsReady = " + _authUser.IsReady);
                 while (!_authUser.IsReady)
                     await Task.Delay(50);
 
