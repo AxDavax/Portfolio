@@ -7,7 +7,7 @@ public class ProductApi : BaseApi, IProductApi
 {
     public ProductApi(HttpClient http, NavigationManager nav) : base(http, nav) { }
 
-    public Task<bool> CreateAsync(ProductDTO dto) => SafePost("api/product", dto);
+    public Task<bool> CreateAsync(ProductDTO dto) => SafePost<bool>("api/product", dto);
 
     public Task<bool> DeleteAsync(int id) => SafeDelete($"api/product/{id}");
 

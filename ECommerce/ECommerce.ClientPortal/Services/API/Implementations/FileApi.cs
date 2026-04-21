@@ -19,6 +19,6 @@ public class FileApi : BaseApi, IFileApi
         fileContent.Headers.ContentType = new MediaTypeHeaderValue("image/jpeg");
         content.Add(fileContent, "file", fileName);
 
-        return SafePostRaw("api/files/products", content);
+        return SafePost<string>("api/files/products", content);
     }
 }

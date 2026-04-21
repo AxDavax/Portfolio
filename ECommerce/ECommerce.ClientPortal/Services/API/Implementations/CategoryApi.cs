@@ -8,7 +8,7 @@ public class CategoryApi : BaseApi, ICategoryApi
 {
     public CategoryApi(HttpClient http, NavigationManager nav) : base(http, nav) { }
 
-    public Task<bool> CreateAsync(CategoryDTO dto) => SafePost("api/category", dto);
+    public Task<bool> CreateAsync(CategoryDTO dto) => SafePost<bool>("api/category", dto);
 
     public Task<bool> DeleteAsync(int id) => SafeDelete($"api/category/{id}");
 

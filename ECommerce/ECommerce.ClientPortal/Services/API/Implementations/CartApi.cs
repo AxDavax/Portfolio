@@ -1,26 +1,16 @@
 ﻿using ECommerce.ClientPortal.Services.API.Interfaces;
 using ECommerce.Contracts.DTO;
-using System.Net.Http.Json;
+using Microsoft.AspNetCore.Components;
 
 namespace ECommerce.ClientPortal.Services.API.Implementations;
 
-public class CartApi : ICartApi
+public class CartApi : BaseApi, ICartApi
 {
-    private readonly HttpClient _http;
-
-    public CartApi(HttpClient http)
-    {
-        _http = http;
-    }
+    public CartApi(HttpClient http, NavigationManager nav) : base(http, nav) { }
 
     public async Task<List<OrderDetailDTO>> ConvertCartToOrderDetailsAsync(List<ShoppingCartDTO> carts)
     {
-        var response = await _http.PostAsJsonAsync("api/cart/convert", carts);
-
-        if(!response.IsSuccessStatusCode)
-            return new List<OrderDetailDTO>();
-
-        var result = await response.Content.ReadFromJsonAsync<List<OrderDetailDTO>>();
+        var result = await SafePost<List<OrderDetailDTO>>("api/cart/convert", carts);
         return result ?? new List<OrderDetailDTO>();
     }
 }

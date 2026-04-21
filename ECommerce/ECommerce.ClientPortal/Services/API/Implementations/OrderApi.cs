@@ -8,7 +8,7 @@ public class OrderApi : BaseApi, IOrderApi
 {
     public OrderApi(HttpClient http, NavigationManager nav) : base(http, nav) { }
 
-    public Task<bool> CreateAsync(OrderHeaderDTO dto) => SafePost("api/order", dto);
+    public Task<bool> CreateAsync(OrderHeaderDTO dto) => SafePost<bool>("api/order", dto);
 
     public Task<List<OrderHeaderDTO>> GetAllAsync(string? userId = null)
     {

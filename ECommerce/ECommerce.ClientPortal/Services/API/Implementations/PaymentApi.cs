@@ -10,7 +10,7 @@ public class PaymentApi : BaseApi, IPaymentApi
     public PaymentApi(HttpClient http, NavigationManager nav) : base(http, nav) { }
 
     public Task<string?> CreateCheckoutSessionAsync(OrderHeaderDTO order)
-        => SafePostRaw("api/payment/create-session", order);
+        => SafePost<string>("api/payment/create-session", order);
 
     public async Task<bool> VerifyPaymentAsync(string sessionId)
     {
