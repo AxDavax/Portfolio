@@ -1,52 +1,37 @@
 ﻿using ECommerce.ClientPortal.Services.API.Interfaces;
 using ECommerce.Contracts.DTO;
-using System.Net.Http.Json;
+using Microsoft.AspNetCore.Components;
 
 namespace ECommerce.ClientPortal.Services.API.Implementations;
 
-public class ShoppingCartApi : IShoppingCartApi
+public class ShoppingCartApi : BaseApi, IShoppingCartApi
 {
-    private readonly HttpClient _http;
+    public ShoppingCartApi(HttpClient http, NavigationManager nav) : base(http, nav) { }
 
-    public ShoppingCartApi(HttpClient http)
-    {
-        _http = http;
-    }
-
-    public async Task<bool> ClearAsync(string userId)
-    {
-        var response = await _http.DeleteAsync($"api/shoppingcart/{userId}");
-        return response.IsSuccessStatusCode;
-    }
+    public Task<bool> ClearAsync(string userId) 
+        => SafeDelete($"api/shoppingcart/{userId}");
 
     public async Task<List<ShoppingCartDTO>> GetAllAsync(string userId)
     {
-        var result = await _http.GetFromJsonAsync<List<ShoppingCartDTO>>(
-            $"api/shoppingcart/{userId}");
-
+        var result = await SafeGet<List<ShoppingCartDTO>>($"api/shoppingcart/{userId}");
         return result ?? new List<ShoppingCartDTO>();
     }
 
-    public async Task<ShoppingCartDTO?> GetItemAsync(string userId, int productId)
-    {
-        return await _http.GetFromJsonAsync<ShoppingCartDTO>(
-            $"api/shoppingcart/{userId}/product/{productId}");
-    }
+    public Task<ShoppingCartDTO?> GetItemAsync(string userId, int productId)
+        => SafeGet<ShoppingCartDTO?>($"api/shoppingcart/{userId}/product/{productId}")!;
 
     public async Task<int> GetTotalCountAsync(string userId)
     {
         if (string.IsNullOrEmpty(userId)) return 0;
 
-        return await _http.GetFromJsonAsync<int>($"api/shoppingcart/{userId}/count");
+        var result = await SafeGet<int?>($"api/shoppingcart/{userId}/count");
+        return result ?? 0;
     }
 
-    public async Task<bool> UpdateAsync(string userId, int productId, int updateBy)
+    public Task<bool> UpdateAsync(string userId, int productId, int updateBy)
     {
-        if (string.IsNullOrEmpty(userId)) return false;
+        if (string.IsNullOrEmpty(userId)) return Task.FromResult(false);
 
-        var response = await _http.PutAsync(
-            $"api/shoppingcart/{userId}/product/{productId}?updateBy={updateBy}", null);
-
-        return response.IsSuccessStatusCode;
+        return SafePut($"api/shoppingcart/{userId}/product/{productId}?updateBy={updateBy}", null);
     }
 }
