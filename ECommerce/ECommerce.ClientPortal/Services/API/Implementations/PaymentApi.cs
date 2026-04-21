@@ -1,30 +1,20 @@
-﻿using ECommerce.ClientPortal.Services.API.Interfaces;
+﻿using ECommerce.ClientPortal.Models;
+using ECommerce.ClientPortal.Services.API.Interfaces;
 using ECommerce.Contracts.DTO;
-using System.Net.Http.Json;
+using Microsoft.AspNetCore.Components;
 
 namespace ECommerce.ClientPortal.Services.API.Implementations;
 
-public class PaymentApi : IPaymentApi
+public class PaymentApi : BaseApi, IPaymentApi
 {
-    private readonly HttpClient _http;
+    public PaymentApi(HttpClient http, NavigationManager nav) : base(http, nav) { }
 
-    public PaymentApi(HttpClient http)
-    {
-        _http = http;
-    }
-
-    public async Task<string?> CreateCheckoutSessionAsync(OrderHeaderDTO order)
-    {
-        var response = await _http.PostAsJsonAsync("api/payment/create-session", order);
-
-        if(!response.IsSuccessStatusCode)
-            return null;
-
-        return await response.Content.ReadAsStringAsync();
-    }
+    public Task<string?> CreateCheckoutSessionAsync(OrderHeaderDTO order)
+        => SafePostRaw("api/payment/create-session", order);
 
     public async Task<bool> VerifyPaymentAsync(string sessionId)
     {
-        return await _http.GetFromJsonAsync<bool>($"api/payment/verify/{sessionId}");
+        var result = await SafeGet<PaymentVerifyResponse>($"api/payment/verify/{sessionId}");
+        return result?.Success ?? false;
     }
 }
