@@ -86,18 +86,24 @@
 
 	public async Task GetInitialCount()
 	{
-		_sharedStateService.TotalCartCount = 0;
-		
 		var user = VM.User;
 
-		if (_shoppingCartApi is null)
+		if (user is null || user.Identity?.IsAuthenticated != true)
 		{
 			_sharedStateService.TotalCartCount = 0;
 			return;
 		}
 
-		_sharedStateService.TotalCartCount = await
-		_shoppingCartApi.GetTotalCountAsync(user?.FindFirst(u => u.Type.Contains("nameidentifier"))?.Value);
+        var userId = user.FindFirst(u => u.Type.Contains("nameidentifier"))?.Value;
+
+		if(string.IsNullOrEmpty(userId) || _shoppingCartApi is null)
+		{
+			_sharedStateService.TotalCartCount = 0;
+			return;
+        }
+
+		_sharedStateService.TotalCartCount = await 
+		_shoppingCartApi.GetTotalCountAsync(userId);
 	}
 
 	public void Dispose()
