@@ -1,44 +1,26 @@
 ﻿using ECommerce.ClientPortal.Services.API.Interfaces;
 using ECommerce.Contracts.DTO;
-using System.Net.Http.Json;
+using Microsoft.AspNetCore.Components;
 
 namespace ECommerce.ClientPortal.Services.API.Implementations;
 
-public class CategoryApi : ICategoryApi
+public class CategoryApi : BaseApi, ICategoryApi
 {
-    private readonly HttpClient _http;
+    public CategoryApi(HttpClient http, NavigationManager nav) : base(http, nav) { }
 
-    public CategoryApi(HttpClient http)
-    {
-        _http = http;
-    }
+    public Task<bool> CreateAsync(CategoryDTO dto) => SafePost("api/category", dto);
 
-    public async Task<bool> CreateAsync(CategoryDTO dto)
-    {
-        var response = await _http.PostAsJsonAsync("api/category", dto);
-        return response.IsSuccessStatusCode;
-    }
-
-    public async Task<bool> DeleteAsync(int id)
-    {
-        var response = await _http.DeleteAsync($"api/category/{id}");
-        return response.IsSuccessStatusCode;
-    }
+    public Task<bool> DeleteAsync(int id) => SafeDelete($"api/category/{id}");
 
     public async Task<List<CategoryDTO>> GetAllAsync()
     {
-        var result = await _http.GetFromJsonAsync<List<CategoryDTO>>("api/category");
+        var result = await SafeGet<List<CategoryDTO>>("api/category");
         return result ?? new List<CategoryDTO>();
     }
 
-    public async Task<CategoryDTO?> GetByIdAsync(int id)
-    {
-        return await _http.GetFromJsonAsync<CategoryDTO>($"api/category/{id}");
-    }
+    public Task<CategoryDTO?> GetByIdAsync(int id) 
+        => SafeGet<CategoryDTO?>($"api/category/{id}");
 
-    public async Task<bool> UpdateAsync(int id, CategoryDTO dto)
-    {
-        var response = await _http.PutAsJsonAsync($"api/category/{id}", dto);
-        return response.IsSuccessStatusCode;
-    }
+    public Task<bool> UpdateAsync(int id, CategoryDTO dto) 
+        => SafePut($"api/category/{id}", dto);
 }
