@@ -128,33 +128,41 @@ namespace ECommerce.ClientPortal.ViewModels.Home
         {
             await RunCommandAsync(() => IsProcessing, async () =>
             {
-                while (_authUser.IsReady)
+                Console.WriteLine("IsReady = " + _authUser.IsReady);
+                while (!_authUser.IsReady)
                     await Task.Delay(50);
 
                 var user = _authUser.User;
                 if (user is null) return;
 
-                var authenticated = user.Identity is not null && user.Identity.IsAuthenticated;
-
+                var authenticated = user?.Identity?.IsAuthenticated ?? false;
                 if (!authenticated)
                 {
-                    _navigation.NavigateTo("/Account/Login", forceLoad: true);
+                    _navigation.NavigateTo("/Auth/Login", forceLoad: true);
                     return;
                 }
                 
                 var userId = user.FindFirst(u => u.Type.Contains("nameidentifier"))?.Value;
-                  
-                var result = await
-                _cartApi.UpdateAsync(userId!, product.Id, 1);
-                _sharedStateService.TotalCartCount = await _cartApi.GetTotalCountAsync(userId!);
 
-                if (result)
+                if (string.IsNullOrEmpty(userId))
                 {
-                    _js?.ToastrSuccess("Product added to cart successfully");
+                    _navigation.NavigateTo("/Auth/Login", forceLoad: true);
+                    return;
                 }
-                else
+
+                try
                 {
-                    _js?.ToastrError("Error encountered");
+                    var result = await _cartApi.UpdateAsync(userId!, product.Id, 1);
+                    _sharedStateService.TotalCartCount = await _cartApi.GetTotalCountAsync(userId!);
+
+                    if (result)
+                        _js?.ToastrSuccess("Product added to cart successfully");
+                    else
+                        _js?.ToastrError("Error encountered");
+                }
+                catch
+                {
+                    _navigation.NavigateTo("/Auth/Login", forceLoad: true);
                 }
             });
         }
