@@ -35,14 +35,15 @@ public class ShoppingCartApi : IShoppingCartApi
 
     public async Task<int> GetTotalCountAsync(string userId)
     {
-        var result = await _http.GetFromJsonAsync<int>(
-            $"api/shoppingcart/{userId}/count");
+        if (string.IsNullOrEmpty(userId)) return 0;
 
-        return result;
+        return await _http.GetFromJsonAsync<int>($"api/shoppingcart/{userId}/count");
     }
 
     public async Task<bool> UpdateAsync(string userId, int productId, int updateBy)
     {
+        if (string.IsNullOrEmpty(userId)) return false;
+
         var response = await _http.PutAsync(
             $"api/shoppingcart/{userId}/product/{productId}?updateBy={updateBy}", null);
 
