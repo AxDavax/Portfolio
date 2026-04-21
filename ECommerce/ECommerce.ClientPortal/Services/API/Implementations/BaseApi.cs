@@ -33,6 +33,26 @@ public abstract class BaseApi
         }
     }
 
+    protected async Task<List<T>> SafeGetList<T>(string url)
+    {
+        try
+        {
+            var result = await _http.GetFromJsonAsync<List<T>>(url);
+            return result ?? new List<T>();
+        }
+        catch (HttpRequestException ex)
+        {
+            HandleHttpError(ex.StatusCode);
+            return new List<T>();
+        }
+        catch
+        {
+            _navigation.NavigateTo("/error", true);
+            return new List<T>();
+        }
+    }
+
+
     protected async Task<bool> SafePost(string url, object? body = null)
     {
         try
