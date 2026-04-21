@@ -52,51 +52,40 @@ public abstract class BaseApi
         }
     }
 
-    protected async Task<bool> SafePost(string url, object? body = null)
+    protected async Task<T?> SafePost<T>(string url, object? body = null)
     {
         try
         {
             var response = await _http.PostAsJsonAsync(url, body);
-            if (!response.IsSuccessStatusCode)
-                HandleHttpError(response.StatusCode);
-
-            return response.IsSuccessStatusCode;
-        }
-        catch (HttpRequestException ex)
-        {
-            HandleHttpError(ex.StatusCode);
-            return false;
-        }
-        catch
-        {
-            _navigation.NavigateTo("/error", true);
-            return false;
-        }
-    }
-
-    protected async Task<string?> SafePostRaw(string url, object? body = null)
-    {
-        try
-        {
-            var response = await _http.PostAsJsonAsync(url, body);
-
             if (!response.IsSuccessStatusCode)
             {
                 HandleHttpError(response.StatusCode);
-                return null;
+                return default;
             }
 
-            return await response.Content.ReadAsStringAsync();
+            return typeof(T) switch
+            {
+                Type t when t == typeof(string)
+                    => (T)(object)(await response.Content.ReadAsStringAsync()),
+
+                Type t when t == typeof(bool)
+                    => (T)(object)true,
+
+                Type t when t == typeof(void) || t == typeof(object)
+                    => default,
+
+                _ => await response.Content.ReadFromJsonAsync<T>()
+            };
         }
         catch (HttpRequestException ex)
         {
             HandleHttpError(ex.StatusCode);
-            return null;
+            return default;
         }
         catch
         {
             _navigation.NavigateTo("/error", true);
-            return null;
+            return default;
         }
     }
 
