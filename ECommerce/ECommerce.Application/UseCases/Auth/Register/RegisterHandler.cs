@@ -12,6 +12,8 @@ public class RegisterHandler
     private readonly IUserAuthRepository _sqlUserRepo;
     private readonly IPasswordService _passwordService;
     private readonly IJwtService _jwtService;
+    private readonly IUserRoleService _userRoleService;
+    private readonly IRoleService _roleService;
     private readonly IRefreshTokenService _refreshTokenService;
     private readonly IConfiguration _config;
 
@@ -20,6 +22,8 @@ public class RegisterHandler
         IUserAuthRepository sqlUserRepo,
         IPasswordService passwordService,
         IJwtService jwtService,
+        IUserRoleService userRoleService,
+        IRoleService roleService,
         IRefreshTokenService refreshTokenService,
         IConfiguration config)
     {
@@ -27,6 +31,8 @@ public class RegisterHandler
         _sqlUserRepo = sqlUserRepo;
         _passwordService = passwordService;
         _jwtService = jwtService;
+        _userRoleService = userRoleService;
+        _roleService = roleService;
         _refreshTokenService = refreshTokenService;
         _config = config;
     }
@@ -56,21 +62,25 @@ public class RegisterHandler
         // 4. Inserts the SqlUser in DB and gets his equivalent User object
         var createdUser = await _sqlUserRepo.CreateAuthAsync(user);
 
-        // 5. Loads the roles
+        // 5. Assign default role "Customer"
+        var customerRoleId = await _roleService.GetIdByNameAsync("Customer");
+        await _userRoleService.AssignRoleAsync(createdUser.Id, customerRoleId);
+
+        // 6. Loads the roles (now includes "Customer")
         var roles = await _userRepo.GetRolesAsync(createdUser.Id);
 
-        // 6. Generates the JWT
+        // 7. Generates the JWT
         var token = _jwtService.GenerateToken(createdUser, roles);
 
-        // 7. Generates the Refresh Token
+        // 8. Generates the Refresh Token
         var refreshToken = await _refreshTokenService.GenerateRefreshTokenAsync(createdUser.Id);
 
-        // 8. Calculates the expiration
+        // 9. Calculates the expiration
         var expiration = DateTime.UtcNow.AddMinutes(
             int.Parse(_config["Jwt:ExpiresInMinutes"]!)
         );
 
-        // 9. Returns the response
+        // 10. Returns the response
         return new RegisterResponse
         {
             Token = token,
