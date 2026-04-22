@@ -21,9 +21,9 @@ public class RefreshTokenService : IRefreshTokenService
         const string sql = """
 
             INSERT INTO 
-                RefreshTokens (UserId, Token, ExpiryDate)
+                RefreshTokens (UserId, Token)
             VALUES
-                (@UserId, @Token, DATEADD(day, 7, GETUTCDATE()))
+                (@UserId, @Token)
 
         """;
 
@@ -60,9 +60,9 @@ public class RefreshTokenService : IRefreshTokenService
 
             INSERT 
             INTO 
-                RefreshTokens (UserId, Token, ExpiryDate)
+                RefreshTokens (UserId, Token)
             VALUES 
-                (@UserId, @NewToken, DATEADD(day, 7, GETUTCDATE()));
+                (@UserId, @NewToken);
 
         """;
 
@@ -87,9 +87,9 @@ public class RefreshTokenService : IRefreshTokenService
                 Token = @OldToken;
 
             INSERT INTO 
-                RefreshTokens (UserId, Token, ExpiryDate)
+                RefreshTokens (UserId, Token)
             VALUES 
-                (@UserId, @NewToken, DATEADD(day, 7, GETUTCDATE()));
+                (@UserId, @NewToken);
 
         """;
 
@@ -114,7 +114,7 @@ public class RefreshTokenService : IRefreshTokenService
             WHERE 
                 UserId = @UserId
                 AND Token = @Token
-                AND ExpiryDate > GETUTCDATE()
+                AND ExpiresAt > GETUTCDATE()
 
         """;
 
