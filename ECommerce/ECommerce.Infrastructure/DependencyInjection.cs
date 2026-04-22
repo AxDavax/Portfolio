@@ -28,10 +28,11 @@ public static class DependencyInjection
         services.AddSingleton<IJwtService, JwtService>();
         services.AddScoped<IRefreshTokenService, RefreshTokenService>();
         services.AddScoped<IResetPasswordTokenService, ResetPasswordTokenService>();
+        services.AddSingleton<IPasswordService, PasswordService>();
+        services.AddScoped<IUserRoleService, UserRoleService>();
 
         // Services
         services.AddScoped<IFileService, FileService>();
-        services.AddSingleton<IPasswordService, PasswordService>();
         services.AddScoped<IPaymentService, PaymentService>();
         services.AddHttpClient<MailTrapEmailService>();
 
