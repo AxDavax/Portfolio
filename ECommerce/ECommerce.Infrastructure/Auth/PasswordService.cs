@@ -1,7 +1,7 @@
 ﻿using ECommerce.Application.Interfaces;
 using System.Security.Cryptography;
 
-namespace ECommerce.Infrastructure.Services;
+namespace ECommerce.Infrastructure.Auth;
 
 public class PasswordService : IPasswordService
 {
