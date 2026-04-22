@@ -30,6 +30,7 @@ public static class DependencyInjection
         services.AddScoped<IResetPasswordTokenService, ResetPasswordTokenService>();
         services.AddSingleton<IPasswordService, PasswordService>();
         services.AddScoped<IUserRoleService, UserRoleService>();
+        services.AddScoped<IRoleService, RoleService>();
 
         // Services
         services.AddScoped<IFileService, FileService>();
