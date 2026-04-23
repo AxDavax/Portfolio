@@ -29,7 +29,6 @@ namespace ECommerce.API.Controllers
             return PhysicalFile(filePath, mime);
         }
 
-        [ApiExplorerSettings(IgnoreApi = true)]
         // POST: api/files/products
         [HttpPost("products")]
         public async Task<IActionResult> UploadProductImage([FromForm] IFormFile file)
