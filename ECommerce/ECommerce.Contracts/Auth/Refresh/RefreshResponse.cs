@@ -1,4 +1,4 @@
-﻿namespace ECommerce.Application.UseCases.Auth.Refresh;
+﻿namespace ECommerce.Contracts.Auth.Refresh;
 
 public class RefreshResponse
 {
