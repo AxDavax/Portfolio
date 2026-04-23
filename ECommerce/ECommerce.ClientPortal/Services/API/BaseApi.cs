@@ -2,7 +2,7 @@
 using System.Net;
 using System.Net.Http.Json;
 
-namespace ECommerce.ClientPortal.Services.API.Implementations;
+namespace ECommerce.ClientPortal.Services.API;
 
 public abstract class BaseApi
 {
@@ -66,7 +66,7 @@ public abstract class BaseApi
             return typeof(T) switch
             {
                 Type t when t == typeof(string)
-                    => (T)(object)(await response.Content.ReadAsStringAsync()),
+                    => (T)(object)await response.Content.ReadAsStringAsync(),
 
                 Type t when t == typeof(bool)
                     => (T)(object)true,

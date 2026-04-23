@@ -1,5 +1,5 @@
 ﻿using ECommerce.ClientPortal.Providers;
-using ECommerce.ClientPortal.Services.API.Implementations;
+using ECommerce.ClientPortal.Services.API;
 using ECommerce.Contracts.Auth.ForgotPassword;
 using ECommerce.Contracts.Auth.Login;
 using ECommerce.Contracts.Auth.Logout;
