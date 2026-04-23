@@ -1,7 +1,40 @@
 ﻿@page "/error"
+@inject NavigationManager Navigation
+<link href="css/errors.css" rel="stylesheet" />
 
 <div class="error-container">
-    <h1>Something went wrong</h1>
-    <p>An unexpected error occurred. Please try again later.</p>
-    <NavLink class="btn btn-success" href="/">Return to Home</NavLink>
+    <div class="error-card">
+        <div class="error-code">500</div>
+        <div class="error-label">ERR_INTERNAL</div>
+
+        <div class="error-warning">
+            <span class="icon">⚠</span>
+            SYSTEM MALFUNCTION
+        </div>
+
+        <h2>Internal Server Error</h2>
+
+        <p class="error-text">
+            An error occurred while the server was processing the request.<br />
+            Please try again later or contact support if the issue persists.
+        </p>
+
+        <div class="error-meta">
+            <span>CODE: E:500</span>
+            <span>STATUS: CRITICAL</span>
+        </div>
+
+        <div class="error-actions">
+            <button class="btn-base" @onclick="GoHome">
+                <span class="bi bi-house-door" aria-hidden="true"></span>
+                RETURN TO HOME
+            </button>
+            <button class="btn-back" @onclick="GoBack">GO BACK</button>
+        </div>
+    </div>
 </div>
+
+@code {
+    void GoHome() => Navigation.NavigateTo("/");
+    void GoBack() => Navigation.NavigateTo(Navigation.Uri, forceLoad: false);
+}

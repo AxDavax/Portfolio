@@ -1,7 +1,40 @@
 ﻿@page "/access-denied"
+@inject NavigationManager Navigation
+<link href="css/errors.css" rel="stylesheet" />
 
 <div class="error-container">
-    <h1>Access Denied</h1>
-    <p>You do not have permission to view this page.</p>
-    <NavLink class="btn btn-success" href="/">Return to Home</NavLink>
+    <div class="error-card">
+        <div class="error-code">403</div>
+        <div class="error-label">ERR_FORBIDDEN</div>
+
+        <div class="error-warning">
+            <span class="icon">⚠</span>
+            ACCESS DENIED
+        </div>
+
+        <h2>Access Denied</h2>
+
+        <p class="error-text">
+            You do not have permission to view this page.<br />
+            Please contact the administrator if you believe this is an error.
+        </p>
+
+        <div class="error-meta">
+            <span>CODE: 0x403</span>
+            <span>STATUS: RESTRICTED</span>
+        </div>
+
+        <div class="error-actions">
+            <button class="btn-base" @onclick="GoHome">
+                <span class="bi bi-house-door" aria-hidden="true"></span>
+                RETURN TO HOME
+            </button>
+            <button class="btn-back" @onclick="GoBack">GO BACK</button>
+        </div>
+    </div>
 </div>
+
+@code {
+    void GoHome() => Navigation.NavigateTo("/");
+    void GoBack() => Navigation.NavigateTo(Navigation.Uri, forceLoad: false);
+}

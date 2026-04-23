@@ -1,0 +1,85 @@
+﻿.error-container {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #0a0f0f;
+    color: #e0e0e0;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.error-card {
+    text-align: center;
+    padding: 40px;
+    border: 1px solid #1aff75;
+    border-radius: 12px;
+    background: rgba(0, 0, 0, 0.4);
+    box-shadow: 0 0 20px #1aff75;
+    width: 90%;
+    max-width: 600px;
+}
+
+.error-code {
+    font-size: 120px;
+    font-weight: bold;
+    color: #1aff75;
+    text-shadow: 0 0 20px #1aff75;
+}
+
+.error-label {
+    font-size: 18px;
+    color: #1aff75;
+    margin-top: -20px;
+    margin-bottom: 20px;
+    letter-spacing: 2px;
+}
+
+.error-warning {
+    color: #1aff75;
+    font-weight: bold;
+    margin-bottom: 10px;
+    font-size: 20px;
+}
+
+    .error-warning .icon {
+        margin-right: 8px;
+    }
+
+.error-text {
+    margin: 20px 0;
+    color: #b5b5b5;
+}
+
+.error-meta {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px 0;
+    color: #888;
+    font-size: 14px;
+}
+
+.error-actions {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.btn-base {
+    background: #1aff75;
+    color: #000;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 0 10px #1aff75;
+}
+
+.btn-back {
+    background: transparent;
+    color: #fff;
+    padding: 12px 20px;
+    border: 1px solid #fff;
+    border-radius: 6px;
+    cursor: pointer;
+}

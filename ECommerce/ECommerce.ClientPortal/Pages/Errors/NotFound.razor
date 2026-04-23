@@ -1,7 +1,40 @@
 ﻿@page "/404"
+@inject NavigationManager Navigation
+<link href="css/errors.css" rel="stylesheet" />
 
 <div class="error-container">
-    <h1>404</h1>
-    <p>Oops… this page doesn’t exist.</p>
-    <NavLink class="btn btn-success" href="/">Return to Home</NavLink>
+    <div class="error-card">
+        <div class="error-code">404</div>
+        <div class="error-label">ERR_NOT_FOUND</div>
+
+        <div class="error-warning">
+            <span class="icon">⚠</span>
+            SYSTEM MALFUNCTION
+        </div>
+
+        <h2>Page Not Found</h2>
+
+        <p class="error-text">
+            The requested resource could not be located in the current sector.<br />
+            It may have been moved, deleted, or never existed.
+        </p>
+
+        <div class="error-meta">
+            <span>CODE: 0x404</span>
+            <span>STATUS: TERMINATED</span>
+        </div>
+
+        <div class="error-actions">
+            <button class="btn-base" @onclick="GoHome">
+                <span class="bi bi-house-door" aria-hidden="true"></span>
+                RETURN TO HOME
+            </button>
+            <button class="btn-back" @onclick="GoBack">GO BACK</button>
+        </div>
+    </div>
 </div>
+
+@code {
+    void GoHome() => Navigation.NavigateTo("/");
+    void GoBack() => Navigation.NavigateTo(Navigation.Uri, forceLoad: false);
+}
