@@ -34,9 +34,4 @@ builder.Services.AddScoped<AuthService>();
 builder.Services.AddViewModels();
 builder.Services.AddAuthorizationCore();
 
-var host = builder.Build();
-
-var authService = host.Services.GetRequiredService<AuthService>();
-await authService.InitializeAsync();
-
-await host.RunAsync();
+await builder.Build().RunAsync();

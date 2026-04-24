@@ -1,6 +1,10 @@
-﻿@using ECommerce.ClientPortal.ViewModels.Core
+﻿@using ECommerce.ClientPortal.Providers
+@using ECommerce.ClientPortal.Services.Auth
+@using ECommerce.ClientPortal.ViewModels.Core
 @using Microsoft.AspNetCore.Components.Authorization
+@inject AuthService Auth
 @inject AuthUserVM VM
+@inject CustomAuthenticationStateProvider AuthStateProvider
 
 <CascadingAuthenticationState>
     <Router AppAssembly="@typeof(App).Assembly">
@@ -20,6 +24,14 @@
 @code {
     protected override async Task OnInitializedAsync()
     {
+        await Auth.InitializeAsync();
+
         await VM.LoadAsync();
+
+        var token = await Auth.GetTokenAsync();
+        if (!string.IsNullOrWhiteSpace(token))
+        
+            AuthStateProvider.MarkUserAsAuthenticated(token);
+        }
     }
 }
