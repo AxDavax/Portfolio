@@ -11,12 +11,14 @@ public class CustomAuthenticationStateProvider : AuthenticationStateProvider
 {
     private readonly TokenStorageService _tokenStorage;
     private readonly UserSessionService _sessionService;
+    private readonly AuthService _authService;
 
     public CustomAuthenticationStateProvider(TokenStorageService tokenStorage, 
-        UserSessionService sessionService)
+        UserSessionService sessionService, AuthService authService)
     {
         _tokenStorage = tokenStorage;
         _sessionService = sessionService;
+        _authService = authService;
     }
 
     private ClaimsPrincipal BuildUserFromToken(string token)
@@ -47,7 +49,23 @@ public class CustomAuthenticationStateProvider : AuthenticationStateProvider
             return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
         }
 
-        var user = BuildUserFromToken(token);
+        var handler = new JwtSecurityTokenHandler();
+        var jwt = handler.ReadJwtToken(token);
+
+        if(jwt.ValidTo < DateTime.UtcNow)
+        {
+            var refreshed = await _authService.Refresh();
+
+            if (!refreshed)
+            {
+                MarkUserAsLoggedOut();
+                return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
+            }
+
+            token = await _tokenStorage.GetTokenAsync();
+        }
+
+        var user = BuildUserFromToken(token!);
         return new AuthenticationState(user);
     }
 
