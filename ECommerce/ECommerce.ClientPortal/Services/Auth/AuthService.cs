@@ -16,16 +16,13 @@ namespace ECommerce.ClientPortal.Services.Auth;
 public class AuthService : BaseApi
 {
     private readonly TokenStorageService _tokenStorage;
-    private readonly CustomAuthenticationStateProvider _authStateProvider;
 
     public AuthService(
         HttpClient http,
         NavigationManager nav,
-        TokenStorageService tokenStorage,
-        CustomAuthenticationStateProvider authStateProvider) : base(http, nav)
+        TokenStorageService tokenStorage) : base(http, nav)
     {
         _tokenStorage = tokenStorage;
-        _authStateProvider = authStateProvider;
     }
 
     public async Task InitializeAsync()
@@ -38,48 +35,46 @@ public class AuthService : BaseApi
         if (isExpired)
         {
             await Logout();
-            return;
+            return;        
         }
 
         _http.DefaultRequestHeaders.Authorization = 
             new AuthenticationHeaderValue("Bearer", token);
-        
-        await _authStateProvider.MarkUserAsAuthenticated(token);
     }
 
-    private async Task<bool> ApplyAuthenticationAsync(AuthResponse result)
+    public Task<string?> GetTokenAsync() => _tokenStorage.GetTokenAsync();
+
+    private async Task<AuthResponse?> ApplyAuthenticationAsync(AuthResponse result)
     {
         if (result == null || string.IsNullOrWhiteSpace(result.Token))
-            return false;
+            return null;
 
         await _tokenStorage.SaveAsync(result.Token, result.RefreshToken, result.Expiration);
 
         _http.DefaultRequestHeaders.Authorization =
             new AuthenticationHeaderValue("Bearer", result.Token);
 
-        await _authStateProvider.MarkUserAsAuthenticated(result.Token);
-
-        return true;
+        return result;
     }
 
 
-    public async Task<bool> Login(LoginRequest request)
+    public async Task<AuthResponse?> Login(LoginRequest request)
     {
         var result = await SafePost<LoginResponse>("api/auth/login", request);
         return await ApplyAuthenticationAsync(result!);
     }
 
-    public async Task<bool> Register(RegisterRequest request) 
+    public async Task<AuthResponse?> Register(RegisterRequest request) 
     {
         var result = await SafePost<RegisterResponse>("api/auth/register", request);
         return await ApplyAuthenticationAsync(result!);
     }
 
-    public async Task<bool> Refresh()
+    public async Task<AuthResponse?> Refresh()
     {
         var refreshToken = await _tokenStorage.GetRefreshTokenAsync();
 
-        if (string.IsNullOrWhiteSpace(refreshToken)) return false;
+        if (string.IsNullOrWhiteSpace(refreshToken)) return null;
 
         var request = new RefreshRequest
         {
@@ -90,7 +85,7 @@ public class AuthService : BaseApi
         return await ApplyAuthenticationAsync(result!);
     }
 
-    public async Task Logout()
+    public async Task<bool> Logout()
     {
         var refreshToken = await _tokenStorage.GetRefreshTokenAsync();
 
@@ -102,10 +97,10 @@ public class AuthService : BaseApi
         if (result) 
         { 
             await _tokenStorage.ClearAsync();
-            _authStateProvider.MarkUserAsLoggedOut();
-
             _http.DefaultRequestHeaders.Authorization = null;
         }
+
+        return result;
     }
 
     public Task<bool> ForgotPassword(ForgotPasswordRequest request)
