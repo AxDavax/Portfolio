@@ -55,7 +55,8 @@ public class RefreshHandler
         // 7. Returns the response
         return new RefreshResponse
         {
-            Token = newToken,
+            Token = newToken.Token,
+            Expiration = newToken.Expiration,
             RefreshToken = newRefreshToken,
             UserId = user.Id,
             Email = user.Email,
