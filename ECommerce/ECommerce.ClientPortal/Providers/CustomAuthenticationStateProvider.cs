@@ -56,13 +56,16 @@ public class CustomAuthenticationStateProvider : AuthenticationStateProvider
         {
             var refreshed = await _authService.Refresh();
 
-            if (!refreshed)
+            if (refreshed != null)
+            {
+                token = await _tokenStorage.GetTokenAsync();
+                MarkUserAsAuthenticated(token!);
+            }
+            else
             {
                 MarkUserAsLoggedOut();
                 return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
             }
-
-            token = await _tokenStorage.GetTokenAsync();
         }
 
         var user = BuildUserFromToken(token!);
@@ -82,7 +85,7 @@ public class CustomAuthenticationStateProvider : AuthenticationStateProvider
         return new AuthenticationState(user);
     }
 
-    public async Task MarkUserAsAuthenticated(string token)
+    public void MarkUserAsAuthenticated(string token)
     {
         var user = BuildUserFromToken(token);
         NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(user)));
