@@ -56,25 +56,20 @@ public class LoginHandler
         var roles = await _users.GetRolesAsync(user.Id);
 
         // 5. Generating JWT
-        var token = _jwt.GenerateToken(user, roles);
+        var jwt = _jwt.GenerateToken(user, roles);
 
         // 6. Generating RefreshToken
         var refreshToken = await _refreshToken.GenerateRefreshTokenAsync(user.Id);
 
-        // 7. Calculates the expiration
-        var expiration = DateTime.UtcNow.AddMinutes(
-            int.Parse(_config["Jwt:ExpiresInMinutes"]!)
-        );
-
-        // 8. Returning response
+        // 7. Returning response
         return new LoginResponse
         {
-            Token = token,
+            Token = jwt.Token,
             RefreshToken = refreshToken,
             UserId = user.Id,
             Email = user.Email,
             Roles = roles,
-            Expiration = expiration
+            Expiration = jwt.Expiration
         };
     }
 }

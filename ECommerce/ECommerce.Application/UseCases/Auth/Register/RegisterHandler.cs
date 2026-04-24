@@ -70,22 +70,17 @@ public class RegisterHandler
         var roles = await _userRepo.GetRolesAsync(createdUser.Id);
 
         // 7. Generates the JWT
-        var token = _jwtService.GenerateToken(createdUser, roles);
+        var jwt = _jwtService.GenerateToken(createdUser, roles);
 
         // 8. Generates the Refresh Token
         var refreshToken = await _refreshTokenService.GenerateRefreshTokenAsync(createdUser.Id);
 
-        // 9. Calculates the expiration
-        var expiration = DateTime.UtcNow.AddMinutes(
-            int.Parse(_config["Jwt:ExpiresInMinutes"]!)
-        );
-
-        // 10. Returns the response
+        // 9. Returns the response
         return new RegisterResponse
         {
-            Token = token,
+            Token = jwt.Token,
             RefreshToken = refreshToken,
-            Expiration = expiration
+            Expiration = jwt.Expiration
         };
     }
 }
