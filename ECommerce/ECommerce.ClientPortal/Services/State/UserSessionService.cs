@@ -11,6 +11,8 @@ public class UserSessionService
         Current = session;
     }
 
+    public UserSession Get() => Current!;
+
     public void Clear()
     {
         Current = null;

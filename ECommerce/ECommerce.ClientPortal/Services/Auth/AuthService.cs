@@ -4,6 +4,7 @@ using ECommerce.Contracts.Auth;
 using ECommerce.Contracts.Auth.ForgotPassword;
 using ECommerce.Contracts.Auth.Login;
 using ECommerce.Contracts.Auth.Logout;
+using ECommerce.Contracts.Auth.Me;
 using ECommerce.Contracts.Auth.Refresh;
 using ECommerce.Contracts.Auth.Register;
 using ECommerce.Contracts.Auth.ResetPassword;
@@ -112,4 +113,6 @@ public class AuthService : BaseApi
 
     public Task<bool> ResetPassword(ResetPasswordRequest request)
         => SafePost<bool>("api/auth/reset-password", request);
+
+    public async Task<MeResponse> Me() => await SafeGet<MeResponse>("api/auth/me");
 }

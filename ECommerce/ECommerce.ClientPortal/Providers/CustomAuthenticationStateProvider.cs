@@ -66,6 +66,19 @@ public class CustomAuthenticationStateProvider : AuthenticationStateProvider
         }
 
         var user = BuildUserFromToken(token!);
+
+        var me = await _authService.Me();
+        if (me != null)
+        {
+            _sessionService.Set(new UserSession
+            {
+                Email = me.Email,
+                FirstName = me.FirstName,
+                LastName = me.LastName,
+                Roles = me.Roles.ToList()
+            });
+        }
+
         return new AuthenticationState(user);
     }
 
