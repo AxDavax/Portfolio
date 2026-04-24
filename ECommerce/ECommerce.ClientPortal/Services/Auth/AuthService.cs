@@ -1,8 +1,10 @@
 ﻿using ECommerce.ClientPortal.Providers;
 using ECommerce.ClientPortal.Services.API;
+using ECommerce.Contracts.Auth;
 using ECommerce.Contracts.Auth.ForgotPassword;
 using ECommerce.Contracts.Auth.Login;
 using ECommerce.Contracts.Auth.Logout;
+using ECommerce.Contracts.Auth.Refresh;
 using ECommerce.Contracts.Auth.Register;
 using ECommerce.Contracts.Auth.ResetPassword;
 using Microsoft.AspNetCore.Components;
@@ -44,11 +46,10 @@ public class AuthService : BaseApi
         await _authStateProvider.MarkUserAsAuthenticated(token);
     }
 
-    public async Task<bool> Login(LoginRequest request)
+    private async Task<bool> ApplyAuthenticationAsync(AuthResponse result)
     {
-        var result = await SafePost<LoginResponse>("api/auth/login", request);
-
-        if (result == null) return false;
+        if (result == null || string.IsNullOrWhiteSpace(result.Token))
+            return false;
 
         await _tokenStorage.SaveAsync(result.Token, result.RefreshToken, result.Expiration);
 
@@ -60,20 +61,32 @@ public class AuthService : BaseApi
         return true;
     }
 
+
+    public async Task<bool> Login(LoginRequest request)
+    {
+        var result = await SafePost<LoginResponse>("api/auth/login", request);
+        return await ApplyAuthenticationAsync(result!);
+    }
+
     public async Task<bool> Register(RegisterRequest request) 
     {
         var result = await SafePost<RegisterResponse>("api/auth/register", request);
-        
-        if (result == null) return false;
+        return await ApplyAuthenticationAsync(result!);
+    }
 
-        await _tokenStorage.SaveAsync(result.Token, result.RefreshToken, result.Expiration);
+    public async Task<bool> Refresh()
+    {
+        var refreshToken = await _tokenStorage.GetRefreshTokenAsync();
 
-        _http.DefaultRequestHeaders.Authorization =
-            new AuthenticationHeaderValue("Bearer", result.Token);
+        if (string.IsNullOrWhiteSpace(refreshToken)) return false;
 
-        await _authStateProvider.MarkUserAsAuthenticated(result.Token);
+        var request = new RefreshRequest
+        {
+            RefreshToken = refreshToken
+        };
 
-        return true;
+        var result = await SafePost<RefreshResponse>("api/auth/refresh", request);
+        return await ApplyAuthenticationAsync(result!);
     }
 
     public async Task Logout()
