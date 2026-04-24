@@ -1,6 +1,8 @@
-﻿namespace ECommerce.Contracts.Auth;
+﻿using ECommerce.Contracts.Interfaces;
 
-public class UserAuthResponse : AuthResponse
+namespace ECommerce.Contracts.Auth;
+
+public class UserAuthResponse : AuthResponse, IUserAuth
 {
     public Guid UserId { get; set; }
     public string Email { get; set; } = string.Empty;

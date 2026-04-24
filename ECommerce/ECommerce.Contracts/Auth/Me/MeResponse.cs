@@ -1,6 +1,8 @@
-﻿namespace ECommerce.Contracts.Auth.Me;
+﻿using ECommerce.Contracts.Interfaces;
 
-public class MeResponse
+namespace ECommerce.Contracts.Auth.Me;
+
+public class MeResponse : IUserAuth
 {
     public Guid UserId { get; set; }
     public string Email { get; set; }
