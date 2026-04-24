@@ -1,4 +1,5 @@
 ﻿using ECommerce.Application.Interfaces;
+using ECommerce.Application.Models;
 using ECommerce.Domain.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -17,7 +18,7 @@ public class JwtService : IJwtService
         _config = config;
     }
 
-    public string GenerateToken(User user, IEnumerable<string> roles)
+    public JwtResult GenerateToken(User user, IEnumerable<string> roles)
     {
         var key = new SymmetricSecurityKey(
             Encoding.UTF8.GetBytes(_config["Jwt:Key"]!)
@@ -38,7 +39,7 @@ public class JwtService : IJwtService
 
         claims.AddRange(roles.Select(r => new Claim(ClaimTypes.Role, r)));
 
-        var token = new JwtSecurityToken(
+        var jwt = new JwtSecurityToken(
             issuer: _config["Jwt:Issuer"],
             audience: _config["Jwt:Audience"],
             claims: claims,
@@ -48,6 +49,12 @@ public class JwtService : IJwtService
             signingCredentials: creds
         );
 
-        return new JwtSecurityTokenHandler().WriteToken(token);
+        var token = new JwtSecurityTokenHandler().WriteToken(jwt);
+
+        return new JwtResult
+        {
+            Token = token,
+            Expiration = jwt.ValidTo
+        };
     }
 }

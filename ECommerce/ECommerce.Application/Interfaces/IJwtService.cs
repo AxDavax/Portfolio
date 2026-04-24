@@ -1,8 +1,9 @@
-﻿using ECommerce.Domain.Models;
+﻿using ECommerce.Application.Models;
+using ECommerce.Domain.Models;
 
 namespace ECommerce.Application.Interfaces;
 
 public interface IJwtService
 {
-    string GenerateToken(User user, IEnumerable<string> roles);
+    JwtResult GenerateToken(User user, IEnumerable<string> roles);
 }
