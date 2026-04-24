@@ -14,6 +14,8 @@ using ECommerce.Contracts.Auth.Register;
 using ECommerce.Contracts.Auth.ResetPassword;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace ECommerce.API.Controllers;
 
@@ -75,11 +77,16 @@ public class AuthController : ControllerBase
     [HttpGet("me")]
     public async Task<IActionResult> Me()
     {
-        var userId = User.GetUserId();
+        var userIdClaim =
+            User.FindFirst(ClaimTypes.NameIdentifier) ??
+            User.FindFirst("uid") ??
+            User.FindFirst(JwtRegisteredClaimNames.Sub);
+
+        if (userIdClaim == null) return Unauthorized();
 
         var response = await _meHandler.Handle(new MeRequest
         {
-            UserId = userId
+            UserId = Guid.Parse(userIdClaim.Value)
         });
 
         return Ok(response);

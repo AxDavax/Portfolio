@@ -14,9 +14,8 @@ public class MeHandler
     public async Task<MeResponse> Handle(MeRequest request)
     {
         // 1. Loads the user
-        var user = await _users.GetByIdAsync(request.UserId);
-        if (user == null)
-            throw new UnauthorizedAccessException("User not found");
+        var user = await _users.GetByIdAsync(request.UserId)
+                   ?? throw new UnauthorizedAccessException("User not found");
 
         // 2. Loads the roles
         var roles = await _users.GetRolesAsync(user.Id);
@@ -26,6 +25,8 @@ public class MeHandler
         {
             UserId = user.Id,
             Email = user.Email,
+            FirstName = user.FirstName,
+            LastName = user.LastName,
             Roles = roles
         };
     }
