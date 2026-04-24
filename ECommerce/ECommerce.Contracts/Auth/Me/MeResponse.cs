@@ -1,4 +1,4 @@
-﻿namespace ECommerce.Application.UseCases.Auth.Me;
+﻿namespace ECommerce.Contracts.Auth.Me;
 
 public class MeResponse
 {
