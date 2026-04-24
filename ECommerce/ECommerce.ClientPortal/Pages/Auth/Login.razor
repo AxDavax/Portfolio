@@ -20,20 +20,20 @@
     <div class="card bg-light" style="min-width: 28rem;">
         <div class="card-body">
             <h5 class="card-title text-center display-6">Sign In</h5>
-            <EditForm Model="VM.Model" OnValidSubmit="VM.LoginAsync">
+            <EditForm Model="VM.Request" OnValidSubmit="VM.LoginAsync">
                 <DataAnnotationsValidator />
                 <hr />
 
                 <div class="form-floating mb-3">
-                    <InputText class="form-control" @bind-Value="VM.Model.Email" id="VM.Model.Email" autocomplete="username" aria-required="true" placeholder="name@example.com" />
-                    <label for="VM.Model.Email" class="form-label">Email</label>
-                    <ValidationMessage For="() => VM.Model.Email" class="text-danger" />
+                    <InputText class="form-control" @bind-Value="VM.Request.Email" id="VM.Request.Email" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+                    <label for="VM.Request.Email" class="form-label">Email</label>
+                    <ValidationMessage For="() => VM.Request.Email" class="text-danger" />
                 </div>
 
                 <div class="form-floating mb-3">
-                    <InputText class="form-control" @bind-Value="VM.Model.Password" type="password" id="VM.Model.Password" autocomplete="current-password" aria-required="true" placeholder="password" />
-                    <label for="VM.Model.Password" class="form-label">Password</label>
-                    <ValidationMessage For="() => VM.Model.Password" class="text-danger" />
+                    <InputText class="form-control" @bind-Value="VM.Request.Password" type="password" id="VM.Request.Password" autocomplete="current-password" aria-required="true" placeholder="password" />
+                    <label for="VM.Request.Password" class="form-label">Password</label>
+                    <ValidationMessage For="() => VM.Request.Password" class="text-danger" />
                 </div>
 
                 <button class="w-100 btn btn-lg btn-primary" type="submit" disabled="@VM.IsProcessing">
