@@ -1,8 +1,3 @@
 ﻿namespace ECommerce.Contracts.Auth.Register;
 
-public class RegisterResponse
-{
-    public string Token { get; set; } = string.Empty;
-    public string RefreshToken {  get; set; } = string.Empty;
-    public DateTime Expiration {  get; set; }
-}
+public class RegisterResponse : AuthResponse { }
