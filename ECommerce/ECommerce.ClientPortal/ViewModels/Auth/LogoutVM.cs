@@ -5,19 +5,11 @@ using Microsoft.AspNetCore.Components;
 
 namespace ECommerce.ClientPortal.ViewModels.Auth;
 
-public class LogoutVM : ProcessingVM
+public class LogoutVM : AuthVMBase
 {
-    private readonly AuthService _authService;
-    private readonly NavigationManager _nav;
-    public readonly CustomAuthenticationStateProvider _authStateProvider;
-
     public LogoutVM(AuthService authService, NavigationManager nav,
                     CustomAuthenticationStateProvider authStateProvider)
-    {
-        _authService = authService;
-        _nav = nav;
-        _authStateProvider = authStateProvider;
-    }
+                    : base(authService, nav, authStateProvider) { }
 
     public async Task LogoutAsync()
     {

@@ -6,22 +6,14 @@ using Microsoft.AspNetCore.Components;
 
 namespace ECommerce.ClientPortal.ViewModels.Auth;
 
-public class LoginVM : ProcessingVM
+public class LoginVM : AuthVMBase
 {
     public LoginRequest Request { get; set; } = new();
     public string ErrorMessage { get; set; } = string.Empty;
 
-    public readonly AuthService _authService;
-    public readonly NavigationManager _nav;
-    public readonly CustomAuthenticationStateProvider _authStateProvider;
-
     public LoginVM(AuthService authService, NavigationManager nav, 
                    CustomAuthenticationStateProvider authStateProvider)
-    {
-        _authService = authService;
-        _nav = nav;
-        _authStateProvider = authStateProvider;
-    }
+                   :base(authService, nav, authStateProvider) { }
 
     public async Task LoginAsync()
     {
