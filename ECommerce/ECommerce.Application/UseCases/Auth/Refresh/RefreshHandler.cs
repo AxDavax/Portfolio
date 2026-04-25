@@ -28,20 +28,20 @@ public class RefreshHandler
         // 1. Validating the refresh token
         var storedToken = await _refreshTokens.GetRefreshTokenAsync(request.RefreshToken);
         if (storedToken == null)
-            throw new UnauthorizedAccessException("Invalid token");
+            return new RefreshResponse { Success = false, Message = "Invalid token" };
 
         if (storedToken.IsExpired)
-            throw new UnauthorizedAccessException("expired refresh token");
+            return new RefreshResponse { Success = false, Message = "expired refresh token" };
 
         // 2. Loads user
         var user = await _users.GetByIdAsync(storedToken.UserId);
         if (user == null)
-            throw new UnauthorizedAccessException("User not found");
+            return new RefreshResponse { Success = false, Message = "User not found" };
 
         // 3. Loads sqlUser
         var sqlUser = await _authUsers.GetSqlUserByEmailAsync(user.Email);
         if (sqlUser == null)
-            throw new UnauthorizedAccessException("User not found");
+            return new RefreshResponse { Success = false, Message = "User not found" };
 
         // 4. Loads roles
         var roles = await _users.GetRolesAsync(user.Id);
@@ -55,6 +55,7 @@ public class RefreshHandler
         // 7. Returns the response
         return new RefreshResponse
         {
+            Success = true,
             Token = newToken.Token,
             Expiration = newToken.Expiration,
             RefreshToken = newRefreshToken,
