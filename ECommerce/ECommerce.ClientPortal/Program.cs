@@ -8,6 +8,7 @@ using ECommerce.ClientPortal.ViewModels;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using Radzen;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
@@ -33,5 +34,6 @@ builder.Services.AddScoped<AuthService>();
 
 builder.Services.AddViewModels();
 builder.Services.AddAuthorizationCore();
+builder.Services.AddRadzenComponents();
 
 await builder.Build().RunAsync();
