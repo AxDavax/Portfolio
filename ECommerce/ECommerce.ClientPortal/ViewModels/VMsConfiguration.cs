@@ -1,7 +1,7 @@
 ﻿using ECommerce.ClientPortal.ViewModels.Auth;
+using ECommerce.ClientPortal.ViewModels.Categories;
 using ECommerce.ClientPortal.ViewModels.Core;
 using ECommerce.ClientPortal.ViewModels.Home;
-using Portfolio.ECommerce.Blazor.ViewModels.Categories;
 
 namespace ECommerce.ClientPortal.ViewModels;
 
@@ -24,5 +24,6 @@ public static class VMsConfiguration
 
         // Category VMs
         services.AddScoped<CategoryListVM>();
+        services.AddScoped<CategoryUpsertVM>();
     }
 }
