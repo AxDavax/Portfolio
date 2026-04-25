@@ -82,7 +82,14 @@ public class AuthService : BaseApi
         };
 
         var result = await SafePost<RefreshResponse>("api/auth/refresh", request);
-        return await ApplyAuthenticationAsync(result!);
+
+        if (result == null || result.Success == false)
+        {
+            await _tokenStorage.ClearAsync();
+            return null;
+        }
+
+        return await ApplyAuthenticationAsync(result);
     }
 
     public async Task<bool> Logout()
