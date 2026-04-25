@@ -1,0 +1,19 @@
+﻿::deep .rz-editor-wrapper {
+    display: block;
+    width: 100%;
+}
+
+::deep .rz-html-editor {
+    width: 100% !important;
+    display: block !important;
+    box-sizing: border-box !important;
+}
+
+::deep .rz-html-editor .rz-toolbar {
+    display: flex !important;
+    flex-wrap: wrap !important;
+}
+
+::deep .rz-html-editor .rz-content {
+    min-height: 350px !important;
+}
