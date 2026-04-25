@@ -4,75 +4,74 @@ using ECommerce.ClientPortal.ViewModels.Core;
 using ECommerce.Contracts.DTO;
 using Microsoft.JSInterop;
 
-namespace Portfolio.ECommerce.Blazor.ViewModels.Categories
+namespace ECommerce.ClientPortal.ViewModels.Categories;
+
+public class CategoryListVM : ProcessingVM
 {
-    public class CategoryListVM : ProcessingVM
+    private readonly ICategoryApi _categoryApi;
+    private readonly IJSRuntime _js;
+
+    public CategoryListVM(ICategoryApi categoryApi, IJSRuntime js)
     {
-        private readonly ICategoryApi _categoryApi;
-        private readonly IJSRuntime _js;
+        _categoryApi = categoryApi;
+        _js = js;
+    }
 
-        public CategoryListVM(ICategoryApi categoryApi, IJSRuntime js)
+    private IEnumerable<CategoryDTO> _categories = new List<CategoryDTO>();
+    public IEnumerable<CategoryDTO> Categories
+    {
+        get => _categories;
+        set => SetProperty(ref _categories, value);
+    }
+
+    private int _deleteCategoryID;
+    public int DeleteCategoryID
+    {
+        get => _deleteCategoryID;
+        set => SetProperty(ref _deleteCategoryID, value);
+    }
+
+    public async Task AfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
         {
-            _categoryApi = categoryApi;
-            _js = js;
+            await LoadCategoriesAsync();
         }
+    }
 
-        private IEnumerable<CategoryDTO> _categories = new List<CategoryDTO>();
-        public IEnumerable<CategoryDTO> Categories
+    public async Task LoadCategoriesAsync()
+    {
+        await RunCommandAsync(() => IsProcessing, async () =>
         {
-            get => _categories;
-            set => SetProperty(ref _categories, value);
-        }
+            Categories = await _categoryApi.GetAllAsync();
+        });
+    }
 
-        private int _deleteCategoryID;
-        public int DeleteCategoryID
-        {
-            get => _deleteCategoryID;
-            set => SetProperty(ref _deleteCategoryID, value);
-        }
+    public void HandleDelete(int id)
+    {
+        DeleteCategoryID = id;
+        _js.InvokeVoidAsync("ShowConfirmationModal");
+    }
 
-        public async Task AfterRenderAsync(bool firstRender)
+    public async Task ConfirmDeleteAsync(bool isConfirmed)
+    {
+        await RunCommandAsync(() => IsProcessing, async () =>
         {
-            if (firstRender)
+            await _js.InvokeVoidAsync("HideConfirmationModal");
+
+            if (isConfirmed && DeleteCategoryID != 0)
             {
+                var result = await _categoryApi.DeleteAsync(DeleteCategoryID);
+
+                if (result)
+                    _js?.ToastrSuccess("Category deleted successfully");
+                else
+                    _js?.ToastrError("Error deleting category");
+
                 await LoadCategoriesAsync();
             }
-        }
 
-        public async Task LoadCategoriesAsync()
-        {
-            await RunCommandAsync(() => IsProcessing, async () =>
-            {
-                Categories = await _categoryApi.GetAllAsync();
-            });
-        }
-
-        public void HandleDelete(int id)
-        {
-            DeleteCategoryID = id;
-            _js.InvokeVoidAsync("ShowConfirmationModal");
-        }
-
-        public async Task ConfirmDeleteAsync(bool isConfirmed)
-        {
-            await RunCommandAsync(() => IsProcessing, async () =>
-            {
-                await _js.InvokeVoidAsync("HideConfirmationModal");
-
-                if (isConfirmed && DeleteCategoryID != 0)
-                {
-                    var result = await _categoryApi.DeleteAsync(DeleteCategoryID);
-
-                    if (result)
-                        _js?.ToastrSuccess("Category deleted successfully");
-                    else
-                        _js?.ToastrError("Error deleting category");
-
-                    await LoadCategoriesAsync();
-                }
-
-                DeleteCategoryID = 0;
-            });
-        }
+            DeleteCategoryID = 0;
+        });
     }
 }

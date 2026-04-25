@@ -5,68 +5,67 @@ using ECommerce.ClientPortal.Services.API.Interfaces;
 using ECommerce.Contracts.DTO;
 using ECommerce.ClientPortal.Services.Extensions;
 
-namespace Portfolio.ECommerce.Blazor.ViewModels.Categories
+namespace ECommerce.ClientPortal.ViewModels.Categories;
+
+public class CategoryUpsertVM : ProcessingVM
 {
-    public class CategoryUpsertVM : ProcessingVM
+    private readonly ICategoryApi _categoryApi;
+    private readonly IJSRuntime _js;
+    private readonly NavigationManager _navigation;
+
+    public CategoryUpsertVM(ICategoryApi categoryApi, IJSRuntime js, NavigationManager navigation)
     {
-        private readonly ICategoryApi _categoryApi;
-        private readonly IJSRuntime _js;
-        private readonly NavigationManager _navigation;
+        _categoryApi = categoryApi;
+        _js = js;
+        _navigation = navigation;
+    }
 
-        public CategoryUpsertVM(ICategoryApi categoryApi, IJSRuntime js, NavigationManager navigation)
+    private int _id;
+    public int Id
+    {
+        get => _id;
+        set => SetProperty(ref _id, value);
+    }
+
+    private CategoryDTO _category = new();
+    public CategoryDTO Category
+    {
+        get => _category;
+        set => SetProperty(ref _category, value);
+    }
+
+    public async Task AfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
         {
-            _categoryApi = categoryApi;
-            _js = js;
-            _navigation = navigation;
+            await LoadCategoryAsync();
         }
+    }
 
-        private int _id;
-        public int Id
+    public async Task LoadCategoryAsync()
+    {
+        await RunCommandAsync(() => IsProcessing, async () =>
         {
-            get => _id;
-            set => SetProperty(ref _id, value);
-        }
+            if (Id > 0) Category = await _categoryApi.GetByIdAsync(Id);
+        });
+    }
 
-        private CategoryDTO _category = new();
-        public CategoryDTO Category
+    public async Task UpsertCategoryAsync()
+    {
+        await RunCommandAsync(() => IsProcessing, async () =>
         {
-            get => _category;
-            set => SetProperty(ref _category, value);
-        }
-
-        public async Task AfterRenderAsync(bool firstRender)
-        {
-            if (firstRender)
+            if (Category.Id == 0)
             {
-                await LoadCategoryAsync();
+                await _categoryApi.CreateAsync(Category);
+                await _js.ToastrSuccess("Category Created Successfully");
             }
-        }
-
-        public async Task LoadCategoryAsync()
-        {
-            await RunCommandAsync(() => IsProcessing, async () =>
+            else
             {
-                if (Id > 0) Category = await _categoryApi.GetByIdAsync(Id);
-            });
-        }
+                await _categoryApi.UpdateAsync(Id, Category);
+                await _js.ToastrSuccess("Category Updated Successfully");
+            }
 
-        public async Task UpsertCategoryAsync()
-        {
-            await RunCommandAsync(() => IsProcessing, async () =>
-            {
-                if (Category.Id == 0)
-                {
-                    await _categoryApi.CreateAsync(Category);
-                    await _js.ToastrSuccess("Category Created Successfully");
-                }
-                else
-                {
-                    await _categoryApi.UpdateAsync(Id, Category);
-                    await _js.ToastrSuccess("Category Updated Successfully");
-                }
-
-                _navigation.NavigateTo("category");
-            });
-        }
+            _navigation.NavigateTo("category");
+        });
     }
 }
