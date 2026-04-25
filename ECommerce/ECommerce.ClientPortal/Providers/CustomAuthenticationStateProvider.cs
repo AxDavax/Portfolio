@@ -56,16 +56,15 @@ public class CustomAuthenticationStateProvider : AuthenticationStateProvider
         {
             var refreshed = await _authService.Refresh();
 
-            if (refreshed != null)
+            if (refreshed == null || refreshed.Success == false)
             {
-                token = await _tokenStorage.GetTokenAsync();
-                MarkUserAsAuthenticated(token!);
-            }
-            else
-            {
+                await _tokenStorage.ClearAsync();
                 MarkUserAsLoggedOut();
                 return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
             }
+
+            token = await _tokenStorage.GetTokenAsync();
+            MarkUserAsAuthenticated(token!);
         }
 
         var user = BuildUserFromToken(token!);
