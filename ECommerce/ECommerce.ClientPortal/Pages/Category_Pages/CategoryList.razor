@@ -1,6 +1,6 @@
 ﻿@page "/category"
 @using ECommerce.ClientPortal.Components
-@using Portfolio.ECommerce.Blazor.ViewModels.Categories
+@using ECommerce.ClientPortal.ViewModels.Categories
 @inject CategoryListVM VM
 
 <BsModal OnModalConfirmation="VM.ConfirmDeleteAsync"
@@ -69,7 +69,6 @@ else
     protected override async Task OnInitializedAsync()
     {
         VM.StateChanged = StateHasChanged;
-        await VM.InitializeAsync();
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
