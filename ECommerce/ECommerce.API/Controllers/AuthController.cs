@@ -70,6 +70,10 @@ public class AuthController : ControllerBase
     public async Task<IActionResult> Refresh([FromBody] RefreshRequest request)
     {
         var response = await _refreshHandler.Handle(request);
+
+        if(!response.Success)
+            return Unauthorized(response.Message);
+
         return Ok(response);
     }
 
