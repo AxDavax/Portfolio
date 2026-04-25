@@ -31,11 +31,6 @@ namespace Portfolio.ECommerce.Blazor.ViewModels.Categories
             set => SetProperty(ref _deleteCategoryID, value);
         }
 
-        public async Task InitializeAsync()
-        {
-            await Task.Delay(5000);
-        }
-
         public async Task AfterRenderAsync(bool firstRender)
         {
             if (firstRender)
