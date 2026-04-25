@@ -1,6 +1,7 @@
 ﻿using ECommerce.ClientPortal.ViewModels.Auth;
 using ECommerce.ClientPortal.ViewModels.Core;
 using ECommerce.ClientPortal.ViewModels.Home;
+using Portfolio.ECommerce.Blazor.ViewModels.Categories;
 
 namespace ECommerce.ClientPortal.ViewModels;
 
@@ -8,9 +9,11 @@ public static class VMsConfiguration
 {
     public static void AddViewModels(this IServiceCollection services)
     {
+        // Core VMs
         services.AddScoped<AuthUserVM>();
         services.AddScoped<HomeVM>();
 
+        // Auth VMs
         services.AddScoped<LoginVM>();
         services.AddScoped<RegisterVM>();
         services.AddScoped<LogoutVM>();
@@ -18,5 +21,8 @@ public static class VMsConfiguration
         services.AddScoped<ProfileVM>();
         services.AddScoped<ForgotPasswordVM>();
         services.AddScoped<ResetPasswordVM>();
+
+        // Category VMs
+        services.AddScoped<CategoryListVM>();
     }
 }
