@@ -2,6 +2,7 @@
 using ECommerce.ClientPortal.ViewModels.Categories;
 using ECommerce.ClientPortal.ViewModels.Core;
 using ECommerce.ClientPortal.ViewModels.Home;
+using ECommerce.ClientPortal.ViewModels.Products;
 
 namespace ECommerce.ClientPortal.ViewModels;
 
@@ -25,5 +26,8 @@ public static class VMsConfiguration
         // Category VMs
         services.AddScoped<CategoryListVM>();
         services.AddScoped<CategoryUpsertVM>();
+
+        // Product VMs
+        services.AddScoped<ProductListVM>();
     }
 }
