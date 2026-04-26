@@ -78,6 +78,6 @@ public class CategoryRepository : ICategoryRepository
     public Task<IEnumerable<Category>> GetAllAsync()
     {
         const string sql = "SELECT Id, Name FROM Category";
-        return _db.QueryAsync<Category, object>(sql, new { });
+        return _db.QueryAsync<Category, object>(sql, null);
     }
 }
