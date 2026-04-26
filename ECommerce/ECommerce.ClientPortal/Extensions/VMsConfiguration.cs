@@ -4,7 +4,7 @@ using ECommerce.ClientPortal.ViewModels.Core;
 using ECommerce.ClientPortal.ViewModels.Home;
 using ECommerce.ClientPortal.ViewModels.Products;
 
-namespace ECommerce.ClientPortal.ViewModels;
+namespace ECommerce.ClientPortal.Extensions;
 
 public static class VMsConfiguration
 {

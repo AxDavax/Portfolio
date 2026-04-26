@@ -3,7 +3,6 @@ using ECommerce.ClientPortal.Extensions;
 using ECommerce.ClientPortal.Providers;
 using ECommerce.ClientPortal.Services.API;
 using ECommerce.ClientPortal.Services.Http;
-using ECommerce.ClientPortal.ViewModels;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
