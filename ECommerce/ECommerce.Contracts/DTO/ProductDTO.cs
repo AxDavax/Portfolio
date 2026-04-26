@@ -17,5 +17,5 @@ public class ProductDTO
 
     public int CategoryId { get; set; }
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public string CategoryName { get; set; }
+    public string? CategoryName { get; set; }
 }
