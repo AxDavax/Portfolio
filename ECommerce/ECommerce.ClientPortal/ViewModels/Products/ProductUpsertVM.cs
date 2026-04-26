@@ -55,6 +55,8 @@ public class ProductUpsertVM : ProcessingVM
         set => SetProperty(ref _directoryPath, value);
     }
 
+    public bool HasUploadedImage { get; set; }
+
     public async Task AfterRenderAsync(bool firstRender)
     {
         if (firstRender)
@@ -104,6 +106,7 @@ public class ProductUpsertVM : ProcessingVM
 
             if (uploadedFileName != null)
             {
+                HasUploadedImage = true;
                 Product.ImageUrl = uploadedFileName;
                 await _js.ToastrSuccess("Image Uploaded Successfully");
             }
