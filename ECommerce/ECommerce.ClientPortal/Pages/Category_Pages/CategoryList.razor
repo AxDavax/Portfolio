@@ -3,7 +3,7 @@
 @using ECommerce.ClientPortal.ViewModels.Categories
 @inject CategoryListVM VM
 
-<BsModal OnModalConfirmation="VM.ConfirmDeleteAsync"
+<BsModal OnModalConfirmation="ConfirmDelete"
          ButtonBootstrapStyle="btn-danger"
          ButtonText="Delete"
          Title="Are you sure you want to delete this Category?">
@@ -73,6 +73,13 @@ else
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
+        VM.StateChanged = StateHasChanged;
         await VM.AfterRenderAsync(firstRender);
+    }
+
+    protected async Task ConfirmDelete(bool isConfirmed)
+    {
+        await VM.ConfirmDeleteAsync(isConfirmed);
+        StateHasChanged();
     }
 }
