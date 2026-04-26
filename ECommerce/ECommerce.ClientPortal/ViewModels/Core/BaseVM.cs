@@ -31,6 +31,11 @@ public class BaseVM : INotifyPropertyChanged
         StateChanged?.Invoke();
     }
 
+    public void OnStateChanged()
+    {
+        StateChanged?.Invoke();
+    }
+
     /// <summary>
     /// Sets the property if the value has changed, and fires OnPropertyChanged
     /// </summary>
