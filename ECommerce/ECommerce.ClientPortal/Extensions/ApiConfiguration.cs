@@ -1,7 +1,7 @@
 ﻿using ECommerce.ClientPortal.Services.API.Implementations;
 using ECommerce.ClientPortal.Services.API.Interfaces;
 
-namespace ECommerce.ClientPortal.Services.API;
+namespace ECommerce.ClientPortal.Extensions;
 
 public static class ApiConfiguration
 {

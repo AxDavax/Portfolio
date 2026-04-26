@@ -1,7 +1,6 @@
 using ECommerce.ClientPortal;
 using ECommerce.ClientPortal.Extensions;
 using ECommerce.ClientPortal.Providers;
-using ECommerce.ClientPortal.Services.API;
 using ECommerce.ClientPortal.Services.Http;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;

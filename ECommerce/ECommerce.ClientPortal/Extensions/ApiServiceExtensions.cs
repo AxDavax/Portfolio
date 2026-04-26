@@ -1,4 +1,4 @@
-﻿namespace ECommerce.ClientPortal.Services.API;
+﻿namespace ECommerce.ClientPortal.Extensions;
 
 public static class ApiServiceExtensions
 {
