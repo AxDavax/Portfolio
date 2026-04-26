@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace ECommerce.Contracts.DTO;
 
@@ -15,6 +16,6 @@ public class ProductDTO
 
 
     public int CategoryId { get; set; }
-    
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string CategoryName { get; set; }
 }
