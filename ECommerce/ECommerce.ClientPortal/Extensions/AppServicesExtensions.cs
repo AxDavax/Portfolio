@@ -2,11 +2,11 @@
 using ECommerce.ClientPortal.Services.State;
 using ECommerce.ClientPortal.Services.Storage;
 
-namespace ECommerce.ClientPortal.Expressions;
+namespace ECommerce.ClientPortal.Extensions;
 
 public static class AppServicesExtensions
 {
-    public static IServiceCollection AddAppServices(this IServiceCollection services, IConfiguration config)
+    public static IServiceCollection AddAppServices(this IServiceCollection services)
     {
         services.AddScoped<SharedStateService>();
         services.AddScoped<UserSessionService>();

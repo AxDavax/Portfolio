@@ -1,4 +1,5 @@
 using ECommerce.ClientPortal;
+using ECommerce.ClientPortal.Extensions;
 using ECommerce.ClientPortal.Providers;
 using ECommerce.ClientPortal.Services.API;
 using ECommerce.ClientPortal.Services.Http;
@@ -30,7 +31,7 @@ builder.Services.AddScoped(sp =>
     return clientFactory.CreateClient("AuthorizedClient");
 });
 
-builder.Services.AddApiServices();
+builder.Services.AddAppServices();
 
 builder.Services.AddApiServices(builder.Configuration);
 
