@@ -69,6 +69,7 @@ public class CategoryListVM : ProcessingVM
                     _js?.ToastrError("Error deleting category");
 
                 Categories = Categories.Where(c => c.Id != DeleteCategoryID).ToList();
+                await LoadCategoriesAsync();
             }
 
             DeleteCategoryID = 0;
