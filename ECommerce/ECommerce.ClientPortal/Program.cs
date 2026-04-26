@@ -1,9 +1,7 @@
 using ECommerce.ClientPortal;
 using ECommerce.ClientPortal.Providers;
 using ECommerce.ClientPortal.Services.API;
-using ECommerce.ClientPortal.Services.Auth;
-using ECommerce.ClientPortal.Services.State;
-using ECommerce.ClientPortal.Services.Storage;
+using ECommerce.ClientPortal.Services.Http;
 using ECommerce.ClientPortal.ViewModels;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
@@ -19,21 +17,29 @@ builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
 builder.Services.AddCascadingAuthenticationState();
+builder.Services.AddAuthorizationCore();
 
-builder.Services.AddHttpClient();
+builder.Services.AddTransient<AuthHttpMessageHandler>();
+
+builder.Services.AddHttpClient("AuthorizedClient")
+    .AddHttpMessageHandler<AuthHttpMessageHandler>();
+
+builder.Services.AddScoped(sp =>
+{
+    var clientFactory = sp.GetRequiredService<IHttpClientFactory>();
+    return clientFactory.CreateClient("AuthorizedClient");
+});
+
+builder.Services.AddApiServices();
+
 builder.Services.AddApiServices(builder.Configuration);
-builder.Services.AddScoped<SharedStateService>();
-builder.Services.AddScoped<UserSessionService>();
-builder.Services.AddScoped<LocalStorageService>();
 
-builder.Services.AddScoped<TokenStorageService>();
+builder.Services.AddViewModels();
+
 builder.Services.AddScoped<CustomAuthenticationStateProvider>();
 builder.Services.AddScoped<AuthenticationStateProvider>(sp =>
     sp.GetRequiredService<CustomAuthenticationStateProvider>());
-builder.Services.AddScoped<AuthService>();
 
-builder.Services.AddViewModels();
-builder.Services.AddAuthorizationCore();
 builder.Services.AddRadzenComponents();
 
 await builder.Build().RunAsync();
