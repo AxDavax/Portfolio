@@ -22,7 +22,7 @@ public class CategoryRepository : ICategoryRepository
                         
             """;
         
-        return _db.QuerySingleOrDefaultAsync<Category, dynamic>(sql, new { Id = id });
+        return _db.QuerySingleOrDefaultAsync<Category, object>(sql, new { Id = id });
     }
 
     public async Task<Category> CreateAsync(Category obj)
@@ -35,7 +35,7 @@ public class CategoryRepository : ICategoryRepository
           
             """;
 
-        int newId = await _db.ExecuteScalarAsync<int, dynamic>(sql, obj.Name);
+        int newId = await _db.ExecuteScalarAsync<int, object>(sql, new { Name = obj.Name });
 
         return new Category
         {
@@ -78,6 +78,6 @@ public class CategoryRepository : ICategoryRepository
     public Task<IEnumerable<Category>> GetAllAsync()
     {
         const string sql = "SELECT Id, Name FROM Category";
-        return _db.QueryAsync<Category, dynamic>(sql, new { });
+        return _db.QueryAsync<Category, object>(sql, new { });
     }
 }
