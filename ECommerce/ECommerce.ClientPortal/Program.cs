@@ -1,7 +1,6 @@
 using ECommerce.ClientPortal;
 using ECommerce.ClientPortal.Extensions;
 using ECommerce.ClientPortal.Providers;
-using ECommerce.ClientPortal.Services.Http;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -17,17 +16,6 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 
 builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddAuthorizationCore();
-
-builder.Services.AddTransient<AuthHttpMessageHandler>();
-
-builder.Services.AddHttpClient("AuthorizedClient")
-    .AddHttpMessageHandler<AuthHttpMessageHandler>();
-
-builder.Services.AddScoped(sp =>
-{
-    var clientFactory = sp.GetRequiredService<IHttpClientFactory>();
-    return clientFactory.CreateClient("AuthorizedClient");
-});
 
 builder.Services.AddAppServices();
 
