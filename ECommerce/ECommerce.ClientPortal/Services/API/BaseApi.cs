@@ -89,6 +89,32 @@ public abstract class BaseApi
         }
     }
 
+    protected async Task<string?> SafePostMultipart(string url, MultipartFormDataContent content)
+    {
+        try
+        {
+            var response = await _http.PostAsync(url, content);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                HandleHttpError(response.StatusCode);
+                return null;
+            }
+
+            return await response.Content.ReadAsStringAsync();
+        }
+        catch (HttpRequestException ex)
+        {
+            HandleHttpError(ex.StatusCode);
+            return null;
+        }
+        catch
+        {
+            _navigation.NavigateTo("/error", true);
+            return null;
+        }
+    }
+
     protected async Task<bool> SafePut(string url, object? body = null)
     {
         try
