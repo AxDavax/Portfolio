@@ -1,7 +1,9 @@
 ﻿@page "/product/create"
 @page "/product/update/{id:int}"
+@using ECommerce.ClientPortal.Services.API.Interfaces
 @using ECommerce.ClientPortal.ViewModels.Products
 @using Radzen.Blazor
+
 @inject ProductUpsertVM VM
 
 @if (VM.IsProcessing)
@@ -70,10 +72,10 @@ else
                         <ValidationMessage For="@(() => VM.Product.CategoryId)" />
                     </div>
                     <div class="form-floating py-3 col-12">
-                        @if(!VM.HasUploadedImage)
+                        @if (VM.Product.ImageUrl == null)
                         {
-                            <InputFile OnChange="VM.LoadFilesAsync" class="form-control pb-3" id="customFile" 
-                            accept="image/x-png,image/jpeg" ></InputFile>
+                            <InputFile OnChange="VM.LoadFilesAsync" class="form-control pb-3" id="customFile"
+                                       accept="image/x-png,image/jpeg" maxFileSize="5242880"></InputFile>
                             <label for="customFile">Upload Image</label>
                         }
                         @if(VM.Product.ImageUrl != null)
@@ -111,14 +113,11 @@ else
     [Parameter]
     public int Id { get; set; }
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        VM.StateChanged = StateHasChanged;
+        VM.StateChanged = () => InvokeAsync(StateHasChanged);
         VM.Id = Id;
-    }
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        await VM.AfterRenderAsync(firstRender);
+        await VM.LoadProductAndCategoryListAsync();
     }
 }
