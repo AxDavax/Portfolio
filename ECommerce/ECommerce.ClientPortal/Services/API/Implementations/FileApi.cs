@@ -11,7 +11,7 @@ public class FileApi : BaseApi, IFileApi
     public Task<bool> DeleteProductImageAsync(string fileName)
         => SafeDelete($"api/files/products/{fileName}");
 
-    public Task<string?> UploadProductImageAsync(Stream fileStream, string fileName)
+    public async Task<string?> UploadProductImageAsync(Stream fileStream, string fileName)
     {
         using var content = new MultipartFormDataContent();
         var fileContent = new StreamContent(fileStream);
@@ -19,6 +19,6 @@ public class FileApi : BaseApi, IFileApi
         fileContent.Headers.ContentType = new MediaTypeHeaderValue("image/jpeg");
         content.Add(fileContent, "file", fileName);
 
-        return SafePost<string>("api/files/products", content);
+        return await SafePostMultipart("api/files/products", content);
     }
 }
