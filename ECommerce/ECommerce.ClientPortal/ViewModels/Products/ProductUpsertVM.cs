@@ -55,21 +55,24 @@ public class ProductUpsertVM : ProcessingVM
         set => SetProperty(ref _directoryPath, value);
     }
 
-    public bool HasUploadedImage { get; set; }
-
     public async Task AfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
-            await LoadProductAndCategoryListAsync();   
+            await LoadProductAndCategoryListAsync();
+            StateChanged?.Invoke();
         }
     }
 
-    private async Task LoadProductAndCategoryListAsync()
+    public async Task LoadProductAndCategoryListAsync()
     {
         await RunCommandAsync(() => IsProcessing, async () =>
         {
-            if (Id > 0) Product = await _productApi.GetByIdAsync(Id);
+            if (Id > 0)
+            {
+                Product = await _productApi.GetByIdAsync(Id) ?? new ProductDTO();
+            }   
+            
             Categories = await _categoryApi.GetAllAsync();
         });
     }
@@ -95,40 +98,39 @@ public class ProductUpsertVM : ProcessingVM
 
     public async Task LoadFilesAsync(InputFileChangeEventArgs e)
     {
-        await RunCommandAsync(() => IsProcessing, async () =>
-        {
-            var file = e.File;
-            var fileName = $"{Guid.NewGuid()}{Path.GetExtension(file.Name)}";
+        var file = e.File;
+        var fileName = $"{Guid.NewGuid()}{Path.GetExtension(file.Name)}";
             
-            await using var fileStream = file.OpenReadStream();
+        await using var fileStream = file.OpenReadStream(5_000_000);
 
-            var uploadedFileName = await _fileApi.UploadProductImageAsync(fileStream, fileName);
+        var uploadedFileName = await _fileApi.UploadProductImageAsync(fileStream, fileName);
 
-            if (uploadedFileName != null)
-            {
-                HasUploadedImage = true;
-                Product.ImageUrl = uploadedFileName;
-                await _js.ToastrSuccess("Image Uploaded Successfully");
-            }
-            else 
-                await _js.ToastrError("Image Upload Failed");
-        });
+        if (uploadedFileName != null)
+        {
+            Product.ImageUrl = uploadedFileName;
+            await _js.ToastrSuccess("Image Uploaded Successfully");
+        }
+        else 
+            await _js.ToastrError("Image Upload Failed");
     }
 
     public async Task DeleteImageAsync()
     {
-        if (string.IsNullOrWhiteSpace(Product.ImageUrl)) return;
-
-        var fileToDelete = Product.ImageUrl.Split('/').Last();
-
-        var result = await _fileApi.DeleteProductImageAsync(fileToDelete);
-
-        if (result)
+        await RunCommandAsync(() => IsProcessing, async () =>
         {
-            Product.ImageUrl = null;
-            await _js.ToastrSuccess("Image deleted successfully");
-        }
-        else
-            await _js.ToastrError("Error deleting image");
+            if (string.IsNullOrWhiteSpace(Product.ImageUrl)) return;
+
+            var fileToDelete = Product.ImageUrl.Split('/').Last();
+
+            var result = await _fileApi.DeleteProductImageAsync(fileToDelete);
+
+            if (result)
+            {
+                Product.ImageUrl = null;
+                await _js.ToastrSuccess("Image deleted successfully");
+            }
+            else
+                await _js.ToastrError("Error deleting image");
+        });
     }
 }
