@@ -68,10 +68,13 @@ public class ProductListVM : ProcessingVM
                 else
                     _js?.ToastrError("Error Encountered while deleting");
 
+                Products = Products.Where(p => p.Id != DeleteProductID).ToList();
                 await LoadProductsAsync();
             }
 
             DeleteProductID = 0;
         });
+
+        OnStateChanged();
     }
 }
