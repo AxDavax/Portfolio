@@ -42,6 +42,6 @@ public class FileService : IFileService
             await fileStream.CopyToAsync(output);
         }
 
-        return filePath;
+        return newFileName;
     }
 }
