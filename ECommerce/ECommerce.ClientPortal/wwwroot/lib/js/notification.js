@@ -5,4 +5,7 @@
     if (type == "error") {
         toastr.error(message);
     }
+    if (type == "info") {
+        toastr.info(message);
+    }
 }
