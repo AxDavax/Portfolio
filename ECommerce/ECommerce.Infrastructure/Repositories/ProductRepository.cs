@@ -23,7 +23,7 @@ public class ProductRepository : IProductRepository
         
             """;
 
-        int newId = await _db.ExecuteScalarAsync<int, dynamic>(sql, new
+        int newId = await _db.ExecuteScalarAsync<int, object>(sql, new
         {
             obj.Name,
             obj.Price,
@@ -54,7 +54,7 @@ public class ProductRepository : IProductRepository
                
             """;
 
-        return _db.QueryAsync<Product, Category, Product, dynamic>(
+        return _db.QueryAsync<Product, Category, Product, object>(
             sql, 
             (product, category) =>
             {
@@ -71,7 +71,7 @@ public class ProductRepository : IProductRepository
              
             SELECT 
                 p.Id, p.Name, p.Price, p.Description, p.SpecialTag, p.CategoryId, p.ImageUrl,
-                c.Id, c.Name
+                c.Id, c.Name 
             FROM 
                 Product p
             INNER JOIN 
@@ -83,7 +83,7 @@ public class ProductRepository : IProductRepository
                         
             """;
 
-        var result = await _db.QueryAsync<Product, Category, Product, dynamic>(
+        var result = await _db.QueryAsync<Product, Category, Product, object>(
             sql,
             (product, category) =>
             {
