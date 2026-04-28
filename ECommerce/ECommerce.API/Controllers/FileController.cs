@@ -45,9 +45,9 @@ namespace ECommerce.API.Controllers
             );
 
             var fileName = Path.GetFileName(savedFilePath);
-            var url = _fileService.GetProductImageUrl(fileName);
+            //var url = _fileService.GetProductImageUrl(fileName);
 
-            return Ok(new { url });
+            return Ok(new { fileName });
         }
 
         // DELETE: api/files/products/{fileName}
