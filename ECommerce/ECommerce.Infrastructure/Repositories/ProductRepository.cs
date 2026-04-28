@@ -79,7 +79,7 @@ public class ProductRepository : IProductRepository
             ON
                 p.CategoryId = c.Id
             WHERE 
-                Id = @Id
+                p.Id = @Id
                         
             """;
 
