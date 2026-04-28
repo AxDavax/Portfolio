@@ -34,6 +34,8 @@ public class ProductUpsertVM : ProcessingVM
         set => SetProperty(ref _id, value);
     }
 
+    private bool IsUpdate => Id > 0;
+
     private ProductDTO _product = new();
     public ProductDTO Product
     {
@@ -46,6 +48,18 @@ public class ProductUpsertVM : ProcessingVM
     {
         get => _categories;
         set => SetProperty(ref _categories, value);
+    }
+
+    public string GetPreviewUrl()
+    {
+        if (!IsUpdate)
+        {
+            if (string.IsNullOrWhiteSpace(Product.ImageUrl))
+                return string.Empty;
+            return _fileApi.GetProductImageUrl(Product.ImageUrl);
+        }
+        
+        return Product.ImageUrl ?? string.Empty;
     }
 
     public async Task UpsertProductAsync()
