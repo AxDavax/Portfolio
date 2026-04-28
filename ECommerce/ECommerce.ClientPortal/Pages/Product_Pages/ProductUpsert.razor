@@ -1,12 +1,31 @@
 ﻿@page "/product/create"
 @page "/product/update/{id:int}"
 @using ECommerce.ClientPortal.Services.API.Interfaces
+@using ECommerce.ClientPortal.Services.Extensions
 @using ECommerce.ClientPortal.ViewModels.Products
+@using ECommerce.Contracts.DTO
 @using Radzen.Blazor
+@inject ICategoryApi categoryApi
+@inject IProductApi productApi
+@inject NavigationManager nav
+@inject IJSRuntime js
+@inject IFileApi fileApi
 
-@inject ProductUpsertVM VM
+<div class="py-3 col-12">
+    <InputFile @ref="fileInput"
+               OnChange="OnFileSelected"
+               class="d-none pb-3"
+               accept="image/x-png,image/jpeg"
+               maxFileSize="5242880" />
+</div>
 
-@if (VM.IsProcessing)
+@if (VM is null)
+{
+    <div class="position-absolute w-75 h-75 d-flex flex-column align-items-center bg-white justify-content-center">
+        <img src="/images/loading.gif" alt="loading" />
+    </div>
+}
+else if (VM.IsProcessing)
 {
     <div class="position-absolute w-75 h-75 d-flex flex-column align-items-center bg-white justify-content-center">
         <img src="/images/loading.gif" alt="loading" />
@@ -23,7 +42,7 @@ else
             </div>
         </div>
         <div class="card-body p-4">
-            <EditForm Model="VM.Product" FormName="ProductUpsertForm" OnValidSubmit="VM.UpsertProductAsync">
+            <EditForm Model="VM.Product" FormName="ProductUpsertForm">
                 <DataAnnotationsValidator />
                 <div class="border p-3 mt-4">
                     <div class="form-floating py-3 col-12">
@@ -71,28 +90,37 @@ else
                         <label for="category">Category</label>
                         <ValidationMessage For="@(() => VM.Product.CategoryId)" />
                     </div>
-                    <div class="form-floating py-3 col-12">
-                        @if (VM.Product.ImageUrl == null)
-                        {
-                            <InputFile OnChange="VM.LoadFilesAsync" class="form-control pb-3" id="customFile"
-                                       accept="image/x-png,image/jpeg" maxFileSize="5242880"></InputFile>
-                            <label for="customFile">Upload Image</label>
-                        }
+                    <div class="py-3 col-12">
                         @if(VM.Product.ImageUrl != null)
                         {
                             <div class="row">
                                 <div class="col-3">
-                                    <img src="@VM.Product.ImageUrl" alt="..." class="img-thumbnail" /> 
+                                    <img src="@fileApi.GetProductImageUrl(VM.Product.ImageUrl)" alt="..." class="img-thumbnail" /> 
                                 </div>
                                 <div class="col-md-9">
                                     <i class="bi bi-trash btn btn-outline-danger" @onclick="VM.DeleteImageAsync">Remove</i>
                                 </div>
                             </div>
                         }
+                        else
+                        {
+                            <!--
+                                <button class="btn btn-primary" @onclick="() => OpenFilePicker()">Upload Image</button>
+                            -->
+                            <div>
+                                <button class="form-control pb-3 btn btn-outline-primary"
+                                        @onclick="OpenFilePicker">
+                                    Upload Image
+                                </button>
+                                <label>Upload Image</label>
+                            </div>
+                        }
                     </div>
                     <div class="row mt-3">
                         <div class="col-6 col-md-3">
-                            <button type="submit" class="btn btn-primary form-control" disabled="@VM.IsProcessing">
+                            <button type="button" class="btn btn-primary form-control" 
+                                    @onclick="VM.UpsertProductAsync"
+                                    disabled="@VM.IsProcessing">
                                 <i class="bi bi-floppy2-fill"></i> @(VM.Id > 0 ? "Update" : "Create")
                             </button>
                         </div>
@@ -113,11 +141,63 @@ else
     [Parameter]
     public int Id { get; set; }
 
-    protected override async Task OnInitializedAsync()
-    {
-        VM.StateChanged = () => InvokeAsync(StateHasChanged);
-        VM.Id = Id;
+    private InputFile fileInput;
 
-        await VM.LoadProductAndCategoryListAsync();
+    private ProductUpsertVM VM;
+
+    private async Task OpenFilePicker()
+    {
+        await js.InvokeVoidAsync("openHiddenFileInput", fileInput.Element);
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            VM = new ProductUpsertVM(categoryApi, productApi, nav, js, fileApi);
+            VM.StateChanged = StateHasChanged;
+            VM.Id = Id;
+
+            await LoadInitialData();
+        }
+    }
+
+    private async Task LoadInitialData()
+    {
+        if (VM.Id > 0)
+            VM.Product = await productApi.GetByIdAsync(VM.Id) ?? new ProductDTO();
+
+        VM.Categories = await categoryApi.GetAllAsync();
+
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private async Task OnFileSelected(InputFileChangeEventArgs e)
+    {
+        try
+        {
+            var file = e.File;
+            var fileName = $"{Guid.NewGuid()}{Path.GetExtension(file.Name)}";
+
+            await using var stream = file.OpenReadStream(5_000_000);
+
+            var uploaded = await fileApi.UploadProductImageAsync(stream, fileName);
+
+            if (uploaded != null)
+            {
+                VM.Product.ImageUrl = uploaded;
+                await js.ToastrSuccess("Image Uploaded Successfully");
+            }
+            else
+            {
+                await js.ToastrError("Image Upload Failed");
+            }
+        }
+        catch (Exception ex)
+        {
+            await js.ToastrError($"OnFileSelected EX: {ex.Message}");
+        }
+
+        await InvokeAsync(StateHasChanged);
     }
 }
