@@ -19,7 +19,11 @@ public class FileApi : BaseApi, IFileApi
         => SafeDelete($"api/files/products/{fileName}");
 
     public string GetProductImageUrl(string fileName)
-        => $"{_config["Api:BaseUrl"]}/products/{fileName}";
+    {
+        var baseUrl = _config["Api:BaseUrl"]!.TrimEnd('/');
+        return $"{baseUrl}/products/{fileName}";
+    }
+        
 
     public async Task<string?> UploadProductImageAsync(Stream fileStream, string fileName)
     {
