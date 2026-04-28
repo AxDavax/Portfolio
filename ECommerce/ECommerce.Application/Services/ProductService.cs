@@ -68,7 +68,7 @@ namespace ECommerce.Application.Services
             var existing = await _repo.GetByIdAsync(id);
             if (existing == null) return false;
 
-            _mapper.Map(existing, dto);   
+            _mapper.Map(dto, existing);   
 
             await _repo.UpdateAsync(existing);
             return true;
