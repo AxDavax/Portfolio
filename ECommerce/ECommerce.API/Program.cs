@@ -4,10 +4,11 @@ using ECommerce.Application.Mappings.Profiles;
 using ECommerce.Infrastructure;
 using ECommerce.Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
+using Scalar.AspNetCore;
 using Stripe;
 using System.Text;
-using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -72,6 +73,14 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
     app.MapScalarApiReference();
 }
+
+var storagePath = Path.Combine(Directory.GetCurrentDirectory(), "storage", "products");
+
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(storagePath),
+    RequestPath = "/products"
+});
 
 app.UseCors("AllowBlazorWebApp");
 
