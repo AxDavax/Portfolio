@@ -3,7 +3,6 @@ using ECommerce.ClientPortal.Services.Extensions;
 using ECommerce.ClientPortal.ViewModels.Core;
 using ECommerce.Contracts.DTO;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.JSInterop;
 
 namespace ECommerce.ClientPortal.ViewModels.Products;
@@ -78,26 +77,6 @@ public class ProductUpsertVM : ProcessingVM
             }
 
             _navigation.NavigateTo("product");
-        });
-    }
-
-    public async Task DeleteImageAsync()
-    {
-        await RunCommandAsync(() => IsProcessing, async () =>
-        {
-            if (string.IsNullOrWhiteSpace(Product.ImageUrl)) return;
-
-            var fileToDelete = Product.ImageUrl.Split('/').Last();
-
-            var result = await _fileApi.DeleteProductImageAsync(fileToDelete);
-
-            if (result)
-            {
-                Product.ImageUrl = null;
-                await _js.ToastrSuccess("Image deleted successfully");
-            }
-            else
-                await _js.ToastrError("Error deleting image");
         });
     }
 }
