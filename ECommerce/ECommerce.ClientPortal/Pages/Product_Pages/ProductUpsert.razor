@@ -151,20 +151,6 @@ else
         await LoadInitialData();
     }
 
-    /*
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            VM = new ProductUpsertVM(categoryApi, productApi, nav, js, fileApi);
-            VM.StateChanged = StateHasChanged;
-            VM.Id = Id;
-
-            await LoadInitialData();
-        }
-    }
-    */
-
     private async Task LoadInitialData()
     {
         if (VM.Id > 0)
