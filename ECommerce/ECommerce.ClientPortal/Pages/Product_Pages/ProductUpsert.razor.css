@@ -17,3 +17,13 @@
 ::deep .rz-html-editor .rz-content {
     min-height: 350px !important;
 }
+
+.custom-frame {
+    border: 2px dashed #007bff; 
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    background-color: #f8f9fa;
+    max-width: 300px;
+    margin: 10px auto;
+}
