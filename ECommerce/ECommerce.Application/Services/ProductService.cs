@@ -40,7 +40,17 @@ namespace ECommerce.Application.Services
             return result;
         }
 
-        public async Task<bool> DeleteAsync(int id) => await _repo.DeleteAsync(id);
+        public async Task<bool> DeleteAsync(int id) 
+        {
+            var dto = await GetByIdAsync(id);
+            if (dto == null) 
+                return false;
+
+            var fileName = Path.GetFileName(dto.ImageUrl!);
+            await _fileService.DeleteProductImageAsync(fileName);
+
+            return await _repo.DeleteAsync(id);
+        } 
 
         public async Task<IEnumerable<ProductDTO>> GetAllAsync()
         {
