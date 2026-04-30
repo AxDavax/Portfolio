@@ -1,13 +1,28 @@
 ﻿@page "/"
 @using System.Globalization
+@using ECommerce.ClientPortal.Services.API.Interfaces
+@using ECommerce.ClientPortal.Services.State
+@using ECommerce.ClientPortal.ViewModels.Core
 @using ECommerce.ClientPortal.ViewModels.Home
-@inject HomeVM VM
+@inject IShoppingCartApi cartApi
+@inject IProductApi productApi
+@inject ICategoryApi categoryApi
+@inject NavigationManager navigation
+@inject SharedStateService sharedStateService
+@inject IJSRuntime js
+@inject AuthUserVM authUser
 
 <PageTitle>Home</PageTitle>
 
-@if (VM.IsProcessing)
+@if (VM is null)
 {
-    <div class="position-absolute w-100 vh-100 d-flex flex-column align-items-center bg-white justify-content-center">
+    <div class="position-absolute w-75 h-75 d-flex flex-column align-items-center bg-white justify-content-center" style="z-index: -1;">
+        <img src="/images/loading.gif" alt="loading" />
+    </div>
+}
+else if (VM.IsProcessing)
+{
+    <div class="position-absolute w-100 vh-100 d-flex flex-column align-items-center bg-white justify-content-center" style="z-index: -1;">
         <img src="/images/loading.gif" alt="loading" />
     </div>
 }
@@ -88,8 +103,20 @@ else
 }
 
 @code {
+    private HomeVM VM;
+
     protected override void OnInitialized()
     {
+        VM = new HomeVM(
+            cartApi,
+            productApi,
+            categoryApi,
+            navigation,
+            sharedStateService,
+            js,
+            authUser
+        );
+
         VM.StateChanged = StateHasChanged;
     }
 

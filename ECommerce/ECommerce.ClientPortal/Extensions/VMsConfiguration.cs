@@ -12,7 +12,7 @@ public static class VMsConfiguration
     {
         // Core VMs
         services.AddScoped<AuthUserVM>();
-        services.AddScoped<HomeVM>();
+        //services.AddScoped<HomeVM>();
 
         // Auth VMs
         services.AddScoped<LoginVM>();
