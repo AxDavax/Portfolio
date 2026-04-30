@@ -7,14 +7,18 @@ public class AuthUserVM : BaseVM
 {
     private readonly AuthenticationStateProvider _authStateProvider;
 
-    private ClaimsPrincipal _user;
+    private readonly TaskCompletionSource<bool> _ready = new();
+
+    public Task WaitUntilReadyAsync() => _ready.Task;
+
+    private ClaimsPrincipal _user = new(new ClaimsIdentity());
     public ClaimsPrincipal User 
     { 
         get => _user;
         private set => SetProperty(ref _user, value); 
     }
 
-    public bool IsReady => User != null;
+    public bool IsReady { get; private set; }
 
     public AuthUserVM(AuthenticationStateProvider authenticationStateProvider) 
     {
@@ -28,6 +32,9 @@ public class AuthUserVM : BaseVM
         var authState = await task;
         User = authState.User;
 
+        IsReady = true;
+        _ready.TrySetResult(true);
+
         OnPropertyChanged(nameof(IsReady));
     }
 
@@ -35,6 +42,9 @@ public class AuthUserVM : BaseVM
     {
         var authState = await _authStateProvider.GetAuthenticationStateAsync();
         User = authState.User;
+
+        IsReady = true;
+        _ready.TrySetResult(true);
 
         OnPropertyChanged(nameof(IsReady));
     }
