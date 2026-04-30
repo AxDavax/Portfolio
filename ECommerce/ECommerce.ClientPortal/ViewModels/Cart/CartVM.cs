@@ -2,11 +2,12 @@
 using ECommerce.ClientPortal.Services.API.Interfaces;
 using ECommerce.ClientPortal.Services.State;
 using ECommerce.ClientPortal.Utility;
+using ECommerce.ClientPortal.ViewModels.Auth;
 using ECommerce.ClientPortal.ViewModels.Core;
 using ECommerce.Contracts.DTO;
 using Microsoft.AspNetCore.Components;
 
-namespace Portfolio.ECommerce.Blazor.ViewModels.Cart;
+namespace ECommerce.ClientPortal.ViewModels.Cart;
 
 public class CartVM : ProcessingVM
 {
@@ -16,7 +17,7 @@ public class CartVM : ProcessingVM
     private readonly NavigationManager _navigation;
     private readonly SharedStateService _sharedStateService;
     private readonly PaymentApi _paymentApi;
-    private readonly AuthUserVM _authUser;
+    private readonly ProfileVM _profile;
 
     public CartVM(IShoppingCartApi shoppingCartApi, 
                   ICartApi cartApi,
@@ -24,7 +25,7 @@ public class CartVM : ProcessingVM
                   NavigationManager navigation, 
                   SharedStateService sharedStateService, 
                   PaymentApi paymentApi,
-                  AuthUserVM authUser)
+                  ProfileVM profile)
     {
         _shoppingCartApi = shoppingCartApi;
         _cartApi = cartApi;
@@ -32,7 +33,7 @@ public class CartVM : ProcessingVM
         _navigation = navigation;
         _sharedStateService = sharedStateService;
         _paymentApi = paymentApi;
-        _authUser = authUser;
+        _profile = profile;
     }
 
     private IEnumerable<ShoppingCartDTO> _shoppingCarts = new List<ShoppingCartDTO>();
@@ -58,13 +59,10 @@ public class CartVM : ProcessingVM
 
     public async Task InitializeAsync()
     {
-        await Task.Delay(1000);
-        var user = _authUser.User;
+        await _profile.LoadAsync();
 
-        if (user is null) return;
-        
-        OrderHeader.Email = user.FindFirst(u => u.Type.Contains("email"))?.Value;
-        OrderHeader.UserId = user.FindFirst(u => u.Type.Contains("nameidentifier"))?.Value;
+        OrderHeader.Email = _profile.Email;
+        OrderHeader.UserId = _profile.UserId;
         OrderHeader.Status = SD.StatusPending;
     }
 
