@@ -24,13 +24,12 @@
 @code {
     protected override async Task OnInitializedAsync()
     {
-        await Auth.InitializeAsync();
-
-        await VM.LoadAsync();
-
         var token = await Auth.GetTokenAsync();
 
         if (!string.IsNullOrWhiteSpace(token))
             AuthStateProvider.MarkUserAsAuthenticated(token);
+        
+        await Auth.InitializeAsync();
+        await VM.LoadAsync();
     }
 }
