@@ -6,7 +6,6 @@ namespace ECommerce.ClientPortal.ViewModels.Core;
 public class AuthUserVM : BaseVM
 {
     private readonly AuthenticationStateProvider _authStateProvider;
-
     private readonly TaskCompletionSource<bool> _ready = new();
 
     public Task WaitUntilReadyAsync() => _ready.Task;
@@ -18,16 +17,27 @@ public class AuthUserVM : BaseVM
         private set => SetProperty(ref _user, value); 
     }
 
-    public bool IsReady { get; private set; }
+    private bool _isReady;
+    public bool IsReady
+    {
+        get => _isReady;
+        private set => SetProperty(ref _isReady, value);
+    }
 
     public AuthUserVM(AuthenticationStateProvider authenticationStateProvider) 
     {
         _authStateProvider = authenticationStateProvider;
 
-        _authStateProvider.AuthenticationStateChanged += OnAuthStateChanged;
+        // AuthenticationStateChanged's signature expects a void delegate, not Task.
+        _authStateProvider.AuthenticationStateChanged += HandleAuthStateChangedWrapper;
     }
 
-    private async void OnAuthStateChanged(Task<AuthenticationState> task)
+    private void HandleAuthStateChangedWrapper(Task<AuthenticationState> task)
+    {
+        _ = HandleAuthStateChanged(task);
+    }
+
+    private async Task HandleAuthStateChanged(Task<AuthenticationState> task)
     {
         var authState = await task;
         User = authState.User;
@@ -35,7 +45,7 @@ public class AuthUserVM : BaseVM
         IsReady = true;
         _ready.TrySetResult(true);
 
-        OnPropertyChanged(nameof(IsReady));
+        NotifyStateChanged();
     }
 
     public async Task LoadAsync()
@@ -46,6 +56,11 @@ public class AuthUserVM : BaseVM
         IsReady = true;
         _ready.TrySetResult(true);
 
-        OnPropertyChanged(nameof(IsReady));
+        NotifyStateChanged();
+    }
+
+    public void Dispose()
+    {
+        _authStateProvider.AuthenticationStateChanged -= HandleAuthStateChangedWrapper;
     }
 }
