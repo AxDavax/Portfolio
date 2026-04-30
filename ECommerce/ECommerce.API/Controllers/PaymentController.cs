@@ -19,8 +19,8 @@ namespace ECommerce.API.Controllers
         [HttpPost("create-session")]
         public async Task<IActionResult> CreateCheckoutSession([FromBody] OrderHeaderDTO order)
         {
-            var url = await _paymentService.CreateCheckoutSessionAsync(order);
-            return Ok(new { url });
+            var session = await _paymentService.CreateCheckoutSessionAsync(order);
+            return Ok(session);
         }
 
         // GET: api/payment/verify/{sessionId}
