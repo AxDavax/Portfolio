@@ -9,7 +9,10 @@ public class ProfileVM : BaseVM
 
     public string Email => _authUser.User?.Identity?.Name ?? string.Empty;
     public string FirstName => _authUser.User?.FindFirst("firstName")?.Value ?? string.Empty;
-    public string LastName => _authUser.User?.FindFirst("lastname")?.Value ?? String.Empty;
+    public string LastName => _authUser.User?.FindFirst("lastname")?.Value ?? string.Empty;
+    public string UserId =>
+    _authUser.User?.FindFirst(c => c.Type.Contains("nameidentifier"))?.Value ?? string.Empty;
+
 
     public IEnumerable<Claim> Claims => _authUser.User?.Claims ?? Enumerable.Empty<Claim>();
 
@@ -24,8 +27,7 @@ public class ProfileVM : BaseVM
 
     public async Task LoadAsync()
     {
-        if(!_authUser.IsReady)
-            await _authUser.LoadAsync();
+        await _authUser.WaitUntilReadyAsync();
 
         OnPropertyChanged(null);
     }
