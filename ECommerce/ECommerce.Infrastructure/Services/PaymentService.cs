@@ -4,6 +4,7 @@ using ECommerce.Domain.Constants;
 using ECommerce.Domain.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Stripe.Checkout;
+using ECommerce.Contracts.DTO.Payment;
 
 namespace ECommerce.Infrastructure.Services;
 
@@ -21,7 +22,7 @@ public class PaymentService : IPaymentService
         _cancelUrl = config["Stripe:CancelUrl"]!;
     }
 
-    public async Task<string> CreateCheckoutSessionAsync(OrderHeaderDTO orderHeader)
+    public async Task<CheckoutSessionResponse> CreateCheckoutSessionAsync(OrderHeaderDTO orderHeader)
     {
         if (orderHeader.OrderDetails == null || !orderHeader.OrderDetails.Any())
             throw new InvalidOperationException("Order must contain at least one item.");
@@ -51,10 +52,14 @@ public class PaymentService : IPaymentService
 
         var service = new SessionService();
         var session = await service.CreateAsync(options);
-
+        
         await _orderRepository.UpdateStatusAsync(orderHeader.Id, OrderStatus.StatusPending, session.Id);
         
-        return session.Url;
+        return new CheckoutSessionResponse
+        {
+            Id = session.Id,
+            Url = session.Url
+        };
     }
 
     public async Task<bool> VerifyPaymentAsync(string sessionId)
