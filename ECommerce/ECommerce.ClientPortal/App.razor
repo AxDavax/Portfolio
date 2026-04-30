@@ -29,9 +29,8 @@
         await VM.LoadAsync();
 
         var token = await Auth.GetTokenAsync();
+
         if (!string.IsNullOrWhiteSpace(token))
-        
             AuthStateProvider.MarkUserAsAuthenticated(token);
-        }
     }
 }
