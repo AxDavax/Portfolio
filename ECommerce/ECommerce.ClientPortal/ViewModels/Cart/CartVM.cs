@@ -5,6 +5,7 @@ using ECommerce.ClientPortal.Utility;
 using ECommerce.ClientPortal.ViewModels.Auth;
 using ECommerce.ClientPortal.ViewModels.Core;
 using ECommerce.Contracts.DTO;
+using ECommerce.Contracts.DTO.Payment;
 using Microsoft.AspNetCore.Components;
 
 namespace ECommerce.ClientPortal.ViewModels.Cart;
@@ -43,7 +44,7 @@ public class CartVM : ProcessingVM
         set => SetProperty(ref _shoppingCarts, value);
     }
 
-    private OrderHeaderDTO _orderHeader = new();
+    private OrderHeaderDTO _orderHeader;
     public OrderHeaderDTO OrderHeader
     {
         get => _orderHeader;
@@ -59,28 +60,28 @@ public class CartVM : ProcessingVM
 
     public async Task InitializeAsync()
     {
-        await _profile.LoadAsync();
+        await RunCommandAsync(() => IsProcessing, async () =>
+        {
+            await _profile.LoadAsync();
 
-        OrderHeader.Email = _profile.Email;
-        OrderHeader.UserId = _profile.UserId;
-        OrderHeader.Status = SD.StatusPending;
+            OrderHeader = new OrderHeaderDTO
+            {
+                Email = _profile.Email,
+                UserId = _profile.UserId,
+                Status = SD.StatusPending
+            };
+        });
     }
 
-    public async Task AfterRenderAsync(bool firstRender)
+    public async Task LoadCartCoreAsync()
     {
-        if (firstRender)
-        {
-            await LoadCartAsync();
-        }
+        ShoppingCarts = await _shoppingCartApi.GetAllAsync(OrderHeader.UserId);
+        RecalculateTotals();
     }
 
     public async Task LoadCartAsync()
     {
-        await RunCommandAsync(() => IsProcessing, async () =>
-        {
-            ShoppingCarts = await _shoppingCartApi.GetAllAsync(OrderHeader.UserId);
-            RecalculateTotals();
-        });
+        await RunCommandAsync(() => IsProcessing, LoadCartCoreAsync);
     }
 
     private void RecalculateTotals()
@@ -103,22 +104,25 @@ public class CartVM : ProcessingVM
         {
             var result = await _shoppingCartApi.UpdateAsync(OrderHeader.UserId, productId, updateBy);
             _sharedStateService.TotalCartCount = await _shoppingCartApi.GetTotalCountAsync(OrderHeader.UserId);
-            await LoadCartAsync();
+            await LoadCartCoreAsync();
         });
     }
 
     public async Task ProcessOrderCreationAsync()
     {
+        var session = new CheckoutSessionResponse();
+
         await RunCommandAsync(() => IsProcessing, async () =>
         {
             await Task.Yield();
             OrderHeader.OrderDetails = await _cartApi.ConvertCartToOrderDetailsAsync(ShoppingCarts.ToList());
 
-            var session = await _paymentApi.CreateCheckoutSessionAsync(OrderHeader);
-            OrderHeader.SessionId = session.Id;
+            session = await _paymentApi.CreateCheckoutSessionAsync(OrderHeader);
+            OrderHeader.SessionId = session!.Id;
 
             await _orderApi.CreateAsync(OrderHeader);
-            _navigation.NavigateTo(session.Url);
         });
+        
+        _navigation.NavigateTo(session.Url);
     }
 }
