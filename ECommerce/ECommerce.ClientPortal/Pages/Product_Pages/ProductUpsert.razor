@@ -5,11 +5,8 @@
 @using ECommerce.ClientPortal.ViewModels.Products
 @using ECommerce.Contracts.DTO
 @using Radzen.Blazor
-@inject ICategoryApi categoryApi
-@inject IProductApi productApi
-@inject NavigationManager nav
 @inject IJSRuntime js
-@inject IFileApi fileApi
+@inject ProductUpsertVM VM
 
 <div class="py-3 col-12">
     <InputFile @ref="fileInput"
@@ -135,30 +132,24 @@ else
 
     private InputFile fileInput;
 
-    private ProductUpsertVM VM;
-
     private async Task OpenFilePicker()
     {
         await js.InvokeVoidAsync("openHiddenFileInput", fileInput.Element);
     }
 
+    private void StateHasChangedSafe() => InvokeAsync(StateHasChanged);
+
     protected override async Task OnInitializedAsync()
     {
-        VM = new ProductUpsertVM(categoryApi, productApi, nav, js, fileApi);
-        VM.StateChanged = StateHasChanged;
+        VM.StateChanged += StateHasChangedSafe;
         VM.Id = Id;
 
-        await LoadInitialData();
+        await VM.LoadProductAndCategoryListAsync();
     }
 
-    private async Task LoadInitialData()
+    public void Dispose()
     {
-        if (VM.Id > 0)
-            VM.Product = await productApi.GetByIdAsync(VM.Id) ?? new ProductDTO();
-
-        VM.Categories = await categoryApi.GetAllAsync();
-
-        await InvokeAsync(StateHasChanged);
+        VM.StateChanged -= StateHasChangedSafe;
     }
 
     private async Task OnFileSelected(InputFileChangeEventArgs e)
@@ -167,26 +158,13 @@ else
         {
             var file = e.File;
             var fileName = $"{Guid.NewGuid()}{Path.GetExtension(file.Name)}";
-
             await using var stream = file.OpenReadStream(5_000_000);
 
-            var uploaded = await fileApi.UploadProductImageAsync(stream, fileName);
-
-            if (uploaded != null)
-            {
-                VM.Product.ImageUrl = uploaded;
-                await js.ToastrSuccess("Image Uploaded Successfully");
-            }
-            else
-            {
-                await js.ToastrError("Image Upload Failed");
-            }
+            await VM.LoadFilesAsync(stream, fileName);
         }
         catch (Exception ex)
         {
             await js.ToastrError($"OnFileSelected EX: {ex.Message}");
         }
-
-        await InvokeAsync(StateHasChanged);
     }
 }
