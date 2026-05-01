@@ -29,6 +29,6 @@ public static class VMsConfiguration
 
         // Product VMs
         services.AddScoped<ProductListVM>();
-        //services.AddTransient<ProductUpsertVM>();
+        services.AddScoped<ProductUpsertVM>();
     }
 }
