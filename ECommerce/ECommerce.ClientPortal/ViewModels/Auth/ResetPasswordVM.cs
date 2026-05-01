@@ -18,7 +18,12 @@ public class ResetPasswordVM : ProcessingVM
     [Compare(nameof(NewPassword), ErrorMessage = "Passwords doesn't match")]
     public string ConfirmPassword { get; set; } = string.Empty;
 
-    public string Message { get; set; } = string.Empty;
+    private string _message = string.Empty;
+    public string Message
+    {
+        get => _message;
+        set => SetProperty(ref _message, value);
+    }
 
     public ResetPasswordVM(AuthService authService)
     {
@@ -31,17 +36,24 @@ public class ResetPasswordVM : ProcessingVM
         {
             Message = string.Empty;
 
-            var success = await _authService.ResetPassword(
-                new ResetPasswordRequest
-                {
-                    Token = Token,
-                    NewPassword = NewPassword,
-                    ConfirmPassword = ConfirmPassword
-                });
+            try 
+            { 
+                var success = await _authService.ResetPassword(
+                    new ResetPasswordRequest
+                    {
+                        Token = Token,
+                        NewPassword = NewPassword,
+                        ConfirmPassword = ConfirmPassword
+                    });
 
-            Message = success
-                ? "Your password has been successfully reset"
-                : "Password cannot be reset";
+                Message = success
+                    ? "Your password has been successfully reset"
+                    : "Password cannot be reset";
+            }
+            catch (Exception ex)
+            {
+                Message = $"Unexpected error: {ex.Message}";
+            }
         });
     }
 }
