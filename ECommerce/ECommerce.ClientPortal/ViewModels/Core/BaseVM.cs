@@ -8,6 +8,8 @@ namespace ECommerce.ClientPortal.ViewModels.Core;
 /// </summary>
 public abstract class BaseVM
 {
+    public string? ErrorMessage { get; private set; }
+
     /// <summary>
     /// Let's razor component to be notify of stateChanged
     /// </summary>
@@ -46,13 +48,19 @@ public abstract class BaseVM
         if (updatingFlag.GetPropertyValue())
             return;
 
-        // Set the property flag to true to indicate we are running
-        updatingFlag.SetPropertyValue(true);
-
         try
         {
+            // Set the property flag to true to indicate we are running
+            updatingFlag.SetPropertyValue(true);
+            NotifyStateChanged();
+
             // Run the passed in action
             await action();
+        }
+        catch (Exception ex)
+        {
+            // Store the exception message in a property to display in the UI
+            ErrorMessage = ex.Message;
         }
         finally
         {
