@@ -9,7 +9,13 @@ namespace ECommerce.ClientPortal.ViewModels.Auth;
 public class RegisterVM : AuthVMBase
 {
     public RegisterRequest Request { get; set; } = new();
-    public string ErrorMessage { get; set; } = string.Empty;
+
+    private string _errorMessage = string.Empty;
+    public string ErrorMessage
+    {
+        get => _errorMessage;
+        set => SetProperty(ref _errorMessage, value);
+    }
 
     public RegisterVM(AuthService authService, NavigationManager nav,
                       CustomAuthenticationStateProvider authStateProvider)
@@ -17,22 +23,24 @@ public class RegisterVM : AuthVMBase
 
     public async Task RegisterAsync()
     {
+        bool shouldRedirect = false;
+
         await RunCommandAsync(() => IsProcessing, async () =>
         {
             ErrorMessage = string.Empty;
             var result = await _authService.Register(Request);
 
-            if (result != null)
-            {
-                _authStateProvider.MarkUserAsAuthenticated(result.Token);
-            }
-            else
+            if(result == null)
             {
                 ErrorMessage = "Unable to create the account";
                 return;
             }
 
-            _nav.NavigateTo("/");
+            _authStateProvider.MarkUserAsAuthenticated(result.Token);
+            shouldRedirect = true;
         });
+
+        if (shouldRedirect) 
+            _nav.NavigateTo("/");
     }
 }
