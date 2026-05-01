@@ -16,8 +16,7 @@ public class ProductUpsertVM : ProcessingVM
     private readonly IFileApi _fileApi;
 
     public ProductUpsertVM(ICategoryApi categoryApi, IProductApi productApi, 
-                           NavigationManager navigation, IJSRuntime js, 
-                           IFileApi fileApi)
+                           NavigationManager navigation, IJSRuntime js, IFileApi fileApi)
     {
         _categoryApi = categoryApi;
         _productApi = productApi;
@@ -62,6 +61,38 @@ public class ProductUpsertVM : ProcessingVM
         return Product.ImageUrl ?? string.Empty;
     }
 
+    public async Task LoadProductAndCategoryListAsync()
+    {
+        await RunCommandAsync(() => IsProcessing, async () =>
+        {
+            if (Id > 0) Product = await _productApi.GetByIdAsync(Id);
+            Categories = await _categoryApi.GetAllAsync();
+        });
+    }
+
+    public async Task LoadFilesAsync(Stream fileStream, string fileName)
+    {
+        await RunCommandAsync(() => IsProcessing, async () =>
+        {
+            try 
+            { 
+                var uploadedFileName = await _fileApi.UploadProductImageAsync(fileStream, fileName);
+
+                if (uploadedFileName != null)
+                {
+                    Product.ImageUrl = uploadedFileName;
+                    await _js.ToastrSuccess("Image Uploaded Successfully");
+                }
+                else
+                    await _js.ToastrError("Image Upload Failed");
+            }
+            catch (Exception ex)
+            {
+                await _js.ToastrError($"LoadFilesAsync EX: {ex.Message}");
+            }
+        });
+    }
+
     public async Task UpsertProductAsync()
     {
         await RunCommandAsync(() => IsProcessing, async () =>
@@ -76,7 +107,6 @@ public class ProductUpsertVM : ProcessingVM
                 await _productApi.UpdateAsync(Product.Id, Product);
                 await _js.ToastrSuccess("Product Updated Successfully");
             }
-        
         });
         
         _navigation.NavigateTo("product");
