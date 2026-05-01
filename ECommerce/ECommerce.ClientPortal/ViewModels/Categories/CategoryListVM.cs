@@ -31,14 +31,6 @@ public class CategoryListVM : ProcessingVM
         set => SetProperty(ref _deleteCategoryID, value);
     }
 
-    public async Task AfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            await LoadCategoriesAsync();
-        }
-    }
-
     public async Task LoadCategoriesAsync()
     {
         await RunCommandAsync(() => IsProcessing, async () =>
@@ -50,7 +42,7 @@ public class CategoryListVM : ProcessingVM
     public void HandleDelete(int id)
     {
         DeleteCategoryID = id;
-        _js.InvokeVoidAsync("ShowConfirmationModal");
+        _ = _js.InvokeVoidAsync("ShowConfirmationModal");
     }
 
     public async Task ConfirmDeleteAsync(bool isConfirmed)
@@ -64,17 +56,21 @@ public class CategoryListVM : ProcessingVM
                 var result = await _categoryApi.DeleteAsync(DeleteCategoryID);
 
                 if (result)
+                {
                     _js?.ToastrSuccess("Category deleted successfully");
+                    
+                    var list = Categories.ToList();
+                    var item = list.FirstOrDefault(c => c.Id == DeleteCategoryID);
+                    if (item != null)
+                        list.Remove(item);
+
+                    Categories = list;
+                }
                 else
                     _js?.ToastrError("Error deleting category");
-
-                Categories = Categories.Where(c => c.Id != DeleteCategoryID).ToList();
-                await LoadCategoriesAsync();
             }
 
             DeleteCategoryID = 0;
         });
-        
-        OnStateChanged();
     }
 }
