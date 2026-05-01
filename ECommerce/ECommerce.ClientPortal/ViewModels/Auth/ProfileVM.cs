@@ -22,13 +22,17 @@ public class ProfileVM : BaseVM
         _authUser = authUser;
 
         // when AuthUserVM changes, ProfileVM updates automatically
-        _authUser.PropertyChanged += (_, __) => OnPropertyChanged(null);
+        _authUser.StateChanged += OnAuthUserChanged;
+    }
+
+    private void OnAuthUserChanged()
+    {
+        NotifyStateChanged();
     }
 
     public async Task LoadAsync()
     {
         await _authUser.WaitUntilReadyAsync();
-
-        OnPropertyChanged(null);
+        NotifyStateChanged();
     }
 }
