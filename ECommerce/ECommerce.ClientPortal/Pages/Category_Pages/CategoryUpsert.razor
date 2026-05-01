@@ -2,6 +2,7 @@
 @page "/category/update/{id:int}"
 @using ECommerce.ClientPortal.ViewModels.Categories
 @inject CategoryUpsertVM VM
+@inject NavigationManager nav
 
 @if (VM.IsProcessing)
 {
@@ -35,13 +36,22 @@ else
                             </button>
                         </div>
                         <div class="col-6 col-md-3">
-                            <a href="category" class="btn btn-secondary form-control" disabled="@VM.IsProcessing">
-                                <i class="bi bi-arrow-bar-left"></i> Back to List
-                            </a>
+                            <button class="btn btn-secondary form-control"
+                                    disabled="@VM.IsProcessing"
+                                    @onclick="GoBack">
+                                    @if (VM.IsProcessing)
+                                    {
+                                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                    }
+                                    else
+                                    {
+                                        <i class="bi bi-arrow-bar-left"></i>
+                                    }
+                                    Back to List
+                            </button>
                         </div>
                     </div>
                 </div>
-                
             </EditForm>
         </div>
     </div>
@@ -51,14 +61,20 @@ else
     [Parameter]
     public int Id { get; set; }
 
-    protected override void OnInitialized()
+    private void StateHasChangedSafe() => InvokeAsync(StateHasChanged);
+
+    private void GoBack() => nav.NavigateTo("category");
+
+    protected override async Task OnInitializedAsync()
     {
-        VM.StateChanged = StateHasChanged;
+        VM.StateChanged += StateHasChangedSafe;
         VM.Id = Id;
+        
+        await VM.LoadCategoryAsync();
     }
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    public void Dispose()
     {
-        await VM.AfterRenderAsync(firstRender);
+        VM.StateChanged -= StateHasChangedSafe;
     }
 }
