@@ -29,7 +29,7 @@ public class LogoutVM : AuthVMBase
             }
             catch (Exception ex)
             {
-                // expose a message
+                ErrorMessage = "Logout failed";
             }
         });
 

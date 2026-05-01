@@ -10,13 +10,6 @@ public class RegisterVM : AuthVMBase
 {
     public RegisterRequest Request { get; set; } = new();
 
-    private string _errorMessage = string.Empty;
-    public string ErrorMessage
-    {
-        get => _errorMessage;
-        set => SetProperty(ref _errorMessage, value);
-    }
-
     public RegisterVM(AuthService authService, NavigationManager nav,
                       CustomAuthenticationStateProvider authStateProvider)
                         : base(authService, nav, authStateProvider) { }

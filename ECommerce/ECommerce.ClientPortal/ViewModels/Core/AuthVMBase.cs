@@ -19,4 +19,11 @@ public abstract class AuthVMBase : ProcessingVM
         _nav = nav;
         _authStateProvider = authStateProvider;
     }
+
+    private string _errorMessage = string.Empty;
+    public string ErrorMessage
+    {
+        get => _errorMessage;
+        set => SetProperty(ref _errorMessage, value);
+    }
 }
