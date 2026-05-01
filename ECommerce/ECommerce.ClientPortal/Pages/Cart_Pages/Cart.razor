@@ -21,7 +21,6 @@ else
 					<h4 class="text-center text-success display-6">
 						Cart Summary
 					</h4>
-
 					@foreach (var cartItem in VM.ShoppingCarts)
 					{
 						<div class="d-flex p-2 m-2">
@@ -43,17 +42,20 @@ else
 									</div>
 									<div class="d-flex justify-content-between align-items-center">
 										<div class="d-flex justify-content-between g-0">
-											<span @onclick="() => VM.UpdateCartItemAsync(cartItem.ProductId, -1)">
+
+											<button class="btn text-secondary" disabled="@VM.IsProcessing"
+													@onclick="() => VM.UpdateCartItemAsync(cartItem.ProductId, -1)">
 												<i class="bi bi-dash-circle-fill btn text-secondary"></i>
-											</span>
+											</button>
 											<span class="ml-1 me-1">
 												<b class="lead">@cartItem.Count</b>
 											</span>
-											<span @onclick="() => VM.UpdateCartItemAsync(cartItem.ProductId, 1)">
+											<button class="btn text-secondary" disabled="@VM.IsProcessing"
+													@onclick="() => VM.UpdateCartItemAsync(cartItem.ProductId, 1)">
 												<i class="bi bi-plus-circle-fill btn text-secondary"></i>
-											</span>
+											</button>
 										</div>
-										<button class="btn btn-danger"
+										<button class="btn btn-danger" disabled="@VM.IsProcessing"
 												@onclick="() => VM.UpdateCartItemAsync(cartItem.ProductId, -10000)">
 												Remove
 										</button>
@@ -62,7 +64,6 @@ else
 							</div>
 						</div>
 					}
-
 				</div>
 			</div>
 			<div class="col-lg-6 col-12 p-4">
@@ -101,7 +102,6 @@ else
 								</div>
 
 							</div>
-						
 							<button type="submit" class="btn btn-success m-4">
 								Looks Good? Place Order!
 							</button>
@@ -122,18 +122,17 @@ else
 }
 
 @code {
-	protected override void OnInitialized()
-	{
-		VM.StateChanged = StateHasChanged;
-	}
+	private void StateHasChangedSafe() => InvokeAsync(StateHasChanged);
 
 	protected override async Task OnInitializedAsync()
 	{
+		VM.StateChanged += StateHasChangedSafe;
 		await VM.InitializeAsync();
+        await VM.LoadCartAsync();
 	}
 
-	protected override async Task OnAfterRenderAsync(bool firstRender)
+	public void Dispose()
 	{
-		await VM.AfterRenderAsync(firstRender);
+		VM.StateChanged -= StateHasChangedSafe;
 	}
 }
