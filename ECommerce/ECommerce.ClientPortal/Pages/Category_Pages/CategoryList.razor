@@ -67,9 +67,11 @@ else
 }
 
 @code {
+    private void StateHasChangedSafe() => InvokeAsync(StateHasChanged);
+
     protected override async Task OnInitializedAsync()
     {
-        VM.StateChanged += StateHasChanged;
+        VM.StateChanged += StateHasChangedSafe;
         await VM.LoadCategoriesAsync();
     }
 
@@ -80,6 +82,6 @@ else
 
     public void Dispose()
     {
-        VM.StateChanged -= StateHasChanged;
+        VM.StateChanged -= StateHasChangedSafe;
     }
 }
