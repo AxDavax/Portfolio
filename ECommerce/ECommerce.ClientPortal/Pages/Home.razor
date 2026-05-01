@@ -102,6 +102,6 @@ else
 
     public void Dispose()
     {
-        VM.StateChanged -= StateHasChanged;
+        VM.StateChanged -= StateHasChangedSafe;
     }
 }
