@@ -35,7 +35,11 @@ else
                       </a>
                   </div>
               </div>
-              @if(VM.Products.Any())
+              @if (!VM.Products.Any())
+              {
+                  <p>No products found.</p>
+              }
+              else
               {
                   <table class="table table-bordered table-striped">
                       <thead>
@@ -73,13 +77,16 @@ else
 }
 
 @code {
+    private void StateHasChangedSafe() => InvokeAsync(StateHasChanged);
+
     protected override async Task OnInitializedAsync()
     {
-        VM.StateChanged = StateHasChanged;
+        VM.StateChanged += StateHasChangedSafe;
+        await VM.LoadProductsAsync();
     }
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    public void Dispose()
     {
-        await VM.AfterRenderAsync(firstRender);
+        VM.StateChanged -= StateHasChangedSafe;
     }
 }
