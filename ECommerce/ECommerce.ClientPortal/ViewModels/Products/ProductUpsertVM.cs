@@ -55,6 +55,7 @@ public class ProductUpsertVM : ProcessingVM
         {
             if (string.IsNullOrWhiteSpace(Product.ImageUrl))
                 return string.Empty;
+
             return _fileApi.GetProductImageUrl(Product.ImageUrl);
         }
         
@@ -75,8 +76,9 @@ public class ProductUpsertVM : ProcessingVM
                 await _productApi.UpdateAsync(Product.Id, Product);
                 await _js.ToastrSuccess("Product Updated Successfully");
             }
-
-            _navigation.NavigateTo("product");
+        
         });
+        
+        _navigation.NavigateTo("product");
     }
 }
