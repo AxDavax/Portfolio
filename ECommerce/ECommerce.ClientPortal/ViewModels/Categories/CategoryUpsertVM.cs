@@ -34,14 +34,6 @@ public class CategoryUpsertVM : ProcessingVM
         set => SetProperty(ref _category, value);
     }
 
-    public async Task AfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            await LoadCategoryAsync();
-        }
-    }
-
     public async Task LoadCategoryAsync()
     {
         await RunCommandAsync(() => IsProcessing, async () =>
@@ -64,8 +56,8 @@ public class CategoryUpsertVM : ProcessingVM
                 await _categoryApi.UpdateAsync(Id, Category);
                 await _js.ToastrSuccess("Category Updated Successfully");
             }
-
-            _navigation.NavigateTo("category");
         });
+        
+        _navigation.NavigateTo("category");
     }
 }
