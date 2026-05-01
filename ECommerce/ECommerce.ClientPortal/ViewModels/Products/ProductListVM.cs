@@ -31,14 +31,6 @@ public class ProductListVM : ProcessingVM
         set => SetProperty(ref _deleteProductID, value);
     }
 
-    public async Task AfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            await LoadProductsAsync();
-        }
-    }
-
     private async Task LoadProductsAsync()
     {
         await RunCommandAsync(() => IsProcessing, async () => 
@@ -50,7 +42,7 @@ public class ProductListVM : ProcessingVM
     public void HandleDelete(int id)
     {
         DeleteProductID = id;
-        _js.InvokeVoidAsync("ShowConfirmationModal");
+        _ = _js.InvokeVoidAsync("ShowConfirmationModal");
     }
 
     public async Task ConfirmDeleteAsync(bool isConfirmed)
@@ -63,18 +55,21 @@ public class ProductListVM : ProcessingVM
             {
                 var result = await _productApi.DeleteAsync(DeleteProductID);
 
-                if (result)
+                if (result) { 
                     _js?.ToastrSuccess("Product deleted successfully");
+                
+                    var list = Products.ToList();
+                    var item = list.FirstOrDefault(p => p.Id == DeleteProductID);
+                    if (item != null)
+                        list.Remove(item);
+
+                    Products = list;
+                }
                 else
                     _js?.ToastrError("Error Encountered while deleting");
-
-                Products = Products.Where(p => p.Id != DeleteProductID).ToList();
-                await LoadProductsAsync();
             }
 
             DeleteProductID = 0;
         });
-
-        OnStateChanged();
     }
 }
