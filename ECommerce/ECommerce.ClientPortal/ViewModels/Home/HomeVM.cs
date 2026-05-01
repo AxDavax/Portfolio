@@ -70,16 +70,6 @@ public class HomeVM : ProcessingVM
         set => SetProperty(ref _searchText, value);
     }
 
-    public Task InitializeAsync() => Task.CompletedTask;
-
-    public async Task AfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            await LoadProductsAsync();
-        } 
-    }
-
     public async Task LoadProductsAsync()
     {
         await RunCommandAsync(() => IsProcessing, async () =>
@@ -110,7 +100,7 @@ public class HomeVM : ProcessingVM
     {
         if (string.IsNullOrWhiteSpace(newValueOfSearchText))
         {
-            FilteredProducts = Products;
+            FilteredProducts = Products.ToList();
         }
         else
         {
@@ -126,40 +116,59 @@ public class HomeVM : ProcessingVM
 
     public async Task AddOrderItem(ProductDTO product)
     {
-       /* await RunCommandAsync(() => IsProcessing, async () =>
-        {*/
-            await _authUser.WaitUntilReadyAsync();
+        bool shouldRedirectToLogin = false;
 
-            var user = _authUser.User;
-
-            if (user?.Identity?.IsAuthenticated != true)
-            {
-                _navigation.NavigateTo("/Auth/Login", forceLoad: true);
-                return;
-            }
-            
-            var userId = user.FindFirst(u => u.Type.Contains("nameidentifier"))?.Value;
-
-            if (string.IsNullOrEmpty(userId))
-            {
-                _navigation.NavigateTo("/Auth/Login", forceLoad: true);
-                return;
-            }
-
+        await RunCommandAsync(() => IsProcessing, async () =>
+        {
             try
             {
-                var result = await _cartApi.UpdateAsync(userId!, product.Id, 1);
-                _sharedStateService.TotalCartCount = await _cartApi.GetTotalCountAsync(userId!);
+                await _authUser.WaitUntilReadyAsync();
 
-                if (result)
-                    _js?.ToastrSuccess("Product added to cart successfully");
-                else
-                    _js?.ToastrError("Error encountered");
+                var user = _authUser.User;
+
+                if (user?.Identity?.IsAuthenticated != true)
+                {
+                    shouldRedirectToLogin = true;
+                    return;
+                }
+
+                var userId = user.FindFirst(u => u.Type.Contains("nameidentifier"))?.Value;
+
+                if (string.IsNullOrEmpty(userId))
+                {
+                    shouldRedirectToLogin = true;
+                    return;
+                }
+
+                try
+                {
+                    var result = await _cartApi.UpdateAsync(userId!, product.Id, 1);
+
+                    if (result) 
+                    { 
+                        _sharedStateService.TotalCartCount = 
+                        await _cartApi.GetTotalCountAsync(userId!);
+                        
+                       _js?.ToastrSuccess("Product added to cart successfully");
+                    }
+                    else
+                        _js?.ToastrError("Error encountered");
+                }
+                catch
+                {
+                    shouldRedirectToLogin = true;
+                    return;
+                }
             }
-            catch
+            catch (Exception ex)
             {
-                _navigation.NavigateTo("/Auth/Login", forceLoad: true);
+                await _js.ToastrError($"AddOrderItem EX: {ex.Message}");
             }
-        //});
+        });
+
+        if(shouldRedirectToLogin)
+        {
+            _navigation.NavigateTo("/Auth/Login", forceLoad: true);
+        }
     }
 }
