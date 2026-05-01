@@ -31,7 +31,7 @@ public class ProductListVM : ProcessingVM
         set => SetProperty(ref _deleteProductID, value);
     }
 
-    private async Task LoadProductsAsync()
+    public async Task LoadProductsAsync()
     {
         await RunCommandAsync(() => IsProcessing, async () => 
         {
