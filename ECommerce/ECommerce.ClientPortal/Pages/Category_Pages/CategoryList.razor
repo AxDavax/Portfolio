@@ -10,6 +10,7 @@
 
 </BsModal>
 
+
 @if(VM.IsProcessing)
 {
     <div class="position-absolute w-75 h-75 d-flex flex-column align-items-center bg-white justify-content-center">
@@ -68,17 +69,17 @@ else
 @code {
     protected override async Task OnInitializedAsync()
     {
-        VM.StateChanged = StateHasChanged;
-    }
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        VM.StateChanged = StateHasChanged;
-        await VM.AfterRenderAsync(firstRender);
+        VM.StateChanged += StateHasChanged;
+        await VM.LoadCategoriesAsync();
     }
 
     protected async Task ConfirmDelete(bool isConfirmed)
     {
         await VM.ConfirmDeleteAsync(isConfirmed);
+    }
+
+    public void Dispose()
+    {
+        VM.StateChanged -= StateHasChanged;
     }
 }
