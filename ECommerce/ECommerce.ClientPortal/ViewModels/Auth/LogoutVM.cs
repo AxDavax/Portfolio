@@ -13,15 +13,27 @@ public class LogoutVM : AuthVMBase
 
     public async Task LogoutAsync()
     {
+        bool shouldRedirect = false;
+
         await RunCommandAsync(() => IsProcessing, async () =>
         {
-            var result = await _authService.Logout();
-
-            if (result)
+            try
             {
-                _authStateProvider.MarkUserAsLoggedOut();
-                _nav.NavigateTo("/");
+                var result = await _authService.Logout();
+
+                if (result)
+                {
+                    _authStateProvider.MarkUserAsLoggedOut();
+                    shouldRedirect = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                // expose a message
             }
         });
+
+        if (shouldRedirect)
+            _nav.NavigateTo("/");
     }
 }
