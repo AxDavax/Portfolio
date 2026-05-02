@@ -65,8 +65,21 @@ public class ProductUpsertVM : ProcessingVM
     {
         await RunCommandAsync(() => IsProcessing, async () =>
         {
-            if (Id > 0) Product = await _productApi.GetByIdAsync(Id);
-            Categories = await _categoryApi.GetAllAsync();
+            try
+            {
+                if (Id > 0)
+                {
+                    Product = await _productApi.GetByIdAsync(Id);
+                    if (Product.ImageUrl?.StartsWith("http") == true)
+                        Product.ImageUrl = Path.GetFileName(Product.ImageUrl);
+                }
+
+                Categories = await _categoryApi.GetAllAsync();
+            }
+            catch (Exception ex)
+            {
+                await _js.ToastrError($"LoadProductAndCategoryListAsync EX: {ex.Message}");
+            }
         });
     }
 
