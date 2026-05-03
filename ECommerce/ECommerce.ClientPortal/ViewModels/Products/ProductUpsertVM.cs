@@ -70,8 +70,6 @@ public class ProductUpsertVM : ProcessingVM
                 if (Id > 0)
                 {
                     Product = await _productApi.GetByIdAsync(Id);
-                    if (Product.ImageUrl?.StartsWith("http") == true)
-                        Product.ImageUrl = Path.GetFileName(Product.ImageUrl);
                 }
 
                 Categories = await _categoryApi.GetAllAsync();
