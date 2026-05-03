@@ -37,7 +37,10 @@ public class JwtService : IJwtService
             new Claim(ClaimTypes.Name, user.FirstName)
         };
 
-        claims.AddRange(roles.Select(r => new Claim(ClaimTypes.Role, r)));
+        if(!roles.Any())
+            claims.Add(new Claim(ClaimTypes.Role, "Customer"));
+        else
+            claims.AddRange(roles.Select(r => new Claim(ClaimTypes.Role, r)));
 
         var jwt = new JwtSecurityToken(
             issuer: _config["Jwt:Issuer"],
