@@ -82,7 +82,7 @@ public class UserRepository : IUserRepository, IUserAuthRepository
 
         """;
 
-        var result = await _db.QuerySingleOrDefaultAsync<int?, dynamic>(
+        var result = await _db.QuerySingleOrDefaultAsync<int?, object>(
             sql, new { Email = email });
 
         return result.HasValue;
@@ -101,7 +101,7 @@ public class UserRepository : IUserRepository, IUserAuthRepository
 
         """;
 
-        var user = await _db.QuerySingleOrDefaultAsync<User, dynamic>(
+        var user = await _db.QuerySingleOrDefaultAsync<User, object>(
             sql, new { Email = email });
 
         return user ?? null;
@@ -120,7 +120,7 @@ public class UserRepository : IUserRepository, IUserAuthRepository
 
         """;
 
-        var user = await _db.QuerySingleOrDefaultAsync<User, dynamic>(
+        var user = await _db.QuerySingleOrDefaultAsync<User, object>(
             sql, new { Id = id });
 
         return user ?? null;
@@ -143,7 +143,7 @@ public class UserRepository : IUserRepository, IUserAuthRepository
             
         """;
 
-        return _db.QueryAsync<string, dynamic>(sql, new { UserId = userId });
+        return _db.QueryAsync<string, object>(sql, new { UserId = userId });
     }
 
     public async Task<SqlUser?> GetSqlUserByEmailAsync(string email)
@@ -159,7 +159,7 @@ public class UserRepository : IUserRepository, IUserAuthRepository
 
         """;
 
-        return await _db.QuerySingleOrDefaultAsync<SqlUser, dynamic>(
+        return await _db.QuerySingleOrDefaultAsync<SqlUser, object>(
             sql, new { Email = email });
     }
 }
