@@ -25,7 +25,7 @@ public class ShoppingCartRepository : IShoppingCartRepository
 
         """;
 
-        return await _db.QuerySingleOrDefaultAsync<ShoppingCart, dynamic>
+        return await _db.QuerySingleOrDefaultAsync<ShoppingCart, object>
                          (sql, new { UserId = userId, ProductId = productId });
     }
 
@@ -66,7 +66,7 @@ public class ShoppingCartRepository : IShoppingCartRepository
                 sc.UserId = @UserId
         """;
 
-        return await _db.QueryAsync<ShoppingCart, Product, Category, ShoppingCart, dynamic>(
+        return await _db.QueryAsync<ShoppingCart, Product, Category, ShoppingCart, object>(
             sql,
             (cart, product, category) =>
             {
@@ -91,7 +91,7 @@ public class ShoppingCartRepository : IShoppingCartRepository
 
         """;
         
-        return _db.ExecuteScalarAsync<int, dynamic>(sql, new { UserId = userId });
+        return _db.ExecuteScalarAsync<int, object>(sql, new { UserId = userId });
     }
 
     public async Task<bool> DeleteAsync(int id)
