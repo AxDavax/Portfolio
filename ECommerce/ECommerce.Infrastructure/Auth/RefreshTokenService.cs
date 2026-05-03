@@ -44,7 +44,7 @@ public class RefreshTokenService : IRefreshTokenService
 
         """;
 
-        return await _db.QuerySingleOrDefaultAsync<RefreshToken, dynamic>(
+        return await _db.QuerySingleOrDefaultAsync<RefreshToken, object>(
             sql, new { Token = token });
     }
 
@@ -118,7 +118,7 @@ public class RefreshTokenService : IRefreshTokenService
 
         """;
 
-        var result = await _db.QuerySingleOrDefaultAsync<string, dynamic>(
+        var result = await _db.QuerySingleOrDefaultAsync<string, object>(
             sql, new { UserId = userId, Token = refreshToken });
 
         return result != null;
