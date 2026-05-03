@@ -12,7 +12,7 @@ public class ShoppingCartApi : BaseApi, IShoppingCartApi
         => SafeDelete($"api/shoppingcart/{userId}");
 
     public Task<List<ShoppingCartDTO>> GetAllAsync(string userId)
-        => SafeGetList<ShoppingCartDTO>("api/category/{userId}");
+        => SafeGetList<ShoppingCartDTO>("api/shoppingcart/{userId}");
 
     public Task<ShoppingCartDTO?> GetItemAsync(string userId, int productId)
         => SafeGet<ShoppingCartDTO?>($"api/shoppingcart/{userId}/product/{productId}")!;
