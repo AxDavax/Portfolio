@@ -37,10 +37,25 @@ public class AuthUserVM : BaseVM
         _ = HandleAuthStateChanged(task);
     }
 
+    private ClaimsPrincipal MapClaims(ClaimsPrincipal original)
+    {
+        var identity = original.Identity as ClaimsIdentity;
+
+        var newIdentity = new ClaimsIdentity(
+            identity?.Claims,
+            identity?.AuthenticationType,
+            ClaimTypes.Name,
+            ClaimTypes.Role
+        );
+
+        return new ClaimsPrincipal(newIdentity);
+    }
+
+
     private async Task HandleAuthStateChanged(Task<AuthenticationState> task)
     {
         var authState = await task;
-        User = authState.User;
+        User = MapClaims(authState.User);
 
         IsReady = true;
         _ready.TrySetResult(true);
@@ -51,7 +66,7 @@ public class AuthUserVM : BaseVM
     public async Task LoadAsync()
     {
         var authState = await _authStateProvider.GetAuthenticationStateAsync();
-        User = authState.User;
+        User = MapClaims(authState.User);
 
         IsReady = true;
         _ready.TrySetResult(true);
