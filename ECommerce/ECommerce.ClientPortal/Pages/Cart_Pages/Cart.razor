@@ -25,7 +25,7 @@ else
 					{
 						<div class="d-flex p-2 m-2">
 							<div class="card flex-row w-100">
-								<img class="card-img-left" style="width: 120px;" src="@(cartItem.Product.ImageUrl ?? "/images/default.png")">
+								<img class="card-img-left" style="width: 120px;" src="@(VM.GetPreviewUrl(cartItem.Product.ImageUrl) ?? "/images/default.png")">
 								<div class="card-body">
 									<div class="d-flex justify-content-between align-items-center">
 										<h4 class="">

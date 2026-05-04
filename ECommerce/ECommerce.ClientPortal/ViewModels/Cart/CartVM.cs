@@ -16,6 +16,7 @@ public class CartVM : ProcessingVM
     private readonly ICartApi _cartApi;
     private readonly IOrderApi _orderApi;
     private readonly IPaymentApi _paymentApi;
+    private readonly IFileApi _fileApi;
     private readonly NavigationManager _navigation;
     private readonly SharedStateService _sharedStateService;
     private readonly ProfileVM _profile;
@@ -24,6 +25,7 @@ public class CartVM : ProcessingVM
                   ICartApi cartApi,
                   IOrderApi orderApi, 
                   IPaymentApi paymentApi,
+                  IFileApi fileApi,
                   NavigationManager navigation, 
                   SharedStateService sharedStateService, 
                   ProfileVM profile)
@@ -32,6 +34,7 @@ public class CartVM : ProcessingVM
         _cartApi = cartApi;
         _orderApi = orderApi;
         _paymentApi = paymentApi;
+        _fileApi = fileApi;
         _navigation = navigation;
         _sharedStateService = sharedStateService;
         _profile = profile;
@@ -96,6 +99,14 @@ public class CartVM : ProcessingVM
         }
 
         OrderHeader.OrderTotal = Math.Round(OrderHeader.OrderTotal, 2);
+    }
+
+    public string GetPreviewUrl(string imageUrl)
+    {
+        if (string.IsNullOrWhiteSpace(imageUrl))
+            return string.Empty;
+
+        return _fileApi.GetProductImageUrl(imageUrl);
     }
 
     public async Task UpdateCartItemAsync(int productId, int updateBy)
