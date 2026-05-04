@@ -1,4 +1,5 @@
 ﻿using ECommerce.ClientPortal.ViewModels.Auth;
+using ECommerce.ClientPortal.ViewModels.Cart;
 using ECommerce.ClientPortal.ViewModels.Categories;
 using ECommerce.ClientPortal.ViewModels.Core;
 using ECommerce.ClientPortal.ViewModels.Home;
@@ -30,5 +31,8 @@ public static class VMsConfiguration
         // Product VMs
         services.AddScoped<ProductListVM>();
         services.AddScoped<ProductUpsertVM>();
+
+        // Shopping Cart VM
+        services.AddScoped<CartVM>();
     }
 }
