@@ -50,6 +50,8 @@ public class CategoryUpsertVM : ProcessingVM
             {
                 await _categoryApi.CreateAsync(Category);
                 await _js.ToastrSuccess("Category Created Successfully");
+
+                Category = new CategoryDTO();
             }
             else
             {
