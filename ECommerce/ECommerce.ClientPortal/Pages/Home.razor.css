@@ -17,3 +17,17 @@
 .add-to-cart-outline:active {
     transform: scale(.97);
 }
+
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(255,255,255,0.7);
+    z-index: 99999;
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

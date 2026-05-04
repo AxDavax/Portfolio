@@ -1,8 +1,5 @@
 ﻿@page "/"
 @using System.Globalization
-@using ECommerce.ClientPortal.Services.API.Interfaces
-@using ECommerce.ClientPortal.Services.State
-@using ECommerce.ClientPortal.ViewModels.Core
 @using ECommerce.ClientPortal.ViewModels.Home
 @using ECommerce.Contracts.DTO
 @inject HomeVM VM
@@ -11,7 +8,7 @@
 
 @if (VM.IsProcessing)
 {
-    <div class="position-absolute w-100 vh-100 d-flex flex-column align-items-center bg-white justify-content-center" style="z-index: -1;">
+    <div class="loading-overlay">
         <img src="/images/loading.gif" alt="loading" />
     </div>
 }
@@ -76,7 +73,6 @@ else
                                 <div class="text-center">
                                     <div class="m-lg-auto p-2">
                                         <button class="btn btn-success w-100 add-to-cart-outline"
-                                                style="position: relative; z-index: 9999;"
                                                 @onclick="() => VM.AddOrderItem(prod)">
                                             <i class="bi bi-cart3 text-right"> Add to cart</i>
                                         </button>
