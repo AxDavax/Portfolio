@@ -12,7 +12,7 @@ public class ShoppingCartRepository : IShoppingCartRepository
         _db = db;
     }
 
-    public async Task<ShoppingCart?> GetItemAsync(string userId, int productId)
+    public async Task<ShoppingCart?> GetItemAsync(Guid userId, int productId)
     {
         const string sql = """
 
@@ -29,7 +29,7 @@ public class ShoppingCartRepository : IShoppingCartRepository
                          (sql, new { UserId = userId, ProductId = productId });
     }
 
-    public async Task<bool> ClearCartAsync(string? userId)
+    public async Task<bool> ClearCartAsync(Guid userId)
     {
         const string sql = """
 
@@ -45,13 +45,13 @@ public class ShoppingCartRepository : IShoppingCartRepository
         return rows > 0;
     }
 
-    public async Task<IEnumerable<ShoppingCart>> GetAllAsync(string? userId)
+    public async Task<IEnumerable<ShoppingCart>> GetAllAsync(Guid userId)
     {
         const string sql = """
             SELECT 
-                sc.Id, sc.UserId, sc.ProductId, sc.Count,
-                p.Id, p.Name, p.Price, p.Description, p.SpecialTag, p.ImageUrl, p.CategoryId,
-                c.Id, c.Name
+                sc.Id As CartId, sc.UserId, sc.ProductId, sc.Count,
+                p.Id As ProductId, p.Name, p.Price, p.Description, p.SpecialTag, p.ImageUrl, p.CategoryId,
+                c.Id As CategoryId, c.Name As CategoryName
             FROM 
                 ShoppingCart sc
             INNER JOIN 
@@ -74,11 +74,12 @@ public class ShoppingCartRepository : IShoppingCartRepository
                 cart.Product = product;
                 return cart;
             },
-            new { UserId = userId }
+            new { UserId = userId },
+            splitOn: "CartId,ProductId,CategoryId"
         );
     }
 
-    public Task<int> GetTotalCartCountAsync(string? userId)
+    public Task<int> GetTotalCartCountAsync(Guid userId)
     {
         const string sql = """
 
@@ -110,9 +111,9 @@ public class ShoppingCartRepository : IShoppingCartRepository
         return rows > 0;
     }
 
-    public async Task<bool> UpdateCartAsync(string userId, int productId, int updateBy)
+    public async Task<bool> UpdateCartAsync(Guid userId, int productId, int updateBy)
     {
-        if (string.IsNullOrEmpty(userId))
+        if (userId == Guid.Empty)
         {
             return false;
         }
