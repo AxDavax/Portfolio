@@ -32,9 +32,11 @@ public class JwtService : IJwtService
             new Claim(JwtRegisteredClaimNames.Email, user.Email),
             new Claim(JwtRegisteredClaimNames.GivenName, user.FirstName),
             new Claim(JwtRegisteredClaimNames.FamilyName, user.LastName),
+            
+            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+            new Claim(ClaimTypes.Name, $"{user.FirstName} {user.LastName}"),
+            new Claim(ClaimTypes.Email, user.Email),
             new Claim("uid", user.Id.ToString()),
-
-            new Claim(ClaimTypes.Name, user.FirstName)
         };
 
         if(!roles.Any())
