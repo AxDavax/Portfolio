@@ -1,10 +1,10 @@
 ﻿CREATE TABLE ShoppingCart (
     Id INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
-    UserId NVARCHAR(450) NOT NULL,
+    UserId UNIQUEIDENTIFIER NOT NULL,
     ProductId INT NOT NULL,
     Count INT NOT NULL,
-    CONSTRAINT FK_ShoppingCart_AspNetUsers_UserId
-        FOREIGN KEY (UserId) REFERENCES AspNetUsers(Id)
+    CONSTRAINT FK_ShoppingCart_Users_UserId
+        FOREIGN KEY (UserId) REFERENCES Users(Id)
         ON DELETE CASCADE,
     CONSTRAINT FK_ShoppingCart_Product_ProductId
         FOREIGN KEY (ProductId) REFERENCES Product(Id)
