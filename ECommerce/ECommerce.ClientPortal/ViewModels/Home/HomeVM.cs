@@ -132,7 +132,7 @@ public class HomeVM : ProcessingVM
                     return;
                 }
 
-                var userId = user.FindFirst(u => u.Type.Contains("nameidentifier"))?.Value;
+                var userId = user.FindFirst("uid")?.Value;
 
                 if (string.IsNullOrEmpty(userId))
                 {
@@ -166,7 +166,7 @@ public class HomeVM : ProcessingVM
             }
         });
 
-        if(shouldRedirectToLogin)
+        if (shouldRedirectToLogin)
         {
             _navigation.NavigateTo("/Auth/Login", forceLoad: true);
         }
