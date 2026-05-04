@@ -98,7 +98,7 @@
 			return;
 		}
 
-        var userId = user.FindFirst(u => u.Type.Contains("nameidentifier"))?.Value;
+		var userId = user.FindFirst("uid")?.Value;
 
 		if(string.IsNullOrEmpty(userId) || _shoppingCartApi is null)
 		{
