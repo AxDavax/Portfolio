@@ -69,6 +69,7 @@ public class CartVM : ProcessingVM
 
             OrderHeader = new OrderHeaderDTO
             {
+                Name = _profile.Name,
                 Email = _profile.Email,
                 UserId = _profile.UserId,
                 Status = SD.StatusPending
