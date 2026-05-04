@@ -3,8 +3,8 @@
 @using ECommerce.ClientPortal.ViewModels.Core
 @using Microsoft.AspNetCore.Components.Authorization
 @inject SharedStateService _sharedStateService
-@inject AuthUserVM VM
 @inject IShoppingCartApi? _shoppingCartApi
+@inject AuthenticationStateProvider AuthStateProvider
 
 <nav class="navbar navbar-expand-md navbar-dark bg-dark pb-4 pt-4">
 	<div class="container-fluid">
@@ -82,9 +82,10 @@
 
 	public async Task GetInitialCount()
 	{
-		var user = VM.User;
+        var state = await AuthStateProvider.GetAuthenticationStateAsync();
+        var user = state.User;
 
-		if (user is null || user.Identity?.IsAuthenticated != true)
+		if (!user.Identity?.IsAuthenticated ?? true)
 		{
 			_sharedStateService.TotalCartCount = 0;
 			return;
