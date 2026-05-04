@@ -7,7 +7,7 @@ public class ShoppingCartDTO
     public int Id { get; set; }
 
     [Required]
-    public string UserId { get; set; }
+    public Guid UserId { get; set; }
 
     [Range(1, 100)]
     public int Count { get; set; }
