@@ -21,26 +21,24 @@ public class ShoppingCartService : IShoppingCartService
         _mapper = mapper;
     }
 
-    public async Task<bool> ClearCartAsync(string userId) => await _repo.ClearCartAsync(userId);
+    public async Task<bool> ClearCartAsync(Guid userId) => await _repo.ClearCartAsync(userId);
 
-    public async Task<IEnumerable<ShoppingCartDTO>> GetAllAsync(string userId)
+    public async Task<IEnumerable<ShoppingCartDTO>> GetAllAsync(Guid userId)
     {
         var items = await _repo.GetAllAsync(userId);
         return _mapper.Map<IEnumerable<ShoppingCartDTO>>(items);
     }
 
-    public async Task<ShoppingCartDTO?> GetItemAsync(string userId, int productId)
+    public async Task<ShoppingCartDTO?> GetItemAsync(Guid userId, int productId)
     {
         var cartItem = await _repo.GetItemAsync(userId, productId);
         return (cartItem == null) ? null : _mapper.Map<ShoppingCartDTO>(cartItem);
     }
 
-    public async Task<int> GetTotalCartCountAsync(string userId)
-    {
-        return await _repo.GetTotalCartCountAsync(userId);
-    }
+    public async Task<int> GetTotalCartCountAsync(Guid userId)
+        => await _repo.GetTotalCartCountAsync(userId);
 
-    public async Task<bool> UpdateCartAsync(string userId, int productId, int updateBy)
+    public async Task<bool> UpdateCartAsync(Guid userId, int productId, int updateBy)
     {
         var existing = await _repo.GetItemAsync(userId, productId);
 
