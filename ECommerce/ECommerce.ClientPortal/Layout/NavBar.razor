@@ -69,11 +69,18 @@
 
 @code {
 
-	protected override void OnInitialized()
+	protected override async Task OnInitializedAsync()
 	{
-		_sharedStateService.OnChange += OnSharedStateChange;
-		GetInitialCount();
-	}
+		AuthStateProvider.AuthenticationStateChanged += async _ =>
+        {
+            await GetInitialCount();
+            StateHasChanged();
+        };
+
+        await GetInitialCount();
+
+        _sharedStateService.OnChange += OnSharedStateChange;
+    }
 
 	private void OnSharedStateChange()
 	{
@@ -106,5 +113,11 @@
 	public void Dispose()
 	{
 		_sharedStateService.OnChange -= OnSharedStateChange;
+
+		AuthStateProvider.AuthenticationStateChanged -= async _ =>
+		{
+			await GetInitialCount();
+			StateHasChanged();
+		};
 	}
 }
