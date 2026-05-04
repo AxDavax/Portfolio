@@ -112,6 +112,8 @@ public class ProductUpsertVM : ProcessingVM
             {
                 await _productApi.CreateAsync(Product);
                 await _js.ToastrSuccess("Product Created Successfully");
+
+                Product = new ProductDTO();
             }
             else
             {
