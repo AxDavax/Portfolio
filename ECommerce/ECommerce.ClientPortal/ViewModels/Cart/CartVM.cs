@@ -15,25 +15,25 @@ public class CartVM : ProcessingVM
     private readonly IShoppingCartApi _shoppingCartApi;
     private readonly ICartApi _cartApi;
     private readonly IOrderApi _orderApi;
+    private readonly IPaymentApi _paymentApi;
     private readonly NavigationManager _navigation;
     private readonly SharedStateService _sharedStateService;
-    private readonly PaymentApi _paymentApi;
     private readonly ProfileVM _profile;
 
     public CartVM(IShoppingCartApi shoppingCartApi, 
                   ICartApi cartApi,
                   IOrderApi orderApi, 
+                  IPaymentApi paymentApi,
                   NavigationManager navigation, 
                   SharedStateService sharedStateService, 
-                  PaymentApi paymentApi,
                   ProfileVM profile)
     {
         _shoppingCartApi = shoppingCartApi;
         _cartApi = cartApi;
         _orderApi = orderApi;
+        _paymentApi = paymentApi;
         _navigation = navigation;
         _sharedStateService = sharedStateService;
-        _paymentApi = paymentApi;
         _profile = profile;
     }
 
