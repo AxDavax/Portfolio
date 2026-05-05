@@ -14,6 +14,8 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
+StripeConfiguration.ApiKey = builder.Configuration["Stripe:ApiKey"]!;
+
 builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
@@ -76,8 +78,6 @@ builder.Services.AddCors(options =>
 });
 
 var app = builder.Build();
-
-StripeConfiguration.ApiKey = builder.Configuration["Stripe:ApiKey"]!;
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
