@@ -39,7 +39,7 @@
 					<Authorized>
 						<li class="nav-item">
 							<NavLink class="nav-link p-2" href="Auth/Profile">
-								Welcome, @context?.User?.Identity?.Name
+								Welcome, @context.User.FindFirst("firstName")?.Value
 							</NavLink>
 						</li>
 						<li class="nav-item">
