@@ -24,6 +24,11 @@ public class AuthUserVM : BaseVM
         private set => SetProperty(ref _isReady, value);
     }
 
+    /// <summary>
+    /// Gets the user ID from the "uid" claim injected by the JWT.
+    /// </summary>
+    public string? UserId => User?.FindFirst("uid")?.Value;
+
     public AuthUserVM(AuthenticationStateProvider authenticationStateProvider) 
     {
         _authStateProvider = authenticationStateProvider;
