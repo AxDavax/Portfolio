@@ -18,7 +18,7 @@ namespace ECommerce.API.Controllers
         // GET: api/order
         // GET: api/order?userId=abc123
         [HttpGet]
-        public async Task<IActionResult> GetAll([FromQuery] string? userId = null)
+        public async Task<IActionResult> GetAll([FromQuery] Guid? userId = null)
         {
             var orders = await _orderService.GetAllAsync(userId);
             return Ok(orders);
