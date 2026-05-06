@@ -33,7 +33,7 @@ public class OrderRepository : IOrderRepository
         return orderHeader;
     }
 
-    public async Task<IEnumerable<OrderHeader>> GetAllAsync(string? userId = null)
+    public async Task<IEnumerable<OrderHeader>> GetAllAsync(Guid? userId = null)
     {
         string sql = """
 
@@ -44,7 +44,7 @@ public class OrderRepository : IOrderRepository
 
         """;
 
-        if (!string.IsNullOrEmpty(userId)) 
+        if (userId.HasValue) 
         {
             sql += " WHERE UserId = @UserId";
             return await _db.QueryAsync<OrderHeader, dynamic>(sql, new { UserId = userId });
