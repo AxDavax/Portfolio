@@ -24,7 +24,7 @@ public class OrderService : IOrderService
         return _mapper.Map<OrderHeaderDTO>(created);
     }
 
-    public async Task<IEnumerable<OrderHeaderDTO>> GetAllAsync(string? userId = null)
+    public async Task<IEnumerable<OrderHeaderDTO>> GetAllAsync(Guid? userId = null)
     {
         var orders = await _repo.GetAllAsync(userId);
         return _mapper.Map<IEnumerable<OrderHeaderDTO>>(orders);
