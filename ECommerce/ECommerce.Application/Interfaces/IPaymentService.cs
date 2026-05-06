@@ -6,5 +6,5 @@ namespace ECommerce.Application.Interfaces;
 public interface IPaymentService
 {
     Task<CheckoutSessionResponse> CreateCheckoutSessionAsync(OrderHeaderDTO order);
-    Task<bool> VerifyPaymentAsync(string sessionId);
+    Task<OrderHeaderDTO> VerifyPaymentAsync(string sessionId);
 }

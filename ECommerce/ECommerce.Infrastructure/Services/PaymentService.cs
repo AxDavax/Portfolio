@@ -1,22 +1,30 @@
-﻿using ECommerce.Contracts.DTO;
+﻿using AutoMapper;
 using ECommerce.Application.Interfaces;
+using ECommerce.Contracts.DTO;
+using ECommerce.Contracts.DTO.Payment;
 using ECommerce.Domain.Constants;
 using ECommerce.Domain.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Stripe.Checkout;
-using ECommerce.Contracts.DTO.Payment;
 
 namespace ECommerce.Infrastructure.Services;
 
 public class PaymentService : IPaymentService
 {
     private readonly IOrderRepository _orderRepository;
+    private readonly IShoppingCartRepository _cartRepository;
+    private readonly IMapper _mapper;
     private readonly string _successUrl;
     private readonly string _cancelUrl;
 
-    public PaymentService(IOrderRepository orderRepository, IConfiguration config)
+    public PaymentService(IOrderRepository orderRepository, 
+                          IShoppingCartRepository cartRepository, 
+                          IMapper mapper,
+                          IConfiguration config)
     {
         _orderRepository = orderRepository;
+        _cartRepository = cartRepository;   
+        _mapper = mapper;
 
         _successUrl = config["Stripe:SuccessUrl"]!;
         _cancelUrl = config["Stripe:CancelUrl"]!;
@@ -62,26 +70,26 @@ public class PaymentService : IPaymentService
         };
     }
 
-    public async Task<bool> VerifyPaymentAsync(string sessionId)
+    public async Task<OrderHeaderDTO> VerifyPaymentAsync(string sessionId)
     {
         var service = new SessionService();
         var session = await service.GetAsync(sessionId);
 
-        if (session.PaymentStatus?.ToLower() == "paid")
-        {
-            var orderHeader = await _orderRepository.GetOrderBySessionIdAsync(sessionId);
-            if (orderHeader == null)
-                return false;
+        if (session.PaymentStatus?.ToLower() != "paid")
+            return null;
 
-            await _orderRepository.UpdateStatusAsync(
-                orderHeader!.Id, 
-                OrderStatus.StatusApproved, 
-                session.PaymentIntentId
-            );
+        var orderHeader = await _orderRepository.GetOrderBySessionIdAsync(sessionId);
+        if (orderHeader == null)
+            return null;
+
+        var newOrderHeader = await _orderRepository.UpdateStatusAsync(
+            orderHeader!.Id, 
+            OrderStatus.StatusApproved, 
+            session.PaymentIntentId
+        );
             
-            return true;
-        }
+        await _cartRepository.ClearCartAsync(orderHeader.UserId);
 
-        return false;
+        return _mapper.Map<OrderHeaderDTO>(newOrderHeader);
     }
 }
