@@ -8,26 +8,26 @@ public class ShoppingCartApi : BaseApi, IShoppingCartApi
 {
     public ShoppingCartApi(HttpClient http, NavigationManager nav) : base(http, nav) { }
 
-    public Task<bool> ClearAsync(string userId) 
+    public Task<bool> ClearAsync(Guid userId) 
         => SafeDelete($"api/shoppingcart/{userId}");
 
-    public Task<List<ShoppingCartDTO>> GetAllAsync(string userId)
+    public Task<List<ShoppingCartDTO>> GetAllAsync(Guid userId)
         => SafeGetList<ShoppingCartDTO>($"api/shoppingcart/{userId}");
 
-    public Task<ShoppingCartDTO?> GetItemAsync(string userId, int productId)
+    public Task<ShoppingCartDTO?> GetItemAsync(Guid userId, int productId)
         => SafeGet<ShoppingCartDTO?>($"api/shoppingcart/{userId}/product/{productId}")!;
 
-    public async Task<int> GetTotalCountAsync(string userId)
+    public async Task<int> GetTotalCountAsync(Guid userId)
     {
-        if (string.IsNullOrEmpty(userId)) return 0;
+        if (userId == Guid.Empty) return 0;
 
         var result = await SafeGet<int?>($"api/shoppingcart/{userId}/count");
         return result ?? 0;
     }
 
-    public Task<bool> UpdateAsync(string userId, int productId, int updateBy)
+    public Task<bool> UpdateAsync(Guid userId, int productId, int updateBy)
     {
-        if (string.IsNullOrEmpty(userId)) return Task.FromResult(false);
+        if (userId == Guid.Empty) return Task.FromResult(false);
 
         return SafePut($"api/shoppingcart/{userId}/product/{productId}?updateBy={updateBy}", null);
     }
