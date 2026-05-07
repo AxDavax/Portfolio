@@ -1,10 +1,12 @@
-﻿using ECommerce.Contracts.DTO;
-using ECommerce.Application.Interfaces;
-using Microsoft.AspNetCore.Mvc;
+﻿using ECommerce.Application.Interfaces;
+using ECommerce.Contracts.DTO;
 using ECommerce.Contracts.DTO.Payment;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerce.API.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class PaymentController : ControllerBase
