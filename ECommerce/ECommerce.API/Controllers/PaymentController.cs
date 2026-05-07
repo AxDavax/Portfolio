@@ -1,6 +1,7 @@
 ﻿using ECommerce.Contracts.DTO;
 using ECommerce.Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using ECommerce.Contracts.DTO.Payment;
 
 namespace ECommerce.API.Controllers
 {
@@ -27,8 +28,23 @@ namespace ECommerce.API.Controllers
         [HttpGet("verify/{sessionId}")]
         public async Task<IActionResult> VerifyPayment(string sessionId)
         {
-            var success = await _paymentService.VerifyPaymentAsync(sessionId);
-            return Ok(new { success });
+            var order = await _paymentService.VerifyPaymentAsync(sessionId);
+            
+            if(order is null)
+            {
+                return Ok(new PaymentVerifyResponse { 
+                    Success = false, 
+                    Order = null,
+                    Message = "Payment verification failed." 
+                });
+            }
+
+            return Ok(new PaymentVerifyResponse 
+            { 
+                Success = true, 
+                Order = order, 
+                Message = "Payment verification succeeded." 
+            });
         }
     }
 }
