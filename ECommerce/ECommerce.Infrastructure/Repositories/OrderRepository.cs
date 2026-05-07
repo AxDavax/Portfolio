@@ -137,7 +137,7 @@ public class OrderRepository : IOrderRepository
             {
                 Id = orderId,
                 Status = status,
-                paymentIntentId = paymentIntentId
+                PaymentIntentId = paymentIntentId
             }
         );
     }
