@@ -9,14 +9,29 @@ public class ResetPasswordVM : ProcessingVM
 {
     private readonly AuthService _authService;
 
-    public string Token { get; set; } = string.Empty;
+    private string _token = string.Empty;
+    public string Token     
+    {
+        get => _token;
+        set => SetProperty(ref _token, value);
+    }
 
+    private string _newPassword = string.Empty;
     [Required(ErrorMessage = "Password is required")]
-    public string NewPassword { get; set; } = string.Empty;
+    public string NewPassword
+    {
+        get => _newPassword;
+        set => SetProperty(ref _newPassword, value);
+    }
 
+    private string _confirmPassword = string.Empty;
     [Required(ErrorMessage = "Confirmation is required")]
     [Compare(nameof(NewPassword), ErrorMessage = "Passwords doesn't match")]
-    public string ConfirmPassword { get; set; } = string.Empty;
+    public string ConfirmPassword 
+    {
+        get => _confirmPassword;
+        set => SetProperty(ref _confirmPassword, value);
+    }
 
     private string _message = string.Empty;
     public string Message
@@ -28,6 +43,14 @@ public class ResetPasswordVM : ProcessingVM
     public ResetPasswordVM(AuthService authService)
     {
         _authService = authService;
+    }
+
+    public void OnInitialised(string token)
+    {
+        Token = token;
+        NewPassword = string.Empty;
+        ConfirmPassword = string.Empty;
+        Message = string.Empty;
     }
 
     public async Task SubmitAsync()
