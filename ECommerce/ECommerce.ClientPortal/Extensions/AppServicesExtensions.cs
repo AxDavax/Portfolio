@@ -8,7 +8,7 @@ public static class AppServicesExtensions
 {
     public static IServiceCollection AddAppServices(this IServiceCollection services)
     {
-        services.AddScoped<SharedStateService>();
+        services.AddSingleton<SharedStateService>();
         services.AddScoped<UserSessionService>();
         services.AddScoped<LocalStorageService>();
         services.AddScoped<TokenStorageService>();
