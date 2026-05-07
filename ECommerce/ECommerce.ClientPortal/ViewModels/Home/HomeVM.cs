@@ -132,9 +132,9 @@ public class HomeVM : ProcessingVM
                     return;
                 }
 
-                var userId = user.FindFirst("uid")?.Value;
+                var userId = Guid.Parse(user.FindFirst("uid")?.Value!);
 
-                if (string.IsNullOrEmpty(userId))
+                if (userId == Guid.Empty)
                 {
                     shouldRedirectToLogin = true;
                     return;
@@ -149,7 +149,7 @@ public class HomeVM : ProcessingVM
                         _sharedStateService.TotalCartCount = 
                         await _cartApi.GetTotalCountAsync(userId!);
                         
-                       _js?.ToastrSuccess("Product added to cart successfully");
+                        _js?.ToastrSuccess("Product added to cart successfully");
                     }
                     else
                         _js?.ToastrError("Error encountered");
