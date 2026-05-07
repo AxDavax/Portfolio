@@ -53,6 +53,13 @@ public class CartVM : ProcessingVM
         set => SetProperty(ref _orderHeader, value);
     }
 
+    private string? _sessionId;
+    public string? SessionId
+    {
+        get => _sessionId;
+        set => SetProperty(ref _sessionId, value);
+    }
+
     private int _totalItems;
     public int TotalItems
     {
@@ -71,7 +78,8 @@ public class CartVM : ProcessingVM
                 Name = _profile.Name,
                 Email = _profile.Email,
                 UserId = Guid.Parse(_profile.UserId),
-                Status = SD.StatusPending
+                Status = SD.StatusPending,
+                SessionId = SessionId
             };
         });
     }
