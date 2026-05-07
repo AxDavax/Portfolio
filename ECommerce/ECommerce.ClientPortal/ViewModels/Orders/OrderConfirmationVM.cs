@@ -38,7 +38,8 @@ public class OrderConfirmationVM : ProcessingVM
             var response = await _paymentApi.VerifyPaymentAsync(SessionId);
             if (response == null || !response.Success)
             {
-                await _js.ToastrError($"{response!.Message} Please contact support.");
+                var message = response?.Message ?? "Unknown error";
+                await _js.ToastrError($"{message} Please contact support.");
                 return;
             }
 
