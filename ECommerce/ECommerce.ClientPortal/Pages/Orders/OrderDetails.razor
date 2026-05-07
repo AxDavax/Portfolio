@@ -34,19 +34,38 @@ else
             <div class="pt-3 text-success text-center">
                 <span class="h4"> ORDER DETAILS</span>
             </div>
-
             <hr />
-            <div class="px-3">
-                <p>Order Id: @VM.OrderHeader!.Id</p>
-                <p>Name: @VM.OrderHeader!.Name</p>
-                <p>Email: @VM.OrderHeader!.Email</p>
-                <p>Phone: @VM.OrderHeader!.PhoneNumber</p>
-                <p>Order Status:  @VM.OrderHeader!.Status</p>
+            <div class="card shadow-sm my-3">
+                <div class="card-body px-3 order-details-table mx-auto my-4">
+                    <div class="row-item">
+                        <div class="label">Order Id:</div>
+                        <div class="value">@VM.OrderHeader!.Id</div>
+                    </div>
+                    <hr />
+                    <div class="row-item">
+                        <div class="label">Name:</div>
+                        <div class="value">@VM.OrderHeader!.Name</div>
+                    </div>
+                    <hr />
+                    <div class="row-item">
+                        <div class="label">Email:</div>
+                        <div class="value">@VM.OrderHeader!.Email</div>
+                    </div>
+                    <hr />
+                    <div class="row-item">
+                        <div class="label">Phone:</div>
+                        <div class="value">@VM.OrderHeader!.PhoneNumber</div>
+                    </div>
+                    <hr />
+                    <div class="row-item">
+                        <div class="label">Order Status:</div>
+                        <div class="value">@VM.OrderHeader!.Status</div>
+                    </div>
+                </div>
             </div>
             <hr />
             <div class="card-body">
                 <h4 class="text-success">Menu Items</h4>
-
                 @foreach (var details in VM.OrderHeader.OrderDetails)
                 {
                     <div class="d-flex">
@@ -63,13 +82,11 @@ else
                         </div>
                     </div>
                 }
-
                 <hr />
                 <h4 class="text-success text-end">
                     @VM.OrderHeader.OrderTotal.ToString("C", CultureInfo.GetCultureInfo("fr-ca"))
                 </h4>
                 <hr />
-
                 <div class="row">
                     <div class="col-5">
                         <a href="order/list" class="btn btn-secondary  m-2 p-2" style="width:150px;">Back to Orders</a>
@@ -95,7 +112,6 @@ else
             </div>
         </div>
     </div>
-
 }
 
 @code {
