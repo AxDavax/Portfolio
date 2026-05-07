@@ -1,4 +1,4 @@
-﻿@page "/order/confirmation/{session_id}"
+﻿@page "/order/confirmation"
 @using ECommerce.ClientPortal.ViewModels.Orders
 @inject OrderConfirmationVM VM
 
@@ -6,6 +6,12 @@
 {
 	<div class="position-absolute w-100 vh-100 d-flex flex-column align-items-center bg-white justify-content-center">
 		<img src="/images/loading.gif" alt="loading" />
+	</div>
+}
+else if (VM.OrderHeader is null)
+{
+	<div class="text-center mt-5">
+		<h3 class="text-danger">Unable to load your order.</h3>
 	</div>
 }
 else
@@ -22,19 +28,24 @@ else
 
 @code {
 	[Parameter]
+	[SupplyParameterFromQuery(Name = "session_id")]
 	public string session_id { get; set; }
 
-	private void StateHasChangedSafe() => InvokeAsync(StateHasChanged);
+	private bool _initialized;
 
-	protected override async Task OnInitializedAsync()
+	protected override async Task OnParametersSetAsync()
 	{
-		VM.StateChanged += StateHasChangedSafe;
+		if (_initialized)
+			return;
+
+		if (string.IsNullOrWhiteSpace(session_id))
+			return;
+
+		_initialized = true;
+
 		VM.SessionId = session_id;
 		await VM.LoadOrderAsync();
-	}
 
-	public void Dispose()
-	{
-		VM.StateChanged -= StateHasChangedSafe;
+		StateHasChanged();
 	}
 }
