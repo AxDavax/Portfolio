@@ -3,6 +3,7 @@ using ECommerce.ClientPortal.ViewModels.Cart;
 using ECommerce.ClientPortal.ViewModels.Categories;
 using ECommerce.ClientPortal.ViewModels.Core;
 using ECommerce.ClientPortal.ViewModels.Home;
+using ECommerce.ClientPortal.ViewModels.Orders;
 using ECommerce.ClientPortal.ViewModels.Products;
 
 namespace ECommerce.ClientPortal.Extensions;
@@ -34,5 +35,10 @@ public static class VMsConfiguration
 
         // Shopping Cart VM
         services.AddScoped<CartVM>();
+
+        // Order VMs
+        services.AddScoped<OrderListVM>();
+        services.AddScoped<OrderDetailsVM>();
+        services.AddScoped<OrderConfirmationVM>();
     }
 }
