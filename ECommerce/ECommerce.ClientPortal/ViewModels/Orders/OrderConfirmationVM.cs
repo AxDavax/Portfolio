@@ -1,5 +1,6 @@
 ﻿using ECommerce.ClientPortal.Services.API.Interfaces;
 using ECommerce.ClientPortal.Services.Extensions;
+using ECommerce.ClientPortal.Services.State;
 using ECommerce.ClientPortal.ViewModels.Core;
 using ECommerce.Contracts.DTO;
 using Microsoft.JSInterop;
@@ -10,6 +11,7 @@ public class OrderConfirmationVM : ProcessingVM
 {
     private readonly IPaymentApi _paymentApi;
     private readonly IJSRuntime _js;
+    private readonly SharedStateService _sharedStateService;
 
     public OrderConfirmationVM(IPaymentApi paymentApi, IJSRuntime js)
     {
@@ -44,6 +46,7 @@ public class OrderConfirmationVM : ProcessingVM
             }
 
             OrderHeader = response.Order!;
+            _sharedStateService.TotalCartCount = 0;
             await _js.ToastrSuccess($"{response!.Message} Thank you for your order!");
         });
     }
