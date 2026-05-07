@@ -8,13 +8,24 @@ public class ForgotPasswordVM : ProcessingVM
 {
     private readonly AuthService _authService;
 
-    public string Email { get; set; } = string.Empty;
+    private string _email = string.Empty;
+    public string Email
+    {
+        get => _email;
+        set => SetProperty(ref _email, value);
+    }
 
     private string _message = string.Empty;
     public string Message
     {
         get => _message;
         set => SetProperty(ref _message, value);
+    }
+
+    public void OnInitialised()
+    {
+        Email = string.Empty;
+        Message = string.Empty;
     }
 
     public ForgotPasswordVM(AuthService authService)
