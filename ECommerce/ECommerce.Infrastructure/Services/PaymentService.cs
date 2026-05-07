@@ -52,7 +52,7 @@ public class PaymentService : IPaymentService
 
         var options = new SessionCreateOptions
         {
-            SuccessUrl = $"{_successUrl}/{orderHeader.Id}",
+            SuccessUrl = $"{_successUrl}?session_id={{CHECKOUT_SESSION_ID}}",
             CancelUrl = _cancelUrl,
             LineItems = lineItems,
             Mode = "payment"
