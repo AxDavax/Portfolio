@@ -98,9 +98,9 @@
 			return;
 		}
 
-		var userId = user.FindFirst("uid")?.Value;
+		var userId = Guid.Parse(user.FindFirst("uid")?.Value!);
 
-		if(string.IsNullOrEmpty(userId) || _shoppingCartApi is null)
+		if (userId == Guid.Empty || _shoppingCartApi is null)
 		{
 			_sharedStateService.TotalCartCount = 0;
 			return;
