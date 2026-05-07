@@ -1,5 +1,4 @@
-﻿using ECommerce.ClientPortal.Services.API.Implementations;
-using ECommerce.ClientPortal.Services.API.Interfaces;
+﻿using ECommerce.ClientPortal.Services.API.Interfaces;
 using ECommerce.ClientPortal.Services.State;
 using ECommerce.ClientPortal.Utility;
 using ECommerce.ClientPortal.ViewModels.Auth;
@@ -71,7 +70,7 @@ public class CartVM : ProcessingVM
             {
                 Name = _profile.Name,
                 Email = _profile.Email,
-                UserId = _profile.UserId,
+                UserId = Guid.Parse(_profile.UserId),
                 Status = SD.StatusPending
             };
         });
