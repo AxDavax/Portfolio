@@ -76,7 +76,7 @@ public class OrderDetailsVM : ProcessingVM
     {
         var header = await _orderApi.GetByIdAsync(Id);
 
-        if (!IsAdmin && header?.UserId != _authUser.UserId)
+        if (!IsAdmin && header?.UserId.ToString() != _authUser.UserId)
         {
             _js.ToastrError("You are not allowed to view this order.");
             OrderHeader = null;
