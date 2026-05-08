@@ -11,12 +11,13 @@ public class OrderConfirmationVM : ProcessingVM
 {
     private readonly IPaymentApi _paymentApi;
     private readonly IJSRuntime _js;
-    private readonly SharedStateService _sharedStateService;
+    private readonly CartState _cartState;
 
-    public OrderConfirmationVM(IPaymentApi paymentApi, IJSRuntime js)
+    public OrderConfirmationVM(IPaymentApi paymentApi, IJSRuntime js, CartState cartState)
     {
         _paymentApi = paymentApi;
         _js = js;   
+        _cartState = cartState;
     }
 
     private string _sessionId = string.Empty;
@@ -46,7 +47,7 @@ public class OrderConfirmationVM : ProcessingVM
             }
 
             OrderHeader = response.Order!;
-            _sharedStateService.TotalCartCount = 0;
+            _cartState.Reset();
             await _js.ToastrSuccess($"{response!.Message} Thank you for your order!");
         });
     }
