@@ -8,7 +8,10 @@ public static class AppServicesExtensions
 {
     public static IServiceCollection AddAppServices(this IServiceCollection services)
     {
-        services.AddSingleton<SharedStateService>();
+        // State Management
+        services.AddSingleton<CartState>();
+
+        // App Services
         services.AddScoped<UserSessionService>();
         services.AddScoped<LocalStorageService>();
         services.AddScoped<TokenStorageService>();
