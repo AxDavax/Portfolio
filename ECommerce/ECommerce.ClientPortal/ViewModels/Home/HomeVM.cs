@@ -14,7 +14,7 @@ public class HomeVM : ProcessingVM
     private readonly IProductApi _productApi;
     private readonly ICategoryApi _categoryApi;
     private readonly NavigationManager _navigation;
-    private readonly SharedStateService _sharedStateService;
+    private readonly CartState _cartState;
     private readonly IJSRuntime _js;
     private readonly AuthUserVM _authUser;
 
@@ -22,7 +22,7 @@ public class HomeVM : ProcessingVM
                   IProductApi productApi, 
                   ICategoryApi categoryApi, 
                   NavigationManager navigation, 
-                  SharedStateService sharedStateService, 
+                  CartState cartState,
                   IJSRuntime js, 
                   AuthUserVM authUser)
     {
@@ -30,7 +30,7 @@ public class HomeVM : ProcessingVM
         _productApi = productApi;
         _categoryApi = categoryApi;
         _navigation = navigation;
-        _sharedStateService = sharedStateService;
+        _cartState = cartState;
         _js = js;
         _authUser = authUser;
     }
@@ -145,10 +145,8 @@ public class HomeVM : ProcessingVM
                     var result = await _cartApi.UpdateAsync(userId!, product.Id, 1);
 
                     if (result) 
-                    { 
-                        _sharedStateService.TotalCartCount = 
-                        await _cartApi.GetTotalCountAsync(userId!);
-                        
+                    {
+                        _cartState.Increment();
                         _js?.ToastrSuccess("Product added to cart successfully");
                     }
                     else
