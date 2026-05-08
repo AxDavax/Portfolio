@@ -2,7 +2,7 @@
 @using ECommerce.ClientPortal.Services.State
 @using ECommerce.ClientPortal.ViewModels.Core
 @using Microsoft.AspNetCore.Components.Authorization
-@inject SharedStateService _sharedStateService
+@inject CartState _cartState
 @inject IShoppingCartApi? _shoppingCartApi
 @inject AuthenticationStateProvider AuthStateProvider
 
@@ -25,7 +25,7 @@
 				</li>
 				<li class="nav-item mx-2">
 					<NavLink class="nav-link" href="/cart">
-						<span class="bi bi-cart3" aria-hidden="true"></span> Cart (@_sharedStateService.TotalCartCount)
+						<span class="bi bi-cart3" aria-hidden="true"></span> Cart (@_cartState.Count) 
 					</NavLink>
 				</li>
 				<li class="nav-item mx-2">
@@ -72,29 +72,26 @@
 	protected override async Task OnInitializedAsync()
 	{
 		AuthStateProvider.AuthenticationStateChanged += async _ =>
-        {
-            await GetInitialCount();
-            StateHasChanged();
-        };
+		{
+			await GetInitialCount();
+			StateHasChanged();
+		};
 
-        await GetInitialCount();
+		await GetInitialCount();
 
-        _sharedStateService.OnChange += OnSharedStateChange;
-    }
-
-	private void OnSharedStateChange()
-	{
-		InvokeAsync(StateHasChanged);
+		_cartState.StateChanged += OnSharedStateChange;
 	}
+
+	private void OnSharedStateChange() => InvokeAsync(StateHasChanged);
 
 	public async Task GetInitialCount()
 	{
-        var state = await AuthStateProvider.GetAuthenticationStateAsync();
-        var user = state.User;
+		var state = await AuthStateProvider.GetAuthenticationStateAsync();
+		var user = state.User;
 
 		if (!user.Identity?.IsAuthenticated ?? true)
 		{
-			_sharedStateService.TotalCartCount = 0;
+			_cartState.Reset();
 			return;
 		}
 
@@ -102,17 +99,16 @@
 
 		if (userId == Guid.Empty || _shoppingCartApi is null)
 		{
-			_sharedStateService.TotalCartCount = 0;
+			_cartState.Reset();
 			return;
         }
 
-		_sharedStateService.TotalCartCount = await 
-		_shoppingCartApi.GetTotalCountAsync(userId);
+		_cartState.SetCount(await _shoppingCartApi.GetTotalCountAsync(userId));
 	}
 
 	public void Dispose()
 	{
-		_sharedStateService.OnChange -= OnSharedStateChange;
+		_cartState.StateChanged -= OnSharedStateChange;
 
 		AuthStateProvider.AuthenticationStateChanged -= async _ =>
 		{
