@@ -28,9 +28,7 @@ builder.Services.AddScoped<IEmailService>(sp =>
 {
     var config = sp.GetRequiredService<IConfiguration>();
     var apiKey = config["Email:ApiKey"];
-
-    var httpFactory = sp.GetRequiredService<IHttpClientFactory>();
-    var http = httpFactory.CreateClient(nameof(MailTrapEmailService));
+    var http = sp.GetRequiredService<HttpClient>();
 
     return new MailTrapEmailService(http, apiKey);
 });
