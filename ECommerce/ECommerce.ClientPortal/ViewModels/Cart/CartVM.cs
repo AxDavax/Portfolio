@@ -17,7 +17,7 @@ public class CartVM : ProcessingVM
     private readonly IPaymentApi _paymentApi;
     private readonly IFileApi _fileApi;
     private readonly NavigationManager _navigation;
-    private readonly SharedStateService _sharedStateService;
+    private readonly CartState _cartState;
     private readonly ProfileVM _profile;
 
     public CartVM(IShoppingCartApi shoppingCartApi, 
@@ -26,7 +26,7 @@ public class CartVM : ProcessingVM
                   IPaymentApi paymentApi,
                   IFileApi fileApi,
                   NavigationManager navigation, 
-                  SharedStateService sharedStateService, 
+                  CartState cartState,
                   ProfileVM profile)
     {
         _shoppingCartApi = shoppingCartApi;
@@ -35,7 +35,7 @@ public class CartVM : ProcessingVM
         _paymentApi = paymentApi;
         _fileApi = fileApi;
         _navigation = navigation;
-        _sharedStateService = sharedStateService;
+        _cartState = cartState;
         _profile = profile;
     }
 
@@ -122,7 +122,7 @@ public class CartVM : ProcessingVM
         await RunCommandAsync(() => IsProcessing, async () =>
         {
             var result = await _shoppingCartApi.UpdateAsync(OrderHeader.UserId, productId, updateBy);
-            _sharedStateService.TotalCartCount = await _shoppingCartApi.GetTotalCountAsync(OrderHeader.UserId);
+            _cartState.SetCount(await _shoppingCartApi.GetTotalCountAsync(OrderHeader.UserId));
             await LoadCartCoreAsync();
         });
     }
