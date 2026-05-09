@@ -1,38 +1,57 @@
 ﻿using ECommerce.Application.Interfaces;
+using Microsoft.Extensions.Logging;
 using System.Net.Http.Json;
-
 
 namespace ECommerce.Infrastructure.Services;
 
 public class MailTrapEmailService : IEmailService
 {
     private readonly HttpClient _http;
-    private readonly string _apiKey;
+    private readonly ILogger<MailTrapEmailService> _logger;
+    private readonly string _fromEmail;
 
-    public MailTrapEmailService(HttpClient http, string apiKey)
+    public MailTrapEmailService(HttpClient http, ILogger<MailTrapEmailService> logger, string fromEmail)
     {
-        _http = http;
-        _apiKey = apiKey;
+        _http = http ?? throw new ArgumentNullException(nameof(http));
+        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+
+        if (string.IsNullOrWhiteSpace(fromEmail))
+            throw new ArgumentException("From email cannot be null or empty.", nameof(fromEmail));
+
+        _fromEmail = fromEmail;
     }
 
     public async Task SendAsync(string to, string subject, string htmlBody)
     {
-        var payload = new
+        try
         {
-            from = new { email = "no-reply@yourapp.dev" },
-            to = new[] { new { email = to } },
-            subject,
-            html = htmlBody
-        };
+            var payload = new
+            {
+                from = new { email = _fromEmail },
+                to = new[] { new { email = to } },
+                subject,
+                html = htmlBody
+            };
 
-        var request = new HttpRequestMessage(HttpMethod.Post,
-            "https://send.api.mailtrap.io/api/send")
+            _logger.LogInformation("Sending email to {To} with subject: {Subject}", to, subject);
+
+            var response = await _http.PostAsJsonAsync("api/send", payload);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                var error = await response.Content.ReadAsStringAsync();
+                _logger.LogError("Email sending failed: {StatusCode} - {Error}",
+                    response.StatusCode, error);
+                
+                throw new InvalidOperationException($"Failed to send email: {response.StatusCode}");
+            }
+
+            _logger.LogInformation("Email sent successfully to {To}", to);
+        }
+        catch (HttpRequestException ex)
         {
-            Content = JsonContent.Create(payload)
-        };
-
-        request.Headers.Add("Api-Token", _apiKey);
-
-        await _http.SendAsync(request);
+            _logger.LogError(ex, "Network error while sending email to {To}", to);
+            throw;
+        }
     }
 }

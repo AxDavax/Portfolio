@@ -1,10 +1,8 @@
+using ECommerce.API.Extensions;
 using ECommerce.Application;
-using ECommerce.Application.Interfaces;
 using ECommerce.Application.Mappings.Profiles;
 using ECommerce.Infrastructure;
-using ECommerce.Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 using Scalar.AspNetCore;
@@ -24,14 +22,7 @@ builder.Services.AddOpenApi();
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure();
 
-builder.Services.AddScoped<IEmailService>(sp =>
-{
-    var config = sp.GetRequiredService<IConfiguration>();
-    var apiKey = config["Email:ApiKey"];
-    var http = sp.GetRequiredService<HttpClient>();
-
-    return new MailTrapEmailService(http, apiKey);
-});
+builder.Services.AddMailServices(builder.Configuration);
 
 builder.Services.AddAutoMapper(typeof(CategoryProfile).Assembly);
 
