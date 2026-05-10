@@ -8,17 +8,17 @@ namespace ECommerce.Application.UseCases.Auth.ForgotPassword;
 public class ForgotPasswordHandler
 {
     private readonly IUserRepository _users;
-    private readonly IResetPasswordTokenService _resetTokens;
-    private readonly IEmailService _email;   
+    private readonly IEmailService _email;
+    private readonly IEmailTemplateService _templates;
 
     public ForgotPasswordHandler(
         IUserRepository users,
-        IResetPasswordTokenService resetTokens,
-        IEmailService email)
+        IEmailService email,
+        IEmailTemplateService templates)
     {
         _users = users;
-        _resetTokens = resetTokens;
         _email = email;
+        _templates = templates;
     }
 
     public async Task<ForgotPasswordResponse> HandleAsync(ForgotPasswordRequest request)
@@ -46,12 +46,9 @@ public class ForgotPasswordHandler
         // 5. Sends the email 
         var resetLink = $"https://localhost:7083/reset-password?token={token}";
 
-        var html = $@"
-            <h2>Password Reset</h2>
-            <p>Click the link below to reset your password:</p>
-            <p><a href=""{resetLink}"">Reset Password</a></p>
-            <p>This link expires in 1 hour.</p>
-        ";
+        var html = await _templates.RenderAsync("ResetPassword",
+            new ResetPasswordModel { Link = resetLink }
+        );
 
         await _email.SendAsync(user.Email, "Reset your password", html);
 
