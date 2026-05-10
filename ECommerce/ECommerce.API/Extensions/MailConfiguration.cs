@@ -10,6 +10,7 @@ public static class MailConfiguration
                                                      IConfiguration config)
     {
         services.AddScoped<IEmailService, MailTrapEmailService>();
+        services.AddSingleton<IEmailTemplateService, EmailTemplateService>();
 
         services.AddSingleton(new MailtrapSmtpSettings
         {
