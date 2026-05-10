@@ -35,10 +35,6 @@ public static class DependencyInjection
         // Services
         services.AddScoped<IFileService, FileService>();
         services.AddScoped<IPaymentService, PaymentService>();
-        services.AddHttpClient<IEmailService, MailTrapEmailService>(client =>
-        {
-            client.BaseAddress = new Uri("https://send.api.mailtrap.io/");
-        });
 
         return services;
     }
