@@ -55,6 +55,8 @@ public class GoogleAuthService : IExternalAuthService
             return null;
 
         var tokenJson = await tokenResponse.Content.ReadFromJsonAsync<GoogleTokenResponse>();
+        if (tokenJson == null || string.IsNullOrWhiteSpace(tokenJson.AccessToken))
+            return null;
 
         // 2. Get user info
         _http.DefaultRequestHeaders.Authorization =
@@ -62,6 +64,9 @@ public class GoogleAuthService : IExternalAuthService
 
         var userInfo = await _http.GetFromJsonAsync<GoogleUserInfo>(
             "https://www.googleapis.com/oauth2/v3/userinfo");
+
+        if (userInfo == null)
+            return null;
 
         return new ExternalUserInfo
         {
