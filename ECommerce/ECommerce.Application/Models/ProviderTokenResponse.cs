@@ -1,6 +1,6 @@
 ﻿namespace ECommerce.Application.Models;
 
-public class GoogleTokenResponse
+public class ProviderTokenResponse
 {
     public string AccessToken { get; set; } = string.Empty;
 }
