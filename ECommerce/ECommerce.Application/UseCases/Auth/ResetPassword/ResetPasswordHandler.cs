@@ -23,28 +23,32 @@ public class ResetPasswordHandler
     public async Task<ResetPasswordResponse> HandleAsync(ResetPasswordRequest request)
     {
         // 1. Verify confirmPassword matches the password
-        if (request.NewPassword == request.ConfirmPassword)
-            return new ResetPasswordResponse { Success = false };
+        if (request.NewPassword != request.ConfirmPassword)
+            return new ResetPasswordResponse 
+            {   
+                Success = false, 
+                Error = "Passwords do not match" 
+            };
 
         // 2. Loads the token out of the DB
         var token = await _resetTokens.GetByTokenAsync(request.Token);
 
         // 3. Invalid or non-existent token
         if (token == null)
-            return new ResetPasswordResponse { Success = false };
-       
+            return new ResetPasswordResponse { Success = false, Error = "Invalid token" };
+
         // 4. Expired token
         if (token.IsExpired)
         {
             await _resetTokens.DeleteAsync(token);
-            return new ResetPasswordResponse { Success = false };
+            return new ResetPasswordResponse { Success = false, Error = "Token expired" };
         }
 
         // 5. Loads the user
         var user = await _users.GetByIdAsync(token.UserId);
         if (user == null)
-            return new ResetPasswordResponse { Success = false };
-        
+            return new ResetPasswordResponse { Success = false, Error = "User not found" };
+
         // 6. Hashes the new password
         var (hash, salt) = _passwordService.HashPassword(request.NewPassword);
 
