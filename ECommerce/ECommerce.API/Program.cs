@@ -2,6 +2,7 @@ using ECommerce.API.Extensions;
 using ECommerce.Application;
 using ECommerce.Application.Mappings.Profiles;
 using ECommerce.Infrastructure;
+using ECommerce.Infrastructure.Auth;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
@@ -21,6 +22,8 @@ builder.Services.AddOpenApi();
 
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure();
+
+builder.Services.AddAuthProviders(builder.Configuration);
 
 builder.Services.AddMailServices(builder.Configuration);
 
