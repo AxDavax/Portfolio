@@ -54,7 +54,7 @@ public class GoogleAuthService : IExternalAuthService
         if (!tokenResponse.IsSuccessStatusCode)
             return null;
 
-        var tokenJson = await tokenResponse.Content.ReadFromJsonAsync<GoogleTokenResponse>();
+        var tokenJson = await tokenResponse.Content.ReadFromJsonAsync<ProviderTokenResponse>();
         if (tokenJson == null || string.IsNullOrWhiteSpace(tokenJson.AccessToken))
             return null;
 
