@@ -12,17 +12,20 @@ public class ForgotPasswordHandler
     private readonly IEmailService _email;
     private readonly IEmailTemplateService _templates;
     private readonly IConfiguration _config;
+    private readonly IResetPasswordTokenService _resetTokens;
 
     public ForgotPasswordHandler(
         IUserRepository users,
         IEmailService email,
         IEmailTemplateService templates,
-        IConfiguration config)
+        IConfiguration config,
+        IResetPasswordTokenService resetTokens)
     {
         _users = users;
         _email = email;
         _templates = templates;
         _config = config;
+        _resetTokens = resetTokens;
     }
 
     public async Task<ForgotPasswordResponse> HandleAsync(ForgotPasswordRequest request)
@@ -46,6 +49,8 @@ public class ForgotPasswordHandler
             CreatedAt = DateTime.UtcNow,
             ExpiresAt = DateTime.UtcNow.AddHours(1)
         };
+
+        await _resetTokens.CreateAsync(resetToken);
 
         // 5. Sends the email 
         var baseUrl = _config["Frontend:BaseUrl"];
