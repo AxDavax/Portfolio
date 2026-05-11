@@ -59,7 +59,7 @@ public class ResetPasswordTokenService : IResetPasswordTokenService
 
         """;
 
-        return await _db.QuerySingleOrDefaultAsync<ResetPasswordToken, dynamic>(
+        return await _db.QuerySingleOrDefaultAsync<ResetPasswordToken, object>(
             sql, new { Token = token });
     }
 }
