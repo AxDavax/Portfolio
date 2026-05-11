@@ -13,10 +13,11 @@ public class GoogleAuthService : IExternalAuthService
     private readonly ProviderSettings _settings;
     private readonly HttpClient _http;
 
-    public GoogleAuthService(IOptionsSnapshot<ProviderSettings> settings, HttpClient http)
+    public GoogleAuthService(IOptionsSnapshot<ProviderSettings> settings, 
+        IHttpClientFactory httpFactory)
     {
         _settings = settings.Get("Google");
-        _http = http;
+        _http = httpFactory.CreateClient();
     }
 
     public string GetAuthorizationUrl(string state)
