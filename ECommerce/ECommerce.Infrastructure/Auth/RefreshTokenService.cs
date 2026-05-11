@@ -36,7 +36,7 @@ public class RefreshTokenService : IRefreshTokenService
         const string sql = """
 
             SELECT
-                UserId, Token
+                UserId, Token, ExpiresAt AS ExpiryDate
             FROM
                 RefreshTokens
             WHERE
