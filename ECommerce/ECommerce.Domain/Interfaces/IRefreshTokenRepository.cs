@@ -1,8 +1,8 @@
-﻿using ECommerce.Application.Models;
+﻿using ECommerce.Domain.Models;
 
-namespace ECommerce.Application.Interfaces;
+namespace ECommerce.Domain.Interfaces;
 
-public interface IRefreshTokenService
+public interface IRefreshTokenRepository
 {
     Task<string> GenerateRefreshTokenAsync(Guid userId);
     Task<bool> ValidateRefreshTokenAsync(Guid userId, string refreshToken);
