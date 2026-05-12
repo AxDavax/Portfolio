@@ -1,4 +1,4 @@
-﻿namespace ECommerce.Application.Models;
+﻿namespace ECommerce.Domain.Models;
 
 public class RefreshToken
 {
