@@ -1,4 +1,5 @@
 ﻿using ECommerce.Application.Interfaces;
+using ECommerce.Application.Interfaces.Auth;
 using MediatR;
 
 namespace ECommerce.Application.UseCases.Auth.ExternalLogin
@@ -16,13 +17,16 @@ namespace ECommerce.Application.UseCases.Auth.ExternalLogin
     {
         private readonly IExternalLoginStateStore _stateStore;
         private readonly IEnumerable<IExternalAuthService> _authServices;
+        private readonly IExternalLoginService _externalLoginService;
 
         public ExternalLoginCallbackHandler(
             IExternalLoginStateStore stateStore,
-            IEnumerable<IExternalAuthService> authServices)
+            IEnumerable<IExternalAuthService> authServices,
+            IExternalLoginService externalLoginService)
         {
             _stateStore = stateStore;
             _authServices = authServices;
+            _externalLoginService = externalLoginService;
         }
 
         public async Task<ExternalLoginCallbackResponse> Handle(
@@ -65,12 +69,17 @@ namespace ECommerce.Application.UseCases.Auth.ExternalLogin
                     ErrorMessage: "Failed to retrieve external user information.");
             }
 
+            var authResult = await _externalLoginService.HandleExternalUserAsync(
+                provider: request.Provider,
+                providerUserId: userInfo.ProviderId,
+                email: userInfo.Email);
+
             // 4. Success
             return new ExternalLoginCallbackResponse(
-                Success: true,
-                Email: userInfo.Email,
-                ProviderUserId: userInfo.ProviderId,
-                ErrorMessage: null);
+                Success: authResult.Success,
+                Email: authResult.Email,
+                ProviderUserId: authResult.ProviderUserId,
+                ErrorMessage: authResult.ErrorMessage);
         }
     }
 }
