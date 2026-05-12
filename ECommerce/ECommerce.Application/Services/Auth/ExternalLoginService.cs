@@ -8,21 +8,21 @@ namespace ECommerce.Application.Services.Auth;
 
 public class ExternalLoginService : IExternalLoginService
 {
-    private readonly IUserRepository _userRepository;
-    private readonly IUserLoginRepository _userLoginRepository;
+    private readonly IUserRepository _userRepo;
+    private readonly IUserLoginRepository _userLoginRepo;
     private readonly IJwtService _jwtService;
-    private readonly IRefreshTokenService _tokenService;
+    private readonly IRefreshTokenRepository _refreshTokenRepo;
 
     public ExternalLoginService(
-        IUserRepository userRepository,
-        IUserLoginRepository userLoginRepository,
+        IUserRepository userRepo,
+        IUserLoginRepository userLoginRepo,
         IJwtService jwtService,
-        IRefreshTokenService tokenService)
+        IRefreshTokenRepository refreshTokenRepo)
     {
-        _userRepository = userRepository;
-        _userLoginRepository = userLoginRepository;
+        _userRepo = userRepo;
+        _userLoginRepo = userLoginRepo;
         _jwtService = jwtService;
-        _tokenService = tokenService;
+        _refreshTokenRepo = refreshTokenRepo;
     }
 
     public async Task<ExternalLoginResult> HandleExternalUserAsync(
@@ -31,19 +31,19 @@ public class ExternalLoginService : IExternalLoginService
         string providerUserId)
     {
         // 1. Check if login already exists
-        var existingLogin = await _userLoginRepository.GetByProviderAsync(provider, providerUserId);
+        var existingLogin = await _userLoginRepo.GetByProviderAsync(provider, providerUserId);
 
         User user;
 
         if (existingLogin != null)
         {
             // 2. Loads the associated user
-            user = await _userRepository.GetByIdAsync(existingLogin.UserId);
+            user = await _userRepo.GetByIdAsync(existingLogin.UserId);
         }
         else 
         {
             // 3. Check if the user exists by email
-            user = await _userRepository.GetByEmailAsync(email);
+            user = await _userRepo.GetByEmailAsync(email);
 
             if (user == null)
             {
@@ -58,7 +58,7 @@ public class ExternalLoginService : IExternalLoginService
                 };
 
                 // or CreateAuthAsync(sqlUser) if you have a specific method for auth users
-                await _userRepository.CreateAsync(user); 
+                await _userRepo.CreateAsync(user); 
             }
 
             // 5. Link provider
@@ -71,17 +71,29 @@ public class ExternalLoginService : IExternalLoginService
                 CreatedAt = DateTime.UtcNow
             };
 
-            await _userLoginRepository.AddAsync(login);
+            await _userLoginRepo.AddAsync(login);
+        }
+
+        if(user == null || !user.IsActive)
+        {
+            return new ExternalLoginResult(
+                Success: false,
+                Email: email,
+                ProviderUserId: providerUserId,
+                JwtToken: null,
+                RefreshToken: null,
+                ErrorMessage: "User account is inactive or does not exist."
+            );
         }
 
         // 6. Loads the roles
-        var roles = await _userRepository.GetRolesAsync(user.Id);
+        var roles = await _userRepo.GetRolesAsync(user.Id);
 
         // 7. Generates the JWT
         var jwt = _jwtService.GenerateToken(user, roles);
 
         // 8. Generates the Refresh Token
-        var refresh = await _tokenService.GenerateRefreshTokenAsync(user.Id);
+        var refresh = await _refreshTokenRepo.GenerateRefreshTokenAsync(user.Id);
 
         // 9. Returns the response
         return new ExternalLoginResult(
