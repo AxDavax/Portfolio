@@ -7,12 +7,12 @@ namespace ECommerce.Application.UseCases.Auth.ResetPassword;
 public class ResetPasswordHandler
 {
     private readonly IUserRepository _users;
-    private readonly IResetPasswordTokenService _resetTokens;
+    private readonly IResetPasswordTokenRepository _resetTokens;
     private readonly IPasswordService _passwordService;
 
     public ResetPasswordHandler(
         IUserRepository users,
-        IResetPasswordTokenService resetTokens, 
+        IResetPasswordTokenRepository resetTokens, 
         IPasswordService passwordService)
     {
         _users = users;

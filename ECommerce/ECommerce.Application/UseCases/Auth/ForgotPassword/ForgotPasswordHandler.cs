@@ -2,6 +2,7 @@
 using ECommerce.Application.Models;
 using ECommerce.Contracts.Auth.ForgotPassword;
 using ECommerce.Domain.Interfaces;
+using ECommerce.Domain.Models;
 using Microsoft.Extensions.Configuration;
 
 namespace ECommerce.Application.UseCases.Auth.ForgotPassword;
@@ -12,14 +13,14 @@ public class ForgotPasswordHandler
     private readonly IEmailService _email;
     private readonly IEmailTemplateService _templates;
     private readonly IConfiguration _config;
-    private readonly IResetPasswordTokenService _resetTokens;
+    private readonly IResetPasswordTokenRepository _resetTokens;
 
     public ForgotPasswordHandler(
         IUserRepository users,
         IEmailService email,
         IEmailTemplateService templates,
         IConfiguration config,
-        IResetPasswordTokenService resetTokens)
+        IResetPasswordTokenRepository resetTokens)
     {
         _users = users;
         _email = email;
