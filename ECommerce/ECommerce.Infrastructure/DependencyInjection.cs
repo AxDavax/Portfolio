@@ -32,6 +32,8 @@ public static class DependencyInjection
         services.AddScoped<IUserRoleService, UserRoleService>();
         services.AddScoped<IRoleService, RoleService>();
 
+        services.AddSingleton<IExternalLoginStateStore, ExternalLoginStateStore>();
+
         // Services
         services.AddScoped<IFileService, FileService>();
         services.AddScoped<IPaymentService, PaymentService>();
