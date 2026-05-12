@@ -11,7 +11,7 @@ public class LoginHandler
     private readonly IUserAuthRepository _authUsers;
     private readonly IPasswordService _passwords;
     private readonly IJwtService _jwt;
-    private readonly IRefreshTokenService _refreshToken;
+    private readonly IRefreshTokenRepository _refreshToken;
     private readonly IConfiguration _config;
 
     public LoginHandler(
@@ -19,7 +19,7 @@ public class LoginHandler
         IUserAuthRepository authUsers,
         IPasswordService passwords,
         IJwtService jwt,
-        IRefreshTokenService refreshToken,
+        IRefreshTokenRepository refreshToken,
         IConfiguration config)
     {
         _users = users;

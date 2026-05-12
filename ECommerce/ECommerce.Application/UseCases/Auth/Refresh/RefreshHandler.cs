@@ -6,13 +6,13 @@ namespace ECommerce.Application.UseCases.Auth.Refresh;
 
 public class RefreshHandler
 {
-    private readonly IRefreshTokenService _refreshTokens;
+    private readonly IRefreshTokenRepository _refreshTokens;
     private readonly IUserRepository _users;
     private readonly IUserAuthRepository _authUsers;
     private readonly IJwtService _jwt;
 
     public RefreshHandler(
-        IRefreshTokenService refreshTokens,
+        IRefreshTokenRepository refreshTokens,
         IUserRepository users,
         IUserAuthRepository authUsers,
         IJwtService jwt)

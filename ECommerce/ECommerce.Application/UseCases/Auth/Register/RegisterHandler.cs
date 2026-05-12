@@ -14,7 +14,7 @@ public class RegisterHandler
     private readonly IJwtService _jwtService;
     private readonly IUserRoleService _userRoleService;
     private readonly IRoleService _roleService;
-    private readonly IRefreshTokenService _refreshTokenService;
+    private readonly IRefreshTokenRepository _refreshTokenRepo;
     private readonly IConfiguration _config;
 
     public RegisterHandler(
@@ -24,7 +24,7 @@ public class RegisterHandler
         IJwtService jwtService,
         IUserRoleService userRoleService,
         IRoleService roleService,
-        IRefreshTokenService refreshTokenService,
+        IRefreshTokenRepository refreshTokenRepo,
         IConfiguration config)
     {
         _userRepo = userRepo;
@@ -33,7 +33,7 @@ public class RegisterHandler
         _jwtService = jwtService;
         _userRoleService = userRoleService;
         _roleService = roleService;
-        _refreshTokenService = refreshTokenService;
+        _refreshTokenRepo = refreshTokenRepo;
         _config = config;
     }
 
@@ -73,7 +73,7 @@ public class RegisterHandler
         var jwt = _jwtService.GenerateToken(createdUser, roles);
 
         // 8. Generates the Refresh Token
-        var refreshToken = await _refreshTokenService.GenerateRefreshTokenAsync(createdUser.Id);
+        var refreshToken = await _refreshTokenRepo.GenerateRefreshTokenAsync(createdUser.Id);
 
         // 9. Returns the response
         return new RegisterResponse

@@ -1,26 +1,26 @@
-﻿using ECommerce.Application.Interfaces;
-using ECommerce.Contracts.Auth.Logout;
+﻿using ECommerce.Contracts.Auth.Logout;
+using ECommerce.Domain.Interfaces;
 
 namespace ECommerce.Application.UseCases.Auth.Logout
 {
     public class LogoutHandler
     {
-        private readonly IRefreshTokenService _refreshTokenService;
+        private readonly IRefreshTokenRepository _refreshTokenRepo;
 
-        public LogoutHandler(IRefreshTokenService refreshTokenService)
+        public LogoutHandler(IRefreshTokenRepository refreshTokenRepo)
         {
-            _refreshTokenService = refreshTokenService;
+            _refreshTokenRepo = refreshTokenRepo;
         }
 
         public async Task<LogoutResponse> HandleAsync(LogoutRequest request)
         {
             // 1. Verify if the token exists
-            var existing = await _refreshTokenService.GetRefreshTokenAsync(request.RefreshToken);
+            var existing = await _refreshTokenRepo.GetRefreshTokenAsync(request.RefreshToken);
             if (existing != null)
                 return new LogoutResponse { Success = false };
 
             // 2. Deletes the refresh token
-            await _refreshTokenService.DeleteRefreshTokenAsync(request.RefreshToken);
+            await _refreshTokenRepo.DeleteRefreshTokenAsync(request.RefreshToken);
 
             // 3. Returns Success
             return new LogoutResponse { Success = true };
