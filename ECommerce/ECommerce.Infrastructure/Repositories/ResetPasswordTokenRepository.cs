@@ -1,14 +1,13 @@
-﻿using ECommerce.Application.Interfaces;
-using ECommerce.Application.Models;
-using ECommerce.Domain.Interfaces;
+﻿using ECommerce.Domain.Interfaces;
+using ECommerce.Domain.Models;
 
-namespace ECommerce.Infrastructure.Auth;
+namespace ECommerce.Infrastructure.Repositories;
 
-public class ResetPasswordTokenService : IResetPasswordTokenService
+public class ResetPasswordTokenRepository : IResetPasswordTokenRepository
 {
     private readonly ISqlDataAccess _db;
 
-    public ResetPasswordTokenService(ISqlDataAccess db)
+    public ResetPasswordTokenRepository(ISqlDataAccess db)
     {
         _db = db;
     }
