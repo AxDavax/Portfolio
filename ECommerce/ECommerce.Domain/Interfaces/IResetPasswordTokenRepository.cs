@@ -1,8 +1,8 @@
-﻿using ECommerce.Application.Models;
+﻿using ECommerce.Domain.Models;
 
-namespace ECommerce.Application.Interfaces;
+namespace ECommerce.Domain.Interfaces;
 
-public interface IResetPasswordTokenService
+public interface IResetPasswordTokenRepository
 {
     Task CreateAsync(ResetPasswordToken token);
     Task<ResetPasswordToken?> GetByTokenAsync(string token);
