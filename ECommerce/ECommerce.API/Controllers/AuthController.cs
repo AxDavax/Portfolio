@@ -147,12 +147,8 @@ public class AuthController : ControllerBase
             new ExternalLoginCallbackRequest(provider, code, state)
         );
 
-        // Here we can :
-        // - create a JWT
-        // - create a refresh token
-        // - redirect to the ClientPortal
-        // - return a cookie
-        // - return a 200 with the information
+        if(!result.Success)
+            return BadRequest(result.ErrorMessage);
 
         return Ok(result);
     }
