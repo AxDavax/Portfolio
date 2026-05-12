@@ -21,13 +21,15 @@ public static class DependencyInjection
         services.AddScoped<IOrderRepository, OrderRepository>();
         services.AddScoped<IProductRepository, ProductRepository>();
         services.AddScoped<IShoppingCartRepository, ShoppingCartRepository>();
+
+        // Auth Repositories
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IUserAuthRepository, UserRepository>();
         services.AddScoped<IUserLoginRepository, UserLoginRepository>();
+        services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
 
         // Auth 
         services.AddSingleton<IJwtService, JwtService>();
-        services.AddScoped<IRefreshTokenService, RefreshTokenService>();
         services.AddScoped<IResetPasswordTokenService, ResetPasswordTokenService>();
         services.AddSingleton<IPasswordService, PasswordService>();
         services.AddScoped<IUserRoleService, UserRoleService>();

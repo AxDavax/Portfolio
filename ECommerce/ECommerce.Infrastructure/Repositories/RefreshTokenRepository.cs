@@ -1,15 +1,14 @@
-﻿using ECommerce.Application.Interfaces;
-using ECommerce.Application.Models;
-using ECommerce.Domain.Interfaces;
+﻿using ECommerce.Domain.Interfaces;
+using ECommerce.Domain.Models;
 using System.Security.Cryptography;
 
-namespace ECommerce.Infrastructure.Auth;
+namespace ECommerce.Infrastructure.Repositories;
 
-public class RefreshTokenService : IRefreshTokenService
+public class RefreshTokenRepository : IRefreshTokenRepository
 {
     private readonly ISqlDataAccess _db;
 
-    public RefreshTokenService(ISqlDataAccess db)
+    public RefreshTokenRepository(ISqlDataAccess db)
     {
         _db = db;
     }
@@ -66,11 +65,11 @@ public class RefreshTokenService : IRefreshTokenService
 
         """;
 
-        await _db.ExecuteAsync(sql, new 
-        { 
-            UserId = userId, 
-            OldToken = oldToken, 
-            NewToken = newToken 
+        await _db.ExecuteAsync(sql, new
+        {
+            UserId = userId,
+            OldToken = oldToken,
+            NewToken = newToken
         });
     }
 
