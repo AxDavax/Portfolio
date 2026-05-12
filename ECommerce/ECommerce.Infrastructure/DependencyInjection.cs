@@ -23,6 +23,7 @@ public static class DependencyInjection
         services.AddScoped<IShoppingCartRepository, ShoppingCartRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IUserAuthRepository, UserRepository>();
+        services.AddScoped<IUserLoginRepository, UserLoginRepository>();
 
         // Auth 
         services.AddSingleton<IJwtService, JwtService>();
