@@ -1,5 +1,7 @@
 ﻿using ECommerce.Application.Interfaces;
+using ECommerce.Application.Interfaces.Auth;
 using ECommerce.Application.Services;
+using ECommerce.Application.Services.Auth;
 using ECommerce.Application.UseCases.Auth.ForgotPassword;
 using ECommerce.Application.UseCases.Auth.Login;
 using ECommerce.Application.UseCases.Auth.Logout;
@@ -30,6 +32,9 @@ public static class DependencyInjection
         services.AddScoped<IProductService, ProductService>();
         services.AddScoped<IShoppingCartService, ShoppingCartService>();
         services.AddScoped<IOrderService, OrderService>();
+
+        // Auth Services
+        services.AddScoped<IExternalLoginService, ExternalLoginService>();
 
         return services;
     }
