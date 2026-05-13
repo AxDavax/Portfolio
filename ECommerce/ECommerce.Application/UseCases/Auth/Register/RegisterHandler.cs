@@ -13,7 +13,7 @@ public class RegisterHandler
     private readonly IPasswordService _passwordService;
     private readonly IJwtService _jwtService;
     private readonly IUserRoleService _userRoleService;
-    private readonly IRoleService _roleService;
+    private readonly IRoleRepository _roleRepo;
     private readonly IRefreshTokenRepository _refreshTokenRepo;
     private readonly IConfiguration _config;
 
@@ -23,7 +23,7 @@ public class RegisterHandler
         IPasswordService passwordService,
         IJwtService jwtService,
         IUserRoleService userRoleService,
-        IRoleService roleService,
+        IRoleRepository roleRepo,
         IRefreshTokenRepository refreshTokenRepo,
         IConfiguration config)
     {
@@ -32,7 +32,7 @@ public class RegisterHandler
         _passwordService = passwordService;
         _jwtService = jwtService;
         _userRoleService = userRoleService;
-        _roleService = roleService;
+        _roleRepo = roleRepo;
         _refreshTokenRepo = refreshTokenRepo;
         _config = config;
     }
@@ -63,7 +63,7 @@ public class RegisterHandler
         var createdUser = await _sqlUserRepo.CreateAuthAsync(user);
 
         // 5. Assign default role "Customer"
-        var customerRoleId = await _roleService.GetIdByNameAsync("Customer");
+        var customerRoleId = await _roleRepo.GetIdByNameAsync("Customer");
         await _userRoleService.AssignRoleAsync(createdUser.Id, customerRoleId);
 
         // 6. Loads the roles (now includes "Customer")
