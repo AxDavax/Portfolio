@@ -1,6 +1,6 @@
 ﻿using ECommerce.Domain.Auth.Interfaces;
 using ECommerce.Domain.Auth.Models;
-using ECommerce.Domain.Interfaces;
+using ECommerce.Domain.Data.Interfaces;
 using System.Security.Cryptography;
 
 namespace ECommerce.Infrastructure.Repositories.Auth;

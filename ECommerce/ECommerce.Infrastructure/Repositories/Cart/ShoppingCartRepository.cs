@@ -1,7 +1,7 @@
 ﻿using ECommerce.Domain.Cart.Interfaces;
 using ECommerce.Domain.Cart.Models;
 using ECommerce.Domain.Catalog.Models;
-using ECommerce.Domain.Interfaces;
+using ECommerce.Domain.Data.Interfaces;
 
 namespace ECommerce.Infrastructure.Repositories.Cart;
 

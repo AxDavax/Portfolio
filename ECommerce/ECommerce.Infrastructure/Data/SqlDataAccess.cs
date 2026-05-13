@@ -1,5 +1,5 @@
 ﻿using Dapper;
-using ECommerce.Domain.Interfaces;
+using ECommerce.Domain.Data.Interfaces;
 using System.Data;
 
 namespace ECommerce.Infrastructure.Data;

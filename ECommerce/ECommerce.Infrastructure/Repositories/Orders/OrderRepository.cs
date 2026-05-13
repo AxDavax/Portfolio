@@ -1,4 +1,4 @@
-﻿using ECommerce.Domain.Interfaces;
+﻿using ECommerce.Domain.Data.Interfaces;
 using ECommerce.Domain.Orders.Interfaces;
 using ECommerce.Domain.Orders.Models;
 

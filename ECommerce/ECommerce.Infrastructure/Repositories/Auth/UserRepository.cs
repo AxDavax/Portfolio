@@ -3,7 +3,7 @@ using ECommerce.Application.Interfaces;
 using ECommerce.Application.Models;
 using ECommerce.Domain.Auth.Interfaces;
 using ECommerce.Domain.Auth.Models;
-using ECommerce.Domain.Interfaces;
+using ECommerce.Domain.Data.Interfaces;
 
 namespace ECommerce.Infrastructure.Repositories.Auth;
 
