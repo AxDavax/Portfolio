@@ -1,7 +1,7 @@
 ﻿using ECommerce.Domain.Interfaces;
 using ECommerce.Domain.Models;
 
-namespace ECommerce.Infrastructure.Repositories;
+namespace ECommerce.Infrastructure.Repositories.Catalog;
 
 public class CategoryRepository : ICategoryRepository
 {
@@ -35,7 +35,7 @@ public class CategoryRepository : ICategoryRepository
           
             """;
 
-        int newId = await _db.ExecuteScalarAsync<int, object>(sql, new { Name = obj.Name });
+        int newId = await _db.ExecuteScalarAsync<int, object>(sql, new { obj.Name });
 
         return new Category
         {
