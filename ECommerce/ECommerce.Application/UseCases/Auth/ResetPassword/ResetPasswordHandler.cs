@@ -1,5 +1,6 @@
 ﻿using ECommerce.Application.Interfaces;
 using ECommerce.Contracts.Auth.ResetPassword;
+using ECommerce.Domain.Auth.Interfaces;
 using ECommerce.Domain.Interfaces;
 
 namespace ECommerce.Application.UseCases.Auth.ResetPassword;

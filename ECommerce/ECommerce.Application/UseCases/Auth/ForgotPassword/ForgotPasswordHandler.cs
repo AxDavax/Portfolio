@@ -1,8 +1,9 @@
 ﻿using ECommerce.Application.Interfaces;
 using ECommerce.Application.Models;
 using ECommerce.Contracts.Auth.ForgotPassword;
+using ECommerce.Domain.Auth.Interfaces;
+using ECommerce.Domain.Auth.Models;
 using ECommerce.Domain.Interfaces;
-using ECommerce.Domain.Models;
 using Microsoft.Extensions.Configuration;
 
 namespace ECommerce.Application.UseCases.Auth.ForgotPassword;
