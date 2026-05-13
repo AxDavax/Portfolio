@@ -1,6 +1,6 @@
-﻿using ECommerce.Domain.Models;
+﻿using ECommerce.Domain.Auth.Models;
 
-namespace ECommerce.Domain.Interfaces;
+namespace ECommerce.Domain.Auth.Interfaces;
 
 public interface IResetPasswordTokenRepository
 {
