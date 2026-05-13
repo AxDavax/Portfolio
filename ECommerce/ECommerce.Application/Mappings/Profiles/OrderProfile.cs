@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using ECommerce.Contracts.DTO;
-using ECommerce.Domain.Models;
+using ECommerce.Domain.Orders.Models;
 
 namespace ECommerce.Application.Mappings.Profiles;
 

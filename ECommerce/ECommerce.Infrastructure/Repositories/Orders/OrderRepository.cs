@@ -1,5 +1,6 @@
 ﻿using ECommerce.Domain.Interfaces;
-using ECommerce.Domain.Models;
+using ECommerce.Domain.Orders.Interfaces;
+using ECommerce.Domain.Orders.Models;
 
 namespace ECommerce.Infrastructure.Repositories.Orders;
 

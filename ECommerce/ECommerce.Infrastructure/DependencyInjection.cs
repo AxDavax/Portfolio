@@ -10,6 +10,7 @@ using ECommerce.Infrastructure.Services;
 using Microsoft.Extensions.DependencyInjection;
 using ECommerce.Domain.Catalog.Interfaces;
 using ECommerce.Domain.Cart.Interfaces;
+using ECommerce.Domain.Orders.Interfaces;
 
 namespace ECommerce.Infrastructure;
 

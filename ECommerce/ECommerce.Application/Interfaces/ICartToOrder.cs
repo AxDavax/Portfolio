@@ -1,5 +1,5 @@
 ﻿using ECommerce.Domain.Cart.Models;
-using ECommerce.Domain.Models;
+using ECommerce.Domain.Orders.Models;
 
 namespace ECommerce.Application.Interfaces;
 
