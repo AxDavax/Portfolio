@@ -8,6 +8,7 @@ using ECommerce.Infrastructure.Repositories.Orders;
 using ECommerce.Infrastructure.Repositories.Cart;
 using ECommerce.Infrastructure.Services;
 using Microsoft.Extensions.DependencyInjection;
+using ECommerce.Domain.Catalog.Interfaces;
 
 namespace ECommerce.Infrastructure;
 

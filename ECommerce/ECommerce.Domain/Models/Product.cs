@@ -1,4 +1,6 @@
-﻿namespace ECommerce.Domain.Models;
+﻿using ECommerce.Domain.Catalog.Models;
+
+namespace ECommerce.Domain.Models;
 
 public class Product
 {

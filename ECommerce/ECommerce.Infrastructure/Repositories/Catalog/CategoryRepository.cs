@@ -1,5 +1,6 @@
-﻿using ECommerce.Domain.Interfaces;
-using ECommerce.Domain.Models;
+﻿using ECommerce.Domain.Catalog.Interfaces;
+using ECommerce.Domain.Catalog.Models;
+using ECommerce.Domain.Interfaces;
 
 namespace ECommerce.Infrastructure.Repositories.Catalog;
 
