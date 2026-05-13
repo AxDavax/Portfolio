@@ -73,5 +73,6 @@
     <None Include="Database\ECommerce\12_Create_OrderHeader.sql" />
     <None Include="Database\ECommerce\13_Create_OrderDetails.sql" />
     <None Include="Database\ECommerce\14_Create_ShoppingCart.sql" />
+    <None Include="Database\Auth\06_Create_UserLogins.sql" />
   </ItemGroup>
 </Project>
