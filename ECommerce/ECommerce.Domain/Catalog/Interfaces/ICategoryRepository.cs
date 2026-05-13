@@ -1,6 +1,6 @@
-﻿using ECommerce.Domain.Models;
+﻿using ECommerce.Domain.Catalog.Models;
 
-namespace ECommerce.Domain.Interfaces;
+namespace ECommerce.Domain.Catalog.Interfaces;
 
 public interface ICategoryRepository
 {
