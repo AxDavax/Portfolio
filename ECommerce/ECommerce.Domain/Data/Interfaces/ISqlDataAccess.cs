@@ -1,4 +1,4 @@
-﻿namespace ECommerce.Domain.Interfaces;
+﻿namespace ECommerce.Domain.Data.Interfaces;
 
 public interface ISqlDataAccess
 {
