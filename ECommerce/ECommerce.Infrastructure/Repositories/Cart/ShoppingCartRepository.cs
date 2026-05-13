@@ -1,7 +1,7 @@
 ﻿using ECommerce.Domain.Interfaces;
 using ECommerce.Domain.Models;
 
-namespace ECommerce.Infrastructure.Repositories;
+namespace ECommerce.Infrastructure.Repositories.Cart;
 
 public class ShoppingCartRepository : IShoppingCartRepository
 {
@@ -134,7 +134,7 @@ public class ShoppingCartRepository : IShoppingCartRepository
             """;
 
             var newCount = existing.Count + updateBy;
-            int rowsUpdated = await _db.ExecuteAsync(updateSql, new { Id = existing.Id, Count = newCount });
+            int rowsUpdated = await _db.ExecuteAsync(updateSql, new { existing.Id, Count = newCount });
             return rowsUpdated > 0;
         }
 
