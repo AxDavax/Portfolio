@@ -1,4 +1,4 @@
-﻿namespace ECommerce.Domain.Models;
+﻿namespace ECommerce.Domain.Orders.Models;
 
 public class OrderDetail
 {

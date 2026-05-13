@@ -1,6 +1,6 @@
-﻿using ECommerce.Domain.Models;
+﻿using ECommerce.Domain.Orders.Models;
 
-namespace ECommerce.Domain.Interfaces;
+namespace ECommerce.Domain.Orders.Interfaces;
 
 public interface IOrderRepository
 {
