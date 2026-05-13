@@ -1,8 +1,8 @@
 ﻿using ECommerce.Contracts.DTO;
 using ECommerce.Application.Interfaces;
-using ECommerce.Domain.Interfaces;
 using AutoMapper;
 using ECommerce.Domain.Catalog.Interfaces;
+using ECommerce.Domain.Cart.Interfaces;
 
 namespace ECommerce.Application.Services;
 

@@ -9,6 +9,7 @@ using ECommerce.Infrastructure.Repositories.Cart;
 using ECommerce.Infrastructure.Services;
 using Microsoft.Extensions.DependencyInjection;
 using ECommerce.Domain.Catalog.Interfaces;
+using ECommerce.Domain.Cart.Interfaces;
 
 namespace ECommerce.Infrastructure;
 

@@ -2,6 +2,7 @@
 using ECommerce.Application.Interfaces;
 using ECommerce.Contracts.DTO;
 using ECommerce.Contracts.DTO.Payment;
+using ECommerce.Domain.Cart.Interfaces;
 using ECommerce.Domain.Constants;
 using ECommerce.Domain.Interfaces;
 using Microsoft.Extensions.Configuration;
