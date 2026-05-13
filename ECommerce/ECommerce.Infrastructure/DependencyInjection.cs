@@ -2,7 +2,10 @@
 using ECommerce.Domain.Interfaces;
 using ECommerce.Infrastructure.Auth;
 using ECommerce.Infrastructure.Data;
-using ECommerce.Infrastructure.Repositories;
+using ECommerce.Infrastructure.Repositories.Auth;
+using ECommerce.Infrastructure.Repositories.Catalog;
+using ECommerce.Infrastructure.Repositories.Orders;
+using ECommerce.Infrastructure.Repositories.Cart;
 using ECommerce.Infrastructure.Services;
 using Microsoft.Extensions.DependencyInjection;
 
