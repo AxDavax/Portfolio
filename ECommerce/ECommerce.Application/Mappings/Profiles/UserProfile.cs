@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using ECommerce.Application.Models;
-using ECommerce.Domain.Models;
+using ECommerce.Domain.Auth.Models;
+
 namespace ECommerce.Application.Mappings.Profiles;
 
 public class UserProfile : Profile

@@ -1,5 +1,5 @@
 ﻿using ECommerce.Contracts.Auth.Me;
-using ECommerce.Domain.Interfaces;
+using ECommerce.Domain.Auth.Interfaces;
 
 namespace ECommerce.Application.UseCases.Auth.Me;
 

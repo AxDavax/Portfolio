@@ -1,6 +1,6 @@
 ﻿using ECommerce.Application.Interfaces;
 using ECommerce.Application.Models;
-using ECommerce.Domain.Models;
+using ECommerce.Domain.Auth.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;

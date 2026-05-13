@@ -1,5 +1,5 @@
 ﻿using ECommerce.Application.Models;
-using ECommerce.Domain.Models;
+using ECommerce.Domain.Auth.Models;
 
 namespace ECommerce.Application.Interfaces;
 

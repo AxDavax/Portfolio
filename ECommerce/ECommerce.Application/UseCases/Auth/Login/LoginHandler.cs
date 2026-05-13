@@ -1,7 +1,6 @@
 ﻿using ECommerce.Application.Interfaces;
 using ECommerce.Contracts.Auth.Login;
 using ECommerce.Domain.Auth.Interfaces;
-using ECommerce.Domain.Interfaces;
 using Microsoft.Extensions.Configuration;
 
 namespace ECommerce.Application.UseCases.Auth.Login;
