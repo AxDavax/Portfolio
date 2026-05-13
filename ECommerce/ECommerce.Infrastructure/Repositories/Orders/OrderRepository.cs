@@ -1,7 +1,7 @@
 ﻿using ECommerce.Domain.Interfaces;
 using ECommerce.Domain.Models;
 
-namespace ECommerce.Infrastructure.Repositories;
+namespace ECommerce.Infrastructure.Repositories.Orders;
 
 public class OrderRepository : IOrderRepository
 {
