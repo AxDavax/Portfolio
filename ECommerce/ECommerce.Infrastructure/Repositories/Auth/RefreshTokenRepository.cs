@@ -2,7 +2,7 @@
 using ECommerce.Domain.Models;
 using System.Security.Cryptography;
 
-namespace ECommerce.Infrastructure.Repositories;
+namespace ECommerce.Infrastructure.Repositories.Auth;
 
 public class RefreshTokenRepository : IRefreshTokenRepository
 {
@@ -94,7 +94,7 @@ public class RefreshTokenRepository : IRefreshTokenRepository
 
         await _db.ExecuteAsync(sql, new
         {
-            UserId = oldToken.UserId,
+            oldToken.UserId,
             OldToken = oldToken.Token,
             NewToken = newToken
         });

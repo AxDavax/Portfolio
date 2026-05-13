@@ -1,6 +1,6 @@
 ﻿using ECommerce.Domain.Interfaces;
 
-namespace ECommerce.Infrastructure.Repositories;
+namespace ECommerce.Infrastructure.Repositories.Auth;
 
 public class RoleRepository : IRoleRepository
 {

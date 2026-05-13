@@ -4,7 +4,7 @@ using ECommerce.Application.Models;
 using ECommerce.Domain.Interfaces;
 using ECommerce.Domain.Models;
 
-namespace ECommerce.Infrastructure.Repositories;
+namespace ECommerce.Infrastructure.Repositories.Auth;
 
 public class UserRepository : IUserRepository, IUserAuthRepository
 {
