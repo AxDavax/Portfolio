@@ -28,12 +28,12 @@ public static class DependencyInjection
         services.AddScoped<IUserLoginRepository, UserLoginRepository>();
         services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
         services.AddScoped<IResetPasswordTokenRepository, ResetPasswordTokenRepository>();
+        services.AddScoped<IRoleRepository, RoleRepository>();
 
         // Auth Services
         services.AddSingleton<IJwtService, JwtService>();
         services.AddSingleton<IPasswordService, PasswordService>();
         services.AddScoped<IUserRoleService, UserRoleService>();
-        services.AddScoped<IRoleService, RoleService>();
 
         services.AddSingleton<IExternalLoginStateStore, ExternalLoginStateStore>();
 

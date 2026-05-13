@@ -1,13 +1,12 @@
-﻿using ECommerce.Application.Interfaces;
-using ECommerce.Domain.Interfaces;
+﻿using ECommerce.Domain.Interfaces;
 
-namespace ECommerce.Infrastructure.Auth;
+namespace ECommerce.Infrastructure.Repositories;
 
-public class RoleService : IRoleService
+public class RoleRepository : IRoleRepository
 {
     private readonly ISqlDataAccess _db;
-
-    public RoleService(ISqlDataAccess db)
+    
+    public RoleRepository(ISqlDataAccess db)
     {
         _db = db;
     }
