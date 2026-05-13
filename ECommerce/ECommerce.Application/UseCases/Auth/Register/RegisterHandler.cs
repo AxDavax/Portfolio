@@ -2,7 +2,6 @@
 using ECommerce.Application.Models;
 using ECommerce.Contracts.Auth.Register;
 using ECommerce.Domain.Interfaces;
-using Microsoft.Extensions.Configuration;
 
 namespace ECommerce.Application.UseCases.Auth.Register;
 
@@ -12,29 +11,26 @@ public class RegisterHandler
     private readonly IUserAuthRepository _sqlUserRepo;
     private readonly IPasswordService _passwordService;
     private readonly IJwtService _jwtService;
-    private readonly IUserRoleService _userRoleService;
+    private readonly IUserRoleRepository _userRoleRepo;
     private readonly IRoleRepository _roleRepo;
     private readonly IRefreshTokenRepository _refreshTokenRepo;
-    private readonly IConfiguration _config;
 
     public RegisterHandler(
         IUserRepository userRepo,
         IUserAuthRepository sqlUserRepo,
         IPasswordService passwordService,
         IJwtService jwtService,
-        IUserRoleService userRoleService,
+        IUserRoleRepository userRoleRepo,
         IRoleRepository roleRepo,
-        IRefreshTokenRepository refreshTokenRepo,
-        IConfiguration config)
+        IRefreshTokenRepository refreshTokenRepo)
     {
         _userRepo = userRepo;
         _sqlUserRepo = sqlUserRepo;
         _passwordService = passwordService;
         _jwtService = jwtService;
-        _userRoleService = userRoleService;
+        _userRoleRepo = userRoleRepo;
         _roleRepo = roleRepo;
         _refreshTokenRepo = refreshTokenRepo;
-        _config = config;
     }
 
     public async Task<RegisterResponse> HandleAsync(RegisterRequest request)
@@ -64,7 +60,7 @@ public class RegisterHandler
 
         // 5. Assign default role "Customer"
         var customerRoleId = await _roleRepo.GetIdByNameAsync("Customer");
-        await _userRoleService.AssignRoleAsync(createdUser.Id, customerRoleId);
+        await _userRoleRepo.AssignRoleAsync(createdUser.Id, customerRoleId);
 
         // 6. Loads the roles (now includes "Customer")
         var roles = await _userRepo.GetRolesAsync(createdUser.Id);
