@@ -1,6 +1,6 @@
-﻿using ECommerce.Domain.Catalog.Models;
+﻿using ECommerce.Domain.Catalog.Interfaces;
+using ECommerce.Domain.Catalog.Models;
 using ECommerce.Domain.Interfaces;
-using ECommerce.Domain.Models;
 
 namespace ECommerce.Infrastructure.Repositories.Catalog;
 
@@ -22,7 +22,7 @@ public class ProductRepository : IProductRepository
 
             SELECT CAST(SCOPE_IDENTITY() AS INT);
         
-            """;
+        """;
 
         int newId = await _db.ExecuteScalarAsync<int, object>(sql, new
         {
@@ -53,7 +53,7 @@ public class ProductRepository : IProductRepository
             ON
                 p.CategoryId = c.Id
                
-            """;
+        """;
 
         return _db.QueryAsync<Product, Category, Product, object>(
             sql, 
@@ -82,7 +82,7 @@ public class ProductRepository : IProductRepository
             WHERE 
                 p.Id = @Id
                         
-            """;
+        """;
 
         var result = await _db.QueryAsync<Product, Category, Product, object>(
             sql,
@@ -110,7 +110,7 @@ public class ProductRepository : IProductRepository
                 ImageUrl = @ImageUrl
             WHERE Id = @Id
 
-            """;
+        """;
 
         int rows = await _db.ExecuteAsync(sql, obj);
 
@@ -129,7 +129,7 @@ public class ProductRepository : IProductRepository
             FROM Product
             WHERE Id = @Id
 
-            """;
+        """;
 
         int rows = await _db.ExecuteAsync(sql, new { Id = id });
         return rows > 0;
