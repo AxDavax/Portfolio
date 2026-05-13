@@ -3,6 +3,7 @@ using ECommerce.Application;
 using ECommerce.Application.Mappings.Profiles;
 using ECommerce.Infrastructure;
 using ECommerce.Infrastructure.Auth;
+using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
@@ -28,6 +29,8 @@ builder.Services.AddAuthProviders(builder.Configuration);
 builder.Services.AddMailServices(builder.Configuration);
 
 builder.Services.AddAutoMapper(typeof(CategoryProfile).Assembly);
+
+builder.Services.AddMediatR(typeof(ECommerce.Application.DependencyInjection).Assembly);
 
 var jwtKey = builder.Configuration["Jwt:Key"];
 var jwtIssuer = builder.Configuration["Jwt:Issuer"];
