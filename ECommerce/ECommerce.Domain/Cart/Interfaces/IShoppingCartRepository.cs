@@ -1,6 +1,6 @@
-﻿using ECommerce.Domain.Models;
+﻿using ECommerce.Domain.Cart.Models;
 
-namespace ECommerce.Domain.Interfaces;
+namespace ECommerce.Domain.Cart.Interfaces;
 
 public interface IShoppingCartRepository
 {

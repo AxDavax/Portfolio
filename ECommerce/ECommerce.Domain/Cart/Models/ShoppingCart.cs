@@ -1,6 +1,6 @@
 ﻿using ECommerce.Domain.Catalog.Models;
 
-namespace ECommerce.Domain.Models;
+namespace ECommerce.Domain.Cart.Models;
 
 public class ShoppingCart
 {
