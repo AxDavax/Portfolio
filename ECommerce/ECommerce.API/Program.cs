@@ -18,7 +18,7 @@ StripeConfiguration.ApiKey = builder.Configuration["Stripe:ApiKey"]!;
 builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddOpenApi();
+builder.Services.AddSwaggerGen();
 
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure();
@@ -67,8 +67,14 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
-    app.MapScalarApiReference();
+    app.UseSwagger();
+    app.UseSwaggerUI();
+
+    app.MapScalarApiReference("/scalar", options =>
+    {
+        options.Title = "ECommerce API";
+        options.OpenApiRoutePattern = "/swagger/v1/swagger.json";
+    });
 }
 
 var storagePath = Path.Combine(Directory.GetCurrentDirectory(), "storage", "products");
