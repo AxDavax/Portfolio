@@ -38,7 +38,10 @@ public class ResetPasswordTokenRepository : IResetPasswordTokenRepository
             
         """;
 
-        await _db.ExecuteAsync(sql, new { token.Token });
+        if(token == null)
+            throw new ArgumentNullException(nameof(token));
+
+        await _db.ExecuteAsync(sql, new { Token = token.Token });
     }
 
     public async Task<ResetPasswordToken?> GetByTokenAsync(string token)
