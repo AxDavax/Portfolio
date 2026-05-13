@@ -1,4 +1,5 @@
-﻿using ECommerce.Application.Interfaces;
+﻿using ECommerce.API.Requests;   
+using ECommerce.Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerce.API.Controllers
@@ -31,8 +32,10 @@ namespace ECommerce.API.Controllers
 
         // POST: api/files/products
         [HttpPost("products")]
-        public async Task<IActionResult> UploadProductImage([FromForm] IFormFile file)
+        [Consumes("multipart/form-data")]
+        public async Task<IActionResult> UploadProductImage([FromForm] UploadProductImageForm form)
         {
+            var file = form.File;
             if (file == null || file.Length == 0)
                 return BadRequest("No file uploaded.");
 
