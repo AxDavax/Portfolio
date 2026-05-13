@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using ECommerce.Domain.Catalog.Interfaces;
 using ECommerce.Domain.Cart.Interfaces;
 using ECommerce.Domain.Orders.Interfaces;
+using ECommerce.Domain.Auth.Interfaces;
 
 namespace ECommerce.Infrastructure;
 

@@ -1,6 +1,7 @@
 ﻿using ECommerce.Application.Interfaces;
 using ECommerce.Application.Models;
 using ECommerce.Contracts.Auth.Register;
+using ECommerce.Domain.Auth.Interfaces;
 using ECommerce.Domain.Interfaces;
 
 namespace ECommerce.Application.UseCases.Auth.Register;
