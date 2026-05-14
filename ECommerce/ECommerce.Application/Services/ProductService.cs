@@ -3,6 +3,7 @@ using ECommerce.Application.Interfaces;
 using AutoMapper;
 using ECommerce.Domain.Catalog.Interfaces;
 using ECommerce.Domain.Catalog.Models;
+using ECommerce.Application.Catalog.Interfaces;
 
 namespace ECommerce.Application.Services
 {

@@ -1,4 +1,4 @@
-﻿using ECommerce.Application.Interfaces;
+﻿using ECommerce.Application.Catalog.Interfaces;
 using ECommerce.Contracts.DTO;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

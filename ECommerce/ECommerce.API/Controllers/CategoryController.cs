@@ -1,6 +1,6 @@
 ﻿using ECommerce.Contracts.DTO;
-using ECommerce.Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using ECommerce.Application.Catalog.Interfaces;
 
 namespace ECommerce.API.Controllers
 {
