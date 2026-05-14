@@ -1,7 +1,7 @@
 ﻿using ECommerce.Application.Models;
 using ECommerce.Domain.Auth.Models;
 
-namespace ECommerce.Application.Interfaces;
+namespace ECommerce.Application.Auth.Interfaces;
 
 public interface IJwtService
 {
