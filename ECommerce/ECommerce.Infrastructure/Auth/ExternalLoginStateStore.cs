@@ -1,4 +1,4 @@
-﻿using ECommerce.Application.Interfaces;
+﻿using ECommerce.Application.Auth.Interfaces;
 using System.Collections.Concurrent;
 
 namespace ECommerce.Infrastructure.Auth;

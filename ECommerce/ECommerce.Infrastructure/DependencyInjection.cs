@@ -12,6 +12,7 @@ using ECommerce.Domain.Cart.Interfaces;
 using ECommerce.Domain.Orders.Interfaces;
 using ECommerce.Domain.Auth.Interfaces;
 using ECommerce.Domain.Data.Interfaces;
+using ECommerce.Application.Auth.Interfaces;
 
 namespace ECommerce.Infrastructure;
 
