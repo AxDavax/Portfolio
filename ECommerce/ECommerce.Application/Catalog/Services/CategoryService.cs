@@ -4,7 +4,7 @@ using ECommerce.Domain.Catalog.Models;
 using ECommerce.Domain.Catalog.Interfaces;
 using ECommerce.Application.Catalog.Interfaces;
 
-namespace ECommerce.Application.Services;
+namespace ECommerce.Application.Catalog.Services;
 
 public class CategoryService : ICategoryService
 {
@@ -36,7 +36,7 @@ public class CategoryService : ICategoryService
     public async Task<CategoryDTO?> GetByIdAsync(int id)
     {
         var category = await _repo.GetByIdAsync(id);
-        return (category == null) ? null : _mapper.Map<CategoryDTO>(category);
+        return category == null ? null : _mapper.Map<CategoryDTO>(category);
     }
 
     public async Task<bool> UpdateAsync(int id, CategoryDTO dto)
