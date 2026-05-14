@@ -1,6 +1,6 @@
 ﻿using ECommerce.Contracts.DTO;
 
-namespace ECommerce.Application.Interfaces;
+namespace ECommerce.Application.Cart.Interfaces;
 
 public interface IShoppingCartService
 {

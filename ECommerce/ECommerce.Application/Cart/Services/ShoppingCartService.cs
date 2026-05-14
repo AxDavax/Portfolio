@@ -1,10 +1,10 @@
 ﻿using ECommerce.Contracts.DTO;
-using ECommerce.Application.Interfaces;
 using AutoMapper;
 using ECommerce.Domain.Catalog.Interfaces;
 using ECommerce.Domain.Cart.Interfaces;
+using ECommerce.Application.Cart.Interfaces;
 
-namespace ECommerce.Application.Services;
+namespace ECommerce.Application.Cart.Services;
 
 public class ShoppingCartService : IShoppingCartService
 {
@@ -33,7 +33,7 @@ public class ShoppingCartService : IShoppingCartService
     public async Task<ShoppingCartDTO?> GetItemAsync(Guid userId, int productId)
     {
         var cartItem = await _repo.GetItemAsync(userId, productId);
-        return (cartItem == null) ? null : _mapper.Map<ShoppingCartDTO>(cartItem);
+        return cartItem == null ? null : _mapper.Map<ShoppingCartDTO>(cartItem);
     }
 
     public async Task<int> GetTotalCartCountAsync(Guid userId)
