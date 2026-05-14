@@ -2,6 +2,8 @@
 using ECommerce.Application.Catalog.Interfaces;
 using ECommerce.Application.Catalog.Services;
 using ECommerce.Application.Interfaces;
+using ECommerce.Application.Orders.Interfaces;
+using ECommerce.Application.Orders.Services;
 using ECommerce.Application.Services;
 using ECommerce.Application.Services.Auth;
 using ECommerce.Application.UseCases.Auth.ForgotPassword;
