@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using ECommerce.Application.Interfaces;
+using ECommerce.Application.Auth.Interfaces;
 using ECommerce.Application.Models;
 using ECommerce.Domain.Auth.Interfaces;
 using ECommerce.Domain.Auth.Models;

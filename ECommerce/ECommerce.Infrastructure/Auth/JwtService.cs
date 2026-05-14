@@ -1,4 +1,4 @@
-﻿using ECommerce.Application.Interfaces;
+﻿using ECommerce.Application.Auth.Interfaces;
 using ECommerce.Application.Models;
 using ECommerce.Domain.Auth.Models;
 using Microsoft.Extensions.Configuration;

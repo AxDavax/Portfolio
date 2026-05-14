@@ -1,4 +1,4 @@
-﻿using ECommerce.Application.Interfaces;
+﻿using ECommerce.Application.Auth.Interfaces;
 using System.Security.Cryptography;
 
 namespace ECommerce.Infrastructure.Auth;
