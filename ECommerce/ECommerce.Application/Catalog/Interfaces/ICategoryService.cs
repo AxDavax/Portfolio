@@ -1,6 +1,6 @@
 ﻿using ECommerce.Contracts.DTO;
 
-namespace ECommerce.Application.Interfaces;
+namespace ECommerce.Application.Catalog.Interfaces;
 
 public interface ICategoryService
 {
