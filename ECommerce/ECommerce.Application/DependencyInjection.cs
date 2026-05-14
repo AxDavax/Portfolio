@@ -1,4 +1,6 @@
 ﻿using ECommerce.Application.Auth.Interfaces;
+using ECommerce.Application.Cart.Interfaces;
+using ECommerce.Application.Cart.Services;
 using ECommerce.Application.Catalog.Interfaces;
 using ECommerce.Application.Catalog.Services;
 using ECommerce.Application.Interfaces;
