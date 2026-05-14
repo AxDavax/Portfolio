@@ -1,6 +1,6 @@
 ﻿using ECommerce.Application.Models;
 
-namespace ECommerce.Application.Interfaces;
+namespace ECommerce.Application.Auth.Interfaces;
 
 public interface IExternalAuthService
 {
