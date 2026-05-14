@@ -1,10 +1,10 @@
 ﻿using ECommerce.Contracts.DTO;
-using ECommerce.Application.Interfaces;
 using AutoMapper;
 using ECommerce.Domain.Orders.Models;
 using ECommerce.Domain.Orders.Interfaces;
+using ECommerce.Application.Orders.Interfaces;
 
-namespace ECommerce.Application.Services;
+namespace ECommerce.Application.Orders.Services;
 
 public class OrderService : IOrderService
 {
