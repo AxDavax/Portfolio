@@ -1,11 +1,12 @@
 ﻿using ECommerce.Application.Auth.Models;
+using ECommerce.Application.Auth.Records;
 using ECommerce.Application.Email.Interfaces;
 using ECommerce.Contracts.Auth.ForgotPassword;
 using ECommerce.Domain.Auth.Interfaces;
 using ECommerce.Domain.Auth.Models;
 using Microsoft.Extensions.Configuration;
 
-namespace ECommerce.Application.UseCases.Auth.ForgotPassword;
+namespace ECommerce.Application.Auth.UseCases;
 
 public class ForgotPasswordHandler
 {

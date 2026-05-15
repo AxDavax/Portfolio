@@ -1,4 +1,5 @@
-﻿using ECommerce.Application.Cart.Interfaces;
+﻿using ECommerce.Application.Auth.UseCases;
+using ECommerce.Application.Cart.Interfaces;
 using ECommerce.Application.Cart.Services;
 using ECommerce.Application.Catalog.Interfaces;
 using ECommerce.Application.Catalog.Services;
@@ -8,7 +9,6 @@ using ECommerce.Application.OAuth.Services;
 using ECommerce.Application.Orders.Interfaces;
 using ECommerce.Application.Orders.Services;
 using ECommerce.Application.Services;
-using ECommerce.Application.UseCases.Auth.ForgotPassword;
 using ECommerce.Application.UseCases.Auth.Login;
 using ECommerce.Application.UseCases.Auth.Logout;
 using ECommerce.Application.UseCases.Auth.Me;

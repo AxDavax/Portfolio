@@ -1,4 +1,4 @@
-﻿namespace ECommerce.Application.UseCases.Auth.ForgotPassword;
+﻿namespace ECommerce.Application.Auth.Records;
 
 public class ForgotPasswordResponse
 {

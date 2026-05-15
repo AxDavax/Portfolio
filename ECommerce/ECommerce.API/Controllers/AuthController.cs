@@ -1,4 +1,4 @@
-﻿using ECommerce.Application.UseCases.Auth.ForgotPassword;
+﻿using ECommerce.Application.Auth.UseCases;
 using ECommerce.Application.UseCases.Auth.Login;
 using ECommerce.Application.UseCases.Auth.Logout;
 using ECommerce.Application.UseCases.Auth.Me;
