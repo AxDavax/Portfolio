@@ -2,7 +2,7 @@
 using ECommerce.Contracts.DTO;
 using ECommerce.Domain.Orders.Models;
 
-namespace ECommerce.Application.Mappings.Profiles;
+namespace ECommerce.Application.Orders.Mappings.Profiles;
 
 public class OrderProfile : Profile
 {
