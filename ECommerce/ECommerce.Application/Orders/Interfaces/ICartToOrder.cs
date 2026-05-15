@@ -1,7 +1,7 @@
 ﻿using ECommerce.Domain.Cart.Models;
 using ECommerce.Domain.Orders.Models;
 
-namespace ECommerce.Application.Interfaces;
+namespace ECommerce.Application.Orders.Interfaces;
 
 public interface ICartToOrder
 {

@@ -1,8 +1,8 @@
-﻿using ECommerce.Application.Interfaces;
+﻿using ECommerce.Application.Orders.Interfaces;
 using ECommerce.Domain.Cart.Models;
 using ECommerce.Domain.Orders.Models;
 
-namespace ECommerce.Application.Services;
+namespace ECommerce.Application.Orders.Services;
 
 public class CartToOrder : ICartToOrder
 {

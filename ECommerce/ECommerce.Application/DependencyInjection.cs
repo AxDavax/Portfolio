@@ -3,12 +3,10 @@ using ECommerce.Application.Cart.Interfaces;
 using ECommerce.Application.Cart.Services;
 using ECommerce.Application.Catalog.Interfaces;
 using ECommerce.Application.Catalog.Services;
-using ECommerce.Application.Interfaces;
 using ECommerce.Application.OAuth.Interfaces;
 using ECommerce.Application.OAuth.Services;
 using ECommerce.Application.Orders.Interfaces;
 using ECommerce.Application.Orders.Services;
-using ECommerce.Application.Services;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ECommerce.Application;
