@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using ECommerce.Application.Interfaces;
+using ECommerce.Application.Payments.Interfaces;
 using ECommerce.Contracts.DTO;
 using ECommerce.Contracts.DTO.Payment;
 using ECommerce.Domain.Cart.Interfaces;

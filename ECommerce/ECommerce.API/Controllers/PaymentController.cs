@@ -1,4 +1,4 @@
-﻿using ECommerce.Application.Interfaces;
+﻿using ECommerce.Application.Payments.Interfaces;
 using ECommerce.Contracts.DTO;
 using ECommerce.Contracts.DTO.Payment;
 using Microsoft.AspNetCore.Authorization;

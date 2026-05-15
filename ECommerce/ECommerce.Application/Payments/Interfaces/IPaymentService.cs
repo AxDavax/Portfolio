@@ -1,7 +1,7 @@
 ﻿using ECommerce.Contracts.DTO;
 using ECommerce.Contracts.DTO.Payment;
 
-namespace ECommerce.Application.Interfaces;
+namespace ECommerce.Application.Payments.Interfaces;
 
 public interface IPaymentService
 {
