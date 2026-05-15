@@ -1,7 +1,8 @@
-﻿using ECommerce.Contracts.Auth.Me;
+﻿using ECommerce.Application.Auth.Records;
+using ECommerce.Contracts.Auth.Me;
 using ECommerce.Domain.Auth.Interfaces;
 
-namespace ECommerce.Application.UseCases.Auth.Me;
+namespace ECommerce.Application.Auth.UseCases;
 
 public class MeHandler
 {

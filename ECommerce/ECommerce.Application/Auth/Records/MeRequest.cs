@@ -1,4 +1,4 @@
-﻿namespace ECommerce.Application.UseCases.Auth.Me;
+﻿namespace ECommerce.Application.Auth.Records;
 
 public class MeRequest
 {
