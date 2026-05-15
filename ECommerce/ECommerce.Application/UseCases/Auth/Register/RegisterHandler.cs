@@ -1,5 +1,5 @@
 ﻿using ECommerce.Application.Auth.Interfaces;
-using ECommerce.Application.Models;
+using ECommerce.Application.Auth.Models;
 using ECommerce.Contracts.Auth.Register;
 using ECommerce.Domain.Auth.Interfaces;
 
