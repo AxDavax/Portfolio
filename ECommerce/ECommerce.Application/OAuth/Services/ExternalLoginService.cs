@@ -4,7 +4,7 @@ using ECommerce.Application.OAuth.Records;
 using ECommerce.Domain.Auth.Interfaces;
 using ECommerce.Domain.Auth.Models;
 
-namespace ECommerce.Application.Services.Auth;
+namespace ECommerce.Application.OAuth.Services;
 
 public class ExternalLoginService : IExternalLoginService
 {
