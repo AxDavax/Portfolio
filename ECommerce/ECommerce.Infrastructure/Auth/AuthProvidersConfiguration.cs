@@ -1,4 +1,4 @@
-﻿using ECommerce.Application.Models;
+﻿using ECommerce.Application.OAuth.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 

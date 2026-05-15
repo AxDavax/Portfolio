@@ -1,10 +1,11 @@
 ﻿using ECommerce.Application.Models;
 using ECommerce.Application.OAuth.Interfaces;
+using ECommerce.Application.OAuth.Models;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Options;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
-using ProviderSettings = ECommerce.Application.Models.ProviderSettings;
+using ProviderSettings = ECommerce.Application.OAuth.Models.ProviderSettings;
 
 namespace ECommerce.Infrastructure.Auth;
 

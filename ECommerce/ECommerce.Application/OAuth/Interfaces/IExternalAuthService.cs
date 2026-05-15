@@ -1,4 +1,4 @@
-﻿using ECommerce.Application.Models;
+﻿using ECommerce.Application.OAuth.Models;
 
 namespace ECommerce.Application.OAuth.Interfaces;
 
