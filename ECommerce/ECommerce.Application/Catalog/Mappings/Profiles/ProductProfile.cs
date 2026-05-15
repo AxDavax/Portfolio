@@ -2,7 +2,7 @@
 using ECommerce.Contracts.DTO;
 using ECommerce.Domain.Catalog.Models;
 
-namespace ECommerce.Application.Mappings.Profiles;
+namespace ECommerce.Application.Catalog.Mappings.Profiles;
 
 public class ProductProfile : Profile
 {
