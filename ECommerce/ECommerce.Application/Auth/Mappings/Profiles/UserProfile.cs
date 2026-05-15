@@ -2,7 +2,7 @@
 using ECommerce.Application.Auth.Models;
 using ECommerce.Domain.Auth.Models;
 
-namespace ECommerce.Application.Mappings.Profiles;
+namespace ECommerce.Application.Auth.Mappings.Profiles;
 
 public class UserProfile : Profile
 {
