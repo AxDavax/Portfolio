@@ -1,5 +1,5 @@
 ﻿using ECommerce.Application.Email.Interfaces;
-using ECommerce.Application.Models;
+using ECommerce.Application.Email.Models;
 using ECommerce.Infrastructure.Services;
 
 namespace ECommerce.API.Extensions;

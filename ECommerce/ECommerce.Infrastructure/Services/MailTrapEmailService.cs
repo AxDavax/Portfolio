@@ -1,5 +1,5 @@
 ﻿using ECommerce.Application.Email.Interfaces;
-using ECommerce.Application.Models;
+using ECommerce.Application.Email.Models;
 using Microsoft.Extensions.Logging;
 using System.Net;
 using System.Net.Mail;

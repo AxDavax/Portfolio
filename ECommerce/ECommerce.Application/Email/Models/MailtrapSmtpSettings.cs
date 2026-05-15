@@ -1,4 +1,4 @@
-﻿namespace ECommerce.Application.Models;
+﻿namespace ECommerce.Application.Email.Models;
 
 public class MailtrapSmtpSettings
 {
