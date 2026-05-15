@@ -1,4 +1,4 @@
-﻿using ECommerce.Application.Interfaces;
+﻿using ECommerce.Application.Email.Interfaces;
 using RazorLight;
 
 namespace ECommerce.Infrastructure.Services;

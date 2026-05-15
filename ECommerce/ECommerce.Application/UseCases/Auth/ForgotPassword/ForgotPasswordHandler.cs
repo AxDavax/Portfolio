@@ -1,4 +1,4 @@
-﻿using ECommerce.Application.Interfaces;
+﻿using ECommerce.Application.Email.Interfaces;
 using ECommerce.Application.Models;
 using ECommerce.Contracts.Auth.ForgotPassword;
 using ECommerce.Domain.Auth.Interfaces;
