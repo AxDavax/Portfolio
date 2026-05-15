@@ -1,16 +1,8 @@
 ﻿using ECommerce.Application.OAuth.Interfaces;
+using ECommerce.Application.OAuth.Records;
 using MediatR;
 
 namespace ECommerce.Application.OAuth.UseCases;
-
-public record ExternalLoginCallbackRequest(string Provider, string Code, string State)
-    : IRequest<ExternalLoginCallbackResponse>;
-
-public record ExternalLoginCallbackResponse(
-    bool Success,
-    string? Email,
-    string? ProviderUserId,
-    string? ErrorMessage);
 
 public class ExternalLoginCallbackHandler : IRequestHandler<ExternalLoginCallbackRequest, ExternalLoginCallbackResponse>
 {
