@@ -1,4 +1,4 @@
-﻿namespace ECommerce.Application.Models;
+﻿namespace ECommerce.Application.Auth.Models;
 
 public class ResetPasswordModel
 {
