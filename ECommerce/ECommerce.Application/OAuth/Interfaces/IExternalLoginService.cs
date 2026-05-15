@@ -1,4 +1,4 @@
-﻿using ECommerce.Application.Records;
+﻿using ECommerce.Application.OAuth.Records;
 
 namespace ECommerce.Application.OAuth.Interfaces;
 

@@ -1,4 +1,4 @@
-﻿namespace ECommerce.Application.Records;
+﻿namespace ECommerce.Application.OAuth.Records;
 
 public record ExternalLoginResult(
     bool Success,
