@@ -14,6 +14,7 @@ using ECommerce.Domain.Auth.Interfaces;
 using ECommerce.Domain.Data.Interfaces;
 using ECommerce.Application.Auth.Interfaces;
 using ECommerce.Application.OAuth.Interfaces;
+using ECommerce.Application.Files.Interfaces;
 
 namespace ECommerce.Infrastructure;
 

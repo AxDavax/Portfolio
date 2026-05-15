@@ -1,5 +1,5 @@
-﻿using ECommerce.API.Requests;   
-using ECommerce.Application.Interfaces;
+﻿using ECommerce.API.Requests;
+using ECommerce.Application.Files.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerce.API.Controllers
