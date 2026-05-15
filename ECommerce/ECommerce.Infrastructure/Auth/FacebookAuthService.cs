@@ -1,5 +1,4 @@
-﻿using ECommerce.Application.Models;
-using ECommerce.Application.OAuth.Interfaces;
+﻿using ECommerce.Application.OAuth.Interfaces;
 using ECommerce.Application.OAuth.Models;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Options;
