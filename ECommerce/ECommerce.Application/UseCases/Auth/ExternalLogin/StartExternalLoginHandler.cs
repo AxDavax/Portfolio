@@ -1,4 +1,4 @@
-﻿using ECommerce.Application.Auth.Interfaces;
+﻿using ECommerce.Application.OAuth.Interfaces;
 using MediatR;
 
 namespace ECommerce.Application.UseCases.Auth.ExternalLogin

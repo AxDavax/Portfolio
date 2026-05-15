@@ -1,9 +1,9 @@
-﻿using ECommerce.Application.Auth.Interfaces;
-using ECommerce.Application.Cart.Interfaces;
+﻿using ECommerce.Application.Cart.Interfaces;
 using ECommerce.Application.Cart.Services;
 using ECommerce.Application.Catalog.Interfaces;
 using ECommerce.Application.Catalog.Services;
 using ECommerce.Application.Interfaces;
+using ECommerce.Application.OAuth.Interfaces;
 using ECommerce.Application.Orders.Interfaces;
 using ECommerce.Application.Orders.Services;
 using ECommerce.Application.Services;
@@ -39,7 +39,7 @@ public static class DependencyInjection
         services.AddScoped<IShoppingCartService, ShoppingCartService>();
         services.AddScoped<IOrderService, OrderService>();
 
-        // Auth Services
+        // OAuth Services
         services.AddScoped<IExternalLoginService, ExternalLoginService>();
 
         return services;
