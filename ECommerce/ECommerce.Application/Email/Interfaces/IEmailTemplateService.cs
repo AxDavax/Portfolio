@@ -1,4 +1,4 @@
-﻿namespace ECommerce.Application.Interfaces;
+﻿namespace ECommerce.Application.Email.Interfaces;
 
 public interface IEmailTemplateService
 {
