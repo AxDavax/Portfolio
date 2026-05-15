@@ -3,7 +3,7 @@ using ECommerce.Contracts.Auth.Login;
 using ECommerce.Domain.Auth.Interfaces;
 using Microsoft.Extensions.Configuration;
 
-namespace ECommerce.Application.UseCases.Auth.Login;
+namespace ECommerce.Application.Auth.UseCases;
 
 public class LoginHandler
 {

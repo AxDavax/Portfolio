@@ -9,11 +9,7 @@ using ECommerce.Application.OAuth.Services;
 using ECommerce.Application.Orders.Interfaces;
 using ECommerce.Application.Orders.Services;
 using ECommerce.Application.Services;
-using ECommerce.Application.UseCases.Auth.Login;
-using ECommerce.Application.UseCases.Auth.Logout;
 using ECommerce.Application.UseCases.Auth.Me;
-using ECommerce.Application.UseCases.Auth.Refresh;
-using ECommerce.Application.UseCases.Auth.Register;
 using ECommerce.Application.UseCases.Auth.ResetPassword;
 using Microsoft.Extensions.DependencyInjection;
 

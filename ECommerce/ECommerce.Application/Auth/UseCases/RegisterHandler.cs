@@ -3,7 +3,7 @@ using ECommerce.Application.Auth.Models;
 using ECommerce.Contracts.Auth.Register;
 using ECommerce.Domain.Auth.Interfaces;
 
-namespace ECommerce.Application.UseCases.Auth.Register;
+namespace ECommerce.Application.Auth.UseCases;
 
 public class RegisterHandler
 {

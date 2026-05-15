@@ -2,7 +2,7 @@
 using ECommerce.Contracts.Auth.Refresh;
 using ECommerce.Domain.Auth.Interfaces;
 
-namespace ECommerce.Application.UseCases.Auth.Refresh;
+namespace ECommerce.Application.Auth.UseCases;
 
 public class RefreshHandler
 {
