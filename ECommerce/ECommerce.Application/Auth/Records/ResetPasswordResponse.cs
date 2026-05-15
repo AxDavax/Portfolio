@@ -1,4 +1,4 @@
-﻿namespace ECommerce.Application.UseCases.Auth.ResetPassword;
+﻿namespace ECommerce.Application.Auth.Records;
 
 public class ResetPasswordResponse
 {

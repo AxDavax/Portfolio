@@ -9,7 +9,6 @@ using ECommerce.Application.OAuth.Services;
 using ECommerce.Application.Orders.Interfaces;
 using ECommerce.Application.Orders.Services;
 using ECommerce.Application.Services;
-using ECommerce.Application.UseCases.Auth.ResetPassword;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ECommerce.Application;
