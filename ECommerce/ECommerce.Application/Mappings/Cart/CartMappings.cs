@@ -1,7 +1,6 @@
 ﻿using ECommerce.Contracts.DTO;
 using ECommerce.Domain.Cart.Models;
 using ECommerce.Domain.Catalog.Models;
-using ECommerce.Domain.Orders.Models;
 
 namespace ECommerce.Application.Mappings.Cart;
 
@@ -20,17 +19,6 @@ public static class CartMappings
                 Name = dto.Product.Name,
                 Price = dto.Product.Price
             }
-        };
-    }
-
-    public static OrderDetailDTO ToDTO(this OrderDetail domain)
-    {
-        return new OrderDetailDTO
-        {
-            ProductId = domain.ProductId,
-            Count = domain.Count,
-            Price = domain.Price,
-            ProductName = domain.ProductName
         };
     }
 }
