@@ -2,7 +2,7 @@
 using ECommerce.Contracts.DTO;
 using ECommerce.Domain.Cart.Models;
 
-namespace ECommerce.Application.Mappings.Profiles;
+namespace ECommerce.Application.Cart.Mappings.Profiles;
 
 public class ShoppingCartProfile : Profile
 {
