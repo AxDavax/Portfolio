@@ -1,4 +1,4 @@
-﻿namespace ECommerce.Application.Models;
+﻿namespace ECommerce.Application.OAuth.Models;
 
 public class ProviderSettings
 {
