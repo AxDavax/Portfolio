@@ -1,6 +1,6 @@
 ﻿using ECommerce.Application.Records;
 
-namespace ECommerce.Application.Auth.Interfaces;
+namespace ECommerce.Application.OAuth.Interfaces;
 
 public interface IExternalLoginService
 {

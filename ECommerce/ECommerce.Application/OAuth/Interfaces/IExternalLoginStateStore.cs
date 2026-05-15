@@ -1,4 +1,4 @@
-﻿namespace ECommerce.Application.Auth.Interfaces;
+﻿namespace ECommerce.Application.OAuth.Interfaces;
 
 public interface IExternalLoginStateStore
 {
