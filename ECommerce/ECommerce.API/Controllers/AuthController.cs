@@ -1,5 +1,4 @@
-﻿using ECommerce.Application.OAuth.Records;
-using ECommerce.Application.UseCases.Auth.ForgotPassword;
+﻿using ECommerce.Application.UseCases.Auth.ForgotPassword;
 using ECommerce.Application.UseCases.Auth.Login;
 using ECommerce.Application.UseCases.Auth.Logout;
 using ECommerce.Application.UseCases.Auth.Me;
@@ -12,7 +11,6 @@ using ECommerce.Contracts.Auth.Logout;
 using ECommerce.Contracts.Auth.Refresh;
 using ECommerce.Contracts.Auth.Register;
 using ECommerce.Contracts.Auth.ResetPassword;
-using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.IdentityModel.Tokens.Jwt;
@@ -31,7 +29,6 @@ public class AuthController : ControllerBase
     private readonly LogoutHandler _logoutHandler;
     private readonly ForgotPasswordHandler _forgotPwdHandler;
     private readonly ResetPasswordHandler _resetPwdHandler;
-    private readonly IMediator _mediator;
 
     public AuthController(
         LoginHandler loginHandler, 
@@ -40,8 +37,7 @@ public class AuthController : ControllerBase
         RegisterHandler registerHandler,
         LogoutHandler logoutHandler,
         ForgotPasswordHandler forgotPwdHandler, 
-        ResetPasswordHandler resetPwdHandler,
-        IMediator mediator)
+        ResetPasswordHandler resetPwdHandler)
     {
         _loginHandler = loginHandler;
         _refreshHandler = refreshHandler;
@@ -50,7 +46,6 @@ public class AuthController : ControllerBase
         _logoutHandler = logoutHandler;
         _forgotPwdHandler = forgotPwdHandler;
         _resetPwdHandler = resetPwdHandler;
-        _mediator = mediator;
     }
 
     [AllowAnonymous]
@@ -119,37 +114,6 @@ public class AuthController : ControllerBase
     public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordRequest request)
     {
         var result = await _resetPwdHandler.HandleAsync(request);
-        return Ok(result);
-    }
-
-    // ---------------------------------------------------------------------//
-    // 1. Start External Login (redirect to Google/Facebook/Microsoft/etc.) //
-    // ---------------------------------------------------------------------//
-    [HttpGet("external/{provider}")]
-    public async Task<IActionResult> StartExternalLogin(string provider)
-    {
-        var result = await _mediator.Send(new StartExternalLoginRequest(provider));
-
-        // result.AuthorizationUrl contains the OAuth URL of the provider
-        return Redirect(result.AuthorizationUrl);
-    }
-
-    // --------------------------------------------------------------//
-    // 2. Callback (provider → API) - handle the provider's response //
-    // --------------------------------------------------------------//
-    [HttpGet("external/{provider}/callback")]
-    public async Task<IActionResult> ExternalLoginCallback(
-        string provider,
-        [FromQuery] string code,
-        [FromQuery] string state)
-    {
-        var result = await _mediator.Send(
-            new ExternalLoginCallbackRequest(provider, code, state)
-        );
-
-        if(!result.Success)
-            return BadRequest(result.ErrorMessage);
-
         return Ok(result);
     }
 }
