@@ -1,11 +1,8 @@
 ﻿using ECommerce.Application.OAuth.Interfaces;
+using ECommerce.Application.OAuth.Records;
 using MediatR;
 
 namespace ECommerce.Application.OAuth.UseCases;
-
-public record StartExternalLoginRequest(string Provider) : IRequest<StartExternalLoginResponse>;
-
-public record StartExternalLoginResponse(string AuthorizationUrl);
 
 public class StartExternalLoginHandler
     : IRequestHandler<StartExternalLoginRequest, StartExternalLoginResponse>
