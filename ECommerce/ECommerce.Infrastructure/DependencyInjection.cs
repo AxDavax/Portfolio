@@ -15,6 +15,7 @@ using ECommerce.Application.OAuth.Interfaces;
 using ECommerce.Application.Files.Interfaces;
 using ECommerce.Application.Payments.Interfaces;
 using ECommerce.Infrastructure.Auth.Repositories;
+using ECommerce.Infrastructure.Auth.Services;
 
 namespace ECommerce.Infrastructure;
 

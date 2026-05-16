@@ -7,7 +7,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace ECommerce.Infrastructure.Auth;
+namespace ECommerce.Infrastructure.Auth.Services;
 
 public class JwtService : IJwtService
 {
