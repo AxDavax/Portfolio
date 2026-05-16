@@ -1,7 +1,7 @@
 ﻿using ECommerce.Application.Email.Interfaces;
 using RazorLight;
 
-namespace ECommerce.Infrastructure.Services;
+namespace ECommerce.Infrastructure.Email.Services;
 
 public class EmailTemplateService : IEmailTemplateService
 {
@@ -10,7 +10,7 @@ public class EmailTemplateService : IEmailTemplateService
 
     public EmailTemplateService()
     {
-        _templateRoot = Path.Combine(AppContext.BaseDirectory, "EmailTemplates");
+        _templateRoot = Path.Combine(AppContext.BaseDirectory, "Email", "Templates");
 
         _engine = new RazorLightEngineBuilder()
             .UseFileSystemProject(_templateRoot)
