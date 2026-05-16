@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 
-namespace ECommerce.Infrastructure.Services;
+namespace ECommerce.Infrastructure.Files.Services;
 
 public class FileService : IFileService
 {

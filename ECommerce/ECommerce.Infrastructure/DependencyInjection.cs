@@ -16,6 +16,7 @@ using ECommerce.Application.Payments.Interfaces;
 using ECommerce.Infrastructure.Auth.Repositories;
 using ECommerce.Infrastructure.Auth.Services;
 using ECommerce.Infrastructure.OAuth.StateStores;
+using ECommerce.Infrastructure.Files.Services;
 
 namespace ECommerce.Infrastructure;
 
