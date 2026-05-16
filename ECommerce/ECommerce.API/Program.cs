@@ -2,7 +2,7 @@ using ECommerce.API.Extensions;
 using ECommerce.Application;
 using ECommerce.Application.Catalog.Mappings.Profiles;
 using ECommerce.Infrastructure;
-using ECommerce.Infrastructure.OAuth.Configuration;
+using ECommerce.Infrastructure.OAuth;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.FileProviders;
@@ -24,7 +24,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure();
 
-builder.Services.AddOAuthProviders(builder.Configuration);
+builder.Services.AddOAuthInfrastructure(builder.Configuration);
 
 builder.Services.AddMailServices(builder.Configuration);
 

@@ -1,12 +1,10 @@
 ﻿using ECommerce.Application.Auth.Interfaces;
 using ECommerce.Application.Files.Interfaces;
-using ECommerce.Application.OAuth.Interfaces;
 using ECommerce.Application.Payments.Interfaces;
 using ECommerce.Domain.Auth.Interfaces;
 using ECommerce.Domain.Cart.Interfaces;
 using ECommerce.Domain.Catalog.Interfaces;
 using ECommerce.Domain.Data.Interfaces;
-using ECommerce.Domain.OAuth.Interfaces;
 using ECommerce.Domain.Orders.Interfaces;
 using ECommerce.Infrastructure.Auth.Repositories;
 using ECommerce.Infrastructure.Auth.Services;
@@ -14,8 +12,6 @@ using ECommerce.Infrastructure.Cart.Repositories;
 using ECommerce.Infrastructure.Catalog.Repositories;
 using ECommerce.Infrastructure.Data;
 using ECommerce.Infrastructure.Files.Services;
-using ECommerce.Infrastructure.OAuth.Repositories;
-using ECommerce.Infrastructure.OAuth.StateStores;
 using ECommerce.Infrastructure.Orders.Repositories;
 using ECommerce.Infrastructure.Payments.Services;
 using Microsoft.Extensions.DependencyInjection;
@@ -39,7 +35,6 @@ public static class DependencyInjection
         // Auth Repositories
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IUserAuthRepository, UserRepository>();
-        services.AddScoped<IUserLoginRepository, UserLoginRepository>();
         services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
         services.AddScoped<IResetPasswordTokenRepository, ResetPasswordTokenRepository>();
         services.AddScoped<IRoleRepository, RoleRepository>();
@@ -48,8 +43,6 @@ public static class DependencyInjection
         // Auth Services
         services.AddSingleton<IJwtService, JwtService>();
         services.AddSingleton<IPasswordService, PasswordService>();
-
-        services.AddSingleton<IExternalLoginStateStore, ExternalLoginStateStore>();
 
         // Services
         services.AddScoped<IFileService, FileService>();
