@@ -1,6 +1,6 @@
 ﻿using ECommerce.Domain.Auth.Models;
 
-namespace ECommerce.Domain.Auth.Interfaces;
+namespace ECommerce.Domain.OAuth.Interfaces;
 
 public interface IUserLoginRepository
 {

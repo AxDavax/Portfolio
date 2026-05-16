@@ -3,6 +3,7 @@ using ECommerce.Application.OAuth.Interfaces;
 using ECommerce.Application.OAuth.Records;
 using ECommerce.Domain.Auth.Interfaces;
 using ECommerce.Domain.Auth.Models;
+using ECommerce.Domain.OAuth.Interfaces;
 
 namespace ECommerce.Application.OAuth.Services;
 
