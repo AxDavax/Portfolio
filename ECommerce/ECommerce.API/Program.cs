@@ -28,7 +28,7 @@ builder.Services.AddOAuthInfrastructure(builder.Configuration);
 
 builder.Services.AddMailServices(builder.Configuration);
 
-builder.Services.AddAutoMapper(typeof(CategoryProfile).Assembly);
+builder.Services.AddAutoMapper(typeof(ECommerce.Application.DependencyInjection).Assembly);
 
 builder.Services.AddMediatR(typeof(ECommerce.Application.DependencyInjection).Assembly);
 
