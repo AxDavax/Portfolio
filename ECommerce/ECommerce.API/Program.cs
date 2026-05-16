@@ -1,6 +1,5 @@
 using ECommerce.API.Extensions;
 using ECommerce.Application;
-using ECommerce.Application.Catalog.Mappings.Profiles;
 using ECommerce.Infrastructure;
 using ECommerce.Infrastructure.OAuth;
 using MediatR;
