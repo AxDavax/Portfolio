@@ -1,6 +1,5 @@
 ﻿using ECommerce.Infrastructure.Auth;
 using ECommerce.Infrastructure.Data;
-using ECommerce.Infrastructure.Repositories.Auth;
 using ECommerce.Infrastructure.Repositories.Catalog;
 using ECommerce.Infrastructure.Repositories.Orders;
 using ECommerce.Infrastructure.Repositories.Cart;
