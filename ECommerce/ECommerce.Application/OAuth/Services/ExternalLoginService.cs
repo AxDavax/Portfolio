@@ -58,7 +58,6 @@ public class ExternalLoginService : IExternalLoginService
                     IsActive = true
                 };
 
-                // or CreateAuthAsync(sqlUser) if you have a specific method for auth users
                 await _userRepo.CreateAsync(user); 
             }
 
