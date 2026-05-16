@@ -14,6 +14,7 @@ using ECommerce.Infrastructure.Cart.Repositories;
 using ECommerce.Infrastructure.Catalog.Repositories;
 using ECommerce.Infrastructure.Data;
 using ECommerce.Infrastructure.Files.Services;
+using ECommerce.Infrastructure.OAuth.Repositories;
 using ECommerce.Infrastructure.OAuth.StateStores;
 using ECommerce.Infrastructure.Orders.Repositories;
 using ECommerce.Infrastructure.Payments.Services;
