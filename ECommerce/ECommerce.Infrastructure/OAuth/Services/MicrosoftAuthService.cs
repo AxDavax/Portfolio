@@ -6,7 +6,7 @@ using System.Net.Http.Json;
 
 namespace ECommerce.Infrastructure.OAuth.Services;
 
-public class MicrosoftAuthService : IExternalAuthService
+public class MicrosoftAuthService : IExternalAuthProvider
 {
     private readonly ProviderSettings _settings;
     private readonly HttpClient _http;

@@ -8,7 +8,7 @@ using ProviderSettings = ECommerce.Application.OAuth.Models.ProviderSettings;
 
 namespace ECommerce.Infrastructure.OAuth.Services;
 
-public class GoogleAuthService : IExternalAuthService
+public class GoogleAuthService : IExternalAuthProvider
 {
     private readonly ProviderSettings _settings;
     private readonly HttpClient _http;

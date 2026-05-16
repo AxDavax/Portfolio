@@ -6,7 +6,7 @@ using System.Net.Http.Json;
 
 namespace ECommerce.Infrastructure.OAuth.Services;
 
-public class FacebookAuthService : IExternalAuthService
+public class FacebookAuthService : IExternalAuthProvider
 {
     private readonly ProviderSettings _settings;
     private readonly HttpClient _http;

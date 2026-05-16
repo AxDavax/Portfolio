@@ -2,7 +2,7 @@
 
 namespace ECommerce.Application.OAuth.Interfaces;
 
-public interface IExternalAuthService
+public interface IExternalAuthProvider
 {
     string GetAuthorizationUrl(string state);
     Task<ExternalUserInfo?> GetUserInfoAsync(string code);

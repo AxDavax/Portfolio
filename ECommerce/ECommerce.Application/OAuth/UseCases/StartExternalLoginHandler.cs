@@ -8,31 +8,31 @@ public class StartExternalLoginHandler
     : IRequestHandler<StartExternalLoginRequest, StartExternalLoginResponse>
 {
     private readonly IExternalLoginStateStore _stateStore;
-    private readonly IEnumerable<IExternalAuthService> _authServices;
+    private readonly IEnumerable<IExternalAuthProvider> _authProvider;
 
     public StartExternalLoginHandler(
         IExternalLoginStateStore stateStore,
-        IEnumerable<IExternalAuthService> authServices)
+        IEnumerable<IExternalAuthProvider> authProvider)
     {
         _stateStore = stateStore;
-        _authServices = authServices;
+        _authProvider = authProvider;
     }
 
     public async Task<StartExternalLoginResponse> Handle(
         StartExternalLoginRequest request,
         CancellationToken cancellationToken)
     {
-        var service = _authServices.FirstOrDefault(s =>
+        var provider = _authProvider.FirstOrDefault(s =>
             s.GetType().Name.StartsWith(request.Provider, StringComparison.OrdinalIgnoreCase));
 
-        if (service == null)
+        if (provider == null)
             throw new InvalidOperationException($"Unknown external provider: {request.Provider}");
 
         var state = Guid.NewGuid().ToString("N");
 
         await _stateStore.StoreAsync(state, request.Provider);
 
-        var url = service.GetAuthorizationUrl(state);
+        var url = provider.GetAuthorizationUrl(state);
 
         return new StartExternalLoginResponse(url);
     }

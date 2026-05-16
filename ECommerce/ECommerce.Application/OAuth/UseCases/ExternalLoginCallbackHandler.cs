@@ -7,16 +7,16 @@ namespace ECommerce.Application.OAuth.UseCases;
 public class ExternalLoginCallbackHandler : IRequestHandler<ExternalLoginCallbackRequest, ExternalLoginCallbackResponse>
 {
     private readonly IExternalLoginStateStore _stateStore;
-    private readonly IEnumerable<IExternalAuthService> _authServices;
+    private readonly IEnumerable<IExternalAuthProvider> _authProvider;
     private readonly IExternalLoginService _externalLoginService;
 
     public ExternalLoginCallbackHandler(
         IExternalLoginStateStore stateStore,
-        IEnumerable<IExternalAuthService> authServices,
+        IEnumerable<IExternalAuthProvider> authProvider,
         IExternalLoginService externalLoginService)
     {
         _stateStore = stateStore;
-        _authServices = authServices;
+        _authProvider = authProvider;
         _externalLoginService = externalLoginService;
     }
 
@@ -36,10 +36,10 @@ public class ExternalLoginCallbackHandler : IRequestHandler<ExternalLoginCallbac
         }
 
         // 2. Resolve provider service
-        var service = _authServices.FirstOrDefault(s =>
+        var provider = _authProvider.FirstOrDefault(s =>
             s.GetType().Name.StartsWith(request.Provider, StringComparison.OrdinalIgnoreCase));
 
-        if (service == null)
+        if (provider == null)
         {
             return new ExternalLoginCallbackResponse(
                 Success: false,
@@ -49,7 +49,7 @@ public class ExternalLoginCallbackHandler : IRequestHandler<ExternalLoginCallbac
         }
 
         // 3. Exchange code for user info
-        var userInfo = await service.GetUserInfoAsync(request.Code);
+        var userInfo = await provider.GetUserInfoAsync(request.Code);
 
         if (userInfo == null)
         {
