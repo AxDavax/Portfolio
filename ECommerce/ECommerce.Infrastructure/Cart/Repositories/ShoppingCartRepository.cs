@@ -3,7 +3,7 @@ using ECommerce.Domain.Cart.Models;
 using ECommerce.Domain.Catalog.Models;
 using ECommerce.Domain.Data.Interfaces;
 
-namespace ECommerce.Infrastructure.Repositories.Cart;
+namespace ECommerce.Infrastructure.Cart.Repositories;
 
 public class ShoppingCartRepository : IShoppingCartRepository
 {
