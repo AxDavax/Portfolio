@@ -1,5 +1,4 @@
-﻿using ECommerce.Infrastructure.Auth;
-using ECommerce.Infrastructure.Data;
+﻿using ECommerce.Infrastructure.Data;
 using ECommerce.Infrastructure.Repositories.Catalog;
 using ECommerce.Infrastructure.Repositories.Orders;
 using ECommerce.Infrastructure.Repositories.Cart;
@@ -16,6 +15,7 @@ using ECommerce.Application.Files.Interfaces;
 using ECommerce.Application.Payments.Interfaces;
 using ECommerce.Infrastructure.Auth.Repositories;
 using ECommerce.Infrastructure.Auth.Services;
+using ECommerce.Infrastructure.OAuth.StateStores;
 
 namespace ECommerce.Infrastructure;
 

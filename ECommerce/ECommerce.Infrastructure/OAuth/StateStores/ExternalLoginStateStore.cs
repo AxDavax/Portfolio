@@ -1,7 +1,7 @@
 ﻿using ECommerce.Application.OAuth.Interfaces;
 using System.Collections.Concurrent;
 
-namespace ECommerce.Infrastructure.Auth;
+namespace ECommerce.Infrastructure.OAuth.StateStores;
 
 public class ExternalLoginStateStore : IExternalLoginStateStore
 {
