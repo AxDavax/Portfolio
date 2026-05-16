@@ -2,11 +2,11 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace ECommerce.Infrastructure.Auth;
+namespace ECommerce.Infrastructure.OAuth.Configuration;
 
-public static class AuthProvidersConfiguration
+public static class OAuthProvidersConfiguration
 {
-    public static IServiceCollection AddAuthProviders(
+    public static IServiceCollection AddOAuthProviders(
             this IServiceCollection services,
             IConfiguration config)
     {
