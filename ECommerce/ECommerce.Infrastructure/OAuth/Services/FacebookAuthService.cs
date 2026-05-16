@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Options;
 using System.Net.Http.Json;
 
-namespace ECommerce.Infrastructure.Auth;
+namespace ECommerce.Infrastructure.OAuth.Services;
 
 public class FacebookAuthService : IExternalAuthService
 {

@@ -2,47 +2,42 @@
 using ECommerce.Application.OAuth.Models;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Options;
-using System.Net.Http.Headers;
 using System.Net.Http.Json;
-using ProviderSettings = ECommerce.Application.OAuth.Models.ProviderSettings;
 
-namespace ECommerce.Infrastructure.Auth;
+namespace ECommerce.Infrastructure.OAuth.Services;
 
-public class GoogleAuthService : IExternalAuthService
+public class MicrosoftAuthService : IExternalAuthService
 {
     private readonly ProviderSettings _settings;
     private readonly HttpClient _http;
 
-    public GoogleAuthService(IOptionsSnapshot<ProviderSettings> settings, 
+    public MicrosoftAuthService(
+        IOptionsSnapshot<ProviderSettings> settings,
         IHttpClientFactory httpFactory)
     {
-        _settings = settings.Get("Google");
+        _settings = settings.Get("Microsoft");
         _http = httpFactory.CreateClient();
     }
 
     public string GetAuthorizationUrl(string state)
     {
-        var url = QueryHelpers.AddQueryString(
-            "https://accounts.google.com/o/oauth2/v2/auth",
+        return QueryHelpers.AddQueryString(
+            "https://login.microsoftonline.com/common/oauth2/v2.0/authorize",
             new Dictionary<string, string>
             {
                 ["client_id"] = _settings.ClientId,
                 ["redirect_uri"] = _settings.RedirectUri,
                 ["response_type"] = "code",
-                ["scope"] = "openid email profile",
-                ["state"] = state,
-                ["access_type"] = "offline",
-                ["prompt"] = "consent"
+                ["scope"] = "openid email profile User.Read",
+                ["state"] = state
             });
-
-        return url;
     }
 
     public async Task<ExternalUserInfo?> GetUserInfoAsync(string code)
     {
-        // 1. Exchange code for tokens
+        // 1. Exchange code for access_token
         var tokenResponse = await _http.PostAsync(
-            "https://oauth2.googleapis.com/token",
+            "https://login.microsoftonline.com/common/oauth2/v2.0/token",
             new FormUrlEncodedContent(new Dictionary<string, string>
             {
                 ["client_id"] = _settings.ClientId,
@@ -59,21 +54,26 @@ public class GoogleAuthService : IExternalAuthService
         if (tokenJson == null || string.IsNullOrWhiteSpace(tokenJson.AccessToken))
             return null;
 
-        // 2. Get user info
+        // 2. Retrieve user info from Microsoft Graph
         _http.DefaultRequestHeaders.Authorization =
-            new AuthenticationHeaderValue("Bearer", tokenJson.AccessToken);
+            new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", tokenJson.AccessToken);
 
-        var userInfo = await _http.GetFromJsonAsync<GoogleUserInfo>(
-            "https://www.googleapis.com/oauth2/v3/userinfo");
+        var userInfo = await _http.GetFromJsonAsync<MicrosoftUserInfo>(
+            "https://graph.microsoft.com/v1.0/me");
 
         if (userInfo == null)
             return null;
 
+        // Microsoft sometimes returns email in Mail, sometimes in UserPrincipalName
+        var email = !string.IsNullOrWhiteSpace(userInfo.Mail)
+            ? userInfo.Mail
+            : userInfo.UserPrincipalName;
+
         return new ExternalUserInfo
         {
-            Email = userInfo.Email,
-            Provider = "Google",
-            ProviderId = userInfo.Sub
+            Email = email,
+            Provider = "Microsoft",
+            ProviderId = userInfo.Id
         };
     }
 }
