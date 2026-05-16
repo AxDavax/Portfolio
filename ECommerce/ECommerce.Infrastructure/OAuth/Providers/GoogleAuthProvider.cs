@@ -6,14 +6,14 @@ using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using ProviderSettings = ECommerce.Application.OAuth.Models.ProviderSettings;
 
-namespace ECommerce.Infrastructure.OAuth.Services;
+namespace ECommerce.Infrastructure.OAuth.Providers;
 
-public class GoogleAuthService : IExternalAuthProvider
+public class GoogleAuthProvider : IExternalAuthProvider
 {
     private readonly ProviderSettings _settings;
     private readonly HttpClient _http;
 
-    public GoogleAuthService(IOptionsSnapshot<ProviderSettings> settings, 
+    public GoogleAuthProvider(IOptionsSnapshot<ProviderSettings> settings, 
         IHttpClientFactory httpFactory)
     {
         _settings = settings.Get("Google");
