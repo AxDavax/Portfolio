@@ -4,14 +4,14 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Options;
 using System.Net.Http.Json;
 
-namespace ECommerce.Infrastructure.OAuth.Services;
+namespace ECommerce.Infrastructure.OAuth.Providers;
 
-public class FacebookAuthService : IExternalAuthProvider
+public class FacebookAuthProvider : IExternalAuthProvider
 {
     private readonly ProviderSettings _settings;
     private readonly HttpClient _http;
 
-    public FacebookAuthService(
+    public FacebookAuthProvider(
             IOptionsSnapshot<ProviderSettings> settings,
             IHttpClientFactory httpFactory)
     {
