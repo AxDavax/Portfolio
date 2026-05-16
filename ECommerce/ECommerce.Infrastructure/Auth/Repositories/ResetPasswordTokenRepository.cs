@@ -2,7 +2,7 @@
 using ECommerce.Domain.Auth.Models;
 using ECommerce.Domain.Data.Interfaces;
 
-namespace ECommerce.Infrastructure.Repositories.Auth;
+namespace ECommerce.Infrastructure.Auth.Repositories;
 
 public class ResetPasswordTokenRepository : IResetPasswordTokenRepository
 {
@@ -42,7 +42,7 @@ public class ResetPasswordTokenRepository : IResetPasswordTokenRepository
         if(token == null)
             throw new ArgumentNullException(nameof(token));
 
-        await _db.ExecuteAsync(sql, new { Token = token.Token });
+        await _db.ExecuteAsync(sql, new { token.Token });
     }
 
     public async Task<ResetPasswordToken?> GetByTokenAsync(string token)

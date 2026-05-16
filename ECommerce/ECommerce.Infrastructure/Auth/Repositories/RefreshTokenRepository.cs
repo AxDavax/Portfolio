@@ -3,7 +3,7 @@ using ECommerce.Domain.Auth.Models;
 using ECommerce.Domain.Data.Interfaces;
 using System.Security.Cryptography;
 
-namespace ECommerce.Infrastructure.Repositories.Auth;
+namespace ECommerce.Infrastructure.Auth.Repositories;
 
 public class RefreshTokenRepository : IRefreshTokenRepository
 {
