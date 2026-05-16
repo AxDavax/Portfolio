@@ -4,14 +4,14 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Options;
 using System.Net.Http.Json;
 
-namespace ECommerce.Infrastructure.OAuth.Services;
+namespace ECommerce.Infrastructure.OAuth.Providers;
 
-public class MicrosoftAuthService : IExternalAuthProvider
+public class MicrosoftAuthProvider : IExternalAuthProvider
 {
     private readonly ProviderSettings _settings;
     private readonly HttpClient _http;
 
-    public MicrosoftAuthService(
+    public MicrosoftAuthProvider(
         IOptionsSnapshot<ProviderSettings> settings,
         IHttpClientFactory httpFactory)
     {
