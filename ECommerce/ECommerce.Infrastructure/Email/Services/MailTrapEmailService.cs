@@ -4,7 +4,7 @@ using Microsoft.Extensions.Logging;
 using System.Net;
 using System.Net.Mail;
 
-namespace ECommerce.Infrastructure.Services;
+namespace ECommerce.Infrastructure.Email.Services;
 
 public class MailTrapEmailService : IEmailService
 {
