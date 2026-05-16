@@ -15,6 +15,9 @@ public static class OAuthDependencyInjection
     public static IServiceCollection AddOAuthInfrastructure(this IServiceCollection services,
             IConfiguration config)
     {
+        // HttpClient factory
+        services.AddHttpClient();
+
         // Provider configuration
         services.AddOAuthProviders(config);
 
