@@ -2,7 +2,7 @@
 using ECommerce.Domain.Catalog.Models;
 using ECommerce.Domain.Data.Interfaces;
 
-namespace ECommerce.Infrastructure.Repositories.Catalog;
+namespace ECommerce.Infrastructure.Catalog.Repositories;
 
 public class ProductRepository : IProductRepository
 {
