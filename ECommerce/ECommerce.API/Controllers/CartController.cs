@@ -1,8 +1,8 @@
 ﻿using ECommerce.Contracts.DTO;
 using Microsoft.AspNetCore.Mvc;
-using ECommerce.Application.Mappings.Cart;
 using ECommerce.Application.Orders.Interfaces;
 using ECommerce.Application.Orders.Mappings;
+using ECommerce.Application.Cart.Mappings;
 
 namespace ECommerce.API.Controllers
 {

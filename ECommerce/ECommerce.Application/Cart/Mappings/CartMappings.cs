@@ -2,7 +2,7 @@
 using ECommerce.Domain.Cart.Models;
 using ECommerce.Domain.Catalog.Models;
 
-namespace ECommerce.Application.Mappings.Cart;
+namespace ECommerce.Application.Cart.Mappings;
 
 public static class CartMappings
 {
