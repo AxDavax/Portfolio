@@ -2,7 +2,6 @@
 using ECommerce.Infrastructure.Repositories.Catalog;
 using ECommerce.Infrastructure.Repositories.Orders;
 using ECommerce.Infrastructure.Repositories.Cart;
-using ECommerce.Infrastructure.Services;
 using Microsoft.Extensions.DependencyInjection;
 using ECommerce.Domain.Catalog.Interfaces;
 using ECommerce.Domain.Cart.Interfaces;
@@ -17,6 +16,7 @@ using ECommerce.Infrastructure.Auth.Repositories;
 using ECommerce.Infrastructure.Auth.Services;
 using ECommerce.Infrastructure.OAuth.StateStores;
 using ECommerce.Infrastructure.Files.Services;
+using ECommerce.Infrastructure.Payments.Services;
 
 namespace ECommerce.Infrastructure;
 

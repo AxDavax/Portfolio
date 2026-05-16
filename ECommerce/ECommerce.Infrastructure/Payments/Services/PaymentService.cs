@@ -8,7 +8,7 @@ using ECommerce.Domain.Orders.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Stripe.Checkout;
 
-namespace ECommerce.Infrastructure.Services;
+namespace ECommerce.Infrastructure.Payments.Services;
 
 public class PaymentService : IPaymentService
 {
