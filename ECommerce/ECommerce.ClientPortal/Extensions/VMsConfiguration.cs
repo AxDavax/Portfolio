@@ -44,5 +44,6 @@ public static class VMsConfiguration
 
         // OAuth VMs
         services.AddScoped<RedirectVM>();
+        services.AddScoped<CallbackVM>();
     }
 }
