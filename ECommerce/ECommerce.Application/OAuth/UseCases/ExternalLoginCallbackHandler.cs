@@ -1,5 +1,6 @@
 ﻿using ECommerce.Application.OAuth.Interfaces;
 using ECommerce.Application.OAuth.Records;
+using ECommerce.Contracts.OAuth.Records;
 using MediatR;
 
 namespace ECommerce.Application.OAuth.UseCases;

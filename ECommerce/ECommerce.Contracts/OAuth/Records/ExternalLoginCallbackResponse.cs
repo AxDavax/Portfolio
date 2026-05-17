@@ -1,4 +1,4 @@
-﻿namespace ECommerce.Application.OAuth.Records;
+﻿namespace ECommerce.Contracts.OAuth.Records;
 
 public record ExternalLoginCallbackResponse(
     bool Success,
