@@ -33,6 +33,24 @@ public abstract class BaseApi
         }
     }
 
+    protected async Task<string?> SafeGetRaw(string url)
+    {
+        try
+        {
+            return await _http.GetStringAsync(url);
+        }
+        catch (HttpRequestException ex)
+        {
+            HandleHttpError(ex.StatusCode);
+            return null;
+        }
+        catch
+        {
+            _navigation.NavigateTo("/error", true);
+            return null;
+        }
+    }
+
     protected async Task<List<T>> SafeGetList<T>(string url)
     {
         try
