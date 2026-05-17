@@ -1,4 +1,5 @@
 ﻿using ECommerce.Application.Email.Interfaces;
+using Microsoft.AspNetCore.Hosting;
 using RazorLight;
 
 namespace ECommerce.Infrastructure.Email.Services;
@@ -8,9 +9,12 @@ public class EmailTemplateService : IEmailTemplateService
     private readonly RazorLightEngine _engine;
     private readonly string _templateRoot;
 
-    public EmailTemplateService()
+    public EmailTemplateService(IWebHostEnvironment env)
     {
-        _templateRoot = Path.Combine(AppContext.BaseDirectory, "Email", "Templates");
+        _templateRoot = Path.Combine(env.ContentRootPath, "Email", "Templates");
+
+        if (!Directory.Exists(_templateRoot))
+            throw new DirectoryNotFoundException($"Email template root not found: {_templateRoot}");
 
         _engine = new RazorLightEngineBuilder()
             .UseFileSystemProject(_templateRoot)
