@@ -57,3 +57,18 @@
         </div>
     </div>
 </div>
+
+@code {
+    private void StateHasChangedSafe() => InvokeAsync(StateHasChanged);
+
+    protected override void OnInitialized()
+    {
+        VM.StateChanged += StateHasChangedSafe;
+        VM.OnInitialized();
+    }
+
+    public void Dispose()
+    {
+        VM.StateChanged -= StateHasChangedSafe;
+    }
+}
