@@ -1,0 +1,42 @@
+﻿@using ECommerce.ClientPortal.ViewModels.OAuth
+<button class="btn w-100 mb-2"
+        style="background-color:@ButtonColor; color:white;"
+        @onclick="StartOAuth">
+    <img src="@LogoPath" style="height:20px; margin-right:8px;" />
+    @ButtonText
+</button>
+
+@code {
+    [Parameter] public string Provider { get; set; } = default!;
+
+    [Inject] public RedirectVM RedirectVM { get; set; } = default!;
+
+    private string ButtonColor => Provider switch
+    {
+        "Google" => "#DB4437",
+        "Facebook" => "#1877F2",
+        "Microsoft" => "#2F2F2F",
+        _ => "#6c757d"
+    };
+
+    private string ButtonText => Provider switch
+    {
+        "Google" => "Continue with Google",
+        "Facebook" => "Continue with Facebook",
+        "Microsoft" => "Continue with Microsoft",
+        _ => "Continue"
+    };
+
+    private string LogoPath => Provider switch
+    {
+        "Google" => "/images/oauth/google.svg",
+        "Facebook" => "/images/oauth/facebook.svg",
+        "Microsoft" => "/images/oauth/microsoft.svg",
+        _ => "/images/oauth/default.svg"
+    };
+
+    private async Task StartOAuth()
+    {
+        await RedirectVM.StartAsync(Provider);
+    }
+}
