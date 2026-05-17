@@ -1,4 +1,5 @@
 ﻿@page "/Auth/Login"
+@using ECommerce.ClientPortal.Components
 @using ECommerce.ClientPortal.ViewModels.Auth
 @inject LoginVM VM
 
@@ -47,6 +48,15 @@
                 </div>
 
                 <hr />
+
+                <div class="mt-3">
+                    <OAuthProviderButton Provider="Google" />
+                    <OAuthProviderButton Provider="Facebook" />
+                    <OAuthProviderButton Provider="Microsoft" />
+                </div>
+
+                <hr />
+
                 <p class="mt-2 text-center">
                     <small class="text-muted text-center">
                         Don't have an account?
