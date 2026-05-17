@@ -1,14 +1,14 @@
-﻿using ECommerce.ClientPortal.Services.API.Implementations;
+﻿using ECommerce.ClientPortal.Services.API.Interfaces;
 using Microsoft.AspNetCore.Components;
 
 namespace ECommerce.ClientPortal.ViewModels.OAuth;
 
 public class RedirectVM
 {
-    private readonly RedirectApi _api;
+    private readonly IRedirectApi _api;
     private readonly NavigationManager _nav;
 
-    public RedirectVM(RedirectApi api, NavigationManager nav)
+    public RedirectVM(IRedirectApi api, NavigationManager nav)
     {
         _api = api;
         _nav = nav;
