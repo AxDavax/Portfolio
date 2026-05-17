@@ -17,8 +17,20 @@ public class CallbackVM
         _tokenStorage = tokenStorage;
     }
 
-    public async Task InitializedAsync(string provider, string code, string state)
+    public async Task InitializedAsync(string provider)
     {
+        var uri = _nav.ToAbsoluteUri(_nav.Uri);
+        var query = System.Web.HttpUtility.ParseQueryString(uri.Query);
+
+        var code = query["code"];
+        var state = query["state"];
+
+        if(string.IsNullOrEmpty(code) || string.IsNullOrEmpty(state))
+        {
+            _nav.NavigateTo("/auth/login?error=invalid_oauth_response", true);
+            return;
+        }
+
         var response = await _api.HandleCallback(provider, code, state);
         
         if (response.Success) 
