@@ -1,5 +1,5 @@
 ﻿using ECommerce.ClientPortal.Services.API.Interfaces;
-using ECommerce.Contracts.OAuth.Records;
+using ECommerce.Contracts.OAuth.Models;
 using Microsoft.AspNetCore.Components;
 
 namespace ECommerce.ClientPortal.Services.API.Implementations

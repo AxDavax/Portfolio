@@ -1,4 +1,4 @@
-﻿using ECommerce.Contracts.OAuth.Records;
+﻿using ECommerce.Contracts.OAuth.Models;
 using MediatR;
 
 namespace ECommerce.Application.OAuth.Records;
