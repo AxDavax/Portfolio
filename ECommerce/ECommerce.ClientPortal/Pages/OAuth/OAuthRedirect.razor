@@ -1,0 +1,14 @@
+﻿@page "/oauth/{provider}"
+@using ECommerce.ClientPortal.ViewModels.OAuth
+
+@inject RedirectVM VM
+
+@code {
+    [Parameter] 
+    public string Provider { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await VM.InitializedAsync(Provider);
+    }
+}
