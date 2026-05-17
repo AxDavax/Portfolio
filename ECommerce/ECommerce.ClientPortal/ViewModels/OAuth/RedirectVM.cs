@@ -14,14 +14,17 @@ public class RedirectVM
         _nav = nav;
     }   
 
-
-    public async Task InitializedAsync(string provider)
+    private async Task RedirectAsync(string provider)
     {
-        string? url = await _api.GetOAuthRedirectUrlAsync(provider);
-
+        var url = await _api.GetOAuthRedirectUrlAsync(provider);
+        
         if (!string.IsNullOrWhiteSpace(url))
             _nav.NavigateTo(url, true);
         else
             _nav.NavigateTo("/auth/login?error=oauth_redirect_failed", true);
     }
+
+    public Task InitializedAsync(string provider) => RedirectAsync(provider);
+
+    public Task StartAsync(string provider) => RedirectAsync(provider);
 }
