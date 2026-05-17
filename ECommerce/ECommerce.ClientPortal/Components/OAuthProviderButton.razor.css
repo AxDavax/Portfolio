@@ -1,0 +1,18 @@
+﻿.oauth-btn {
+    height: 50px; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.oauth-btn img {
+    height: 38px; 
+    width: 38px;
+    background: white; 
+    padding: 4px;
+    border-radius: 20%; 
+}
