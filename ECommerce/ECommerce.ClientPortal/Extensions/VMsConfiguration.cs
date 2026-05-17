@@ -3,6 +3,7 @@ using ECommerce.ClientPortal.ViewModels.Cart;
 using ECommerce.ClientPortal.ViewModels.Categories;
 using ECommerce.ClientPortal.ViewModels.Core;
 using ECommerce.ClientPortal.ViewModels.Home;
+using ECommerce.ClientPortal.ViewModels.OAuth;
 using ECommerce.ClientPortal.ViewModels.Orders;
 using ECommerce.ClientPortal.ViewModels.Products;
 
@@ -40,5 +41,8 @@ public static class VMsConfiguration
         services.AddScoped<OrderListVM>();
         services.AddScoped<OrderDetailsVM>();
         services.AddScoped<OrderConfirmationVM>();
+
+        // OAuth VMs
+        services.AddScoped<RedirectVM>();
     }
 }
