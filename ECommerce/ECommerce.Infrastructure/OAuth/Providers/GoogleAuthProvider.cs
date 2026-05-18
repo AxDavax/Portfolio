@@ -64,8 +64,6 @@ public class GoogleAuthProvider : IExternalAuthProvider
         if (!tokenResponse.IsSuccessStatusCode)
             return null;
 
-        var raw = await tokenResponse.Content.ReadAsStringAsync();
-
         var tokenJson = await tokenResponse.Content.ReadFromJsonAsync<ProviderTokenResponse>();
         if (tokenJson == null || string.IsNullOrWhiteSpace(tokenJson.AccessToken))
             return null;
