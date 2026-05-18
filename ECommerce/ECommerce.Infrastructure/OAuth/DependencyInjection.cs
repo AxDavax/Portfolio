@@ -30,7 +30,7 @@ public static class OAuthDependencyInjection
         services.AddScoped<IExternalAuthProvider, MicrosoftAuthProvider>();
 
         // State store
-        services.AddScoped<IExternalLoginStateStore, ExternalLoginStateStore>();
+        services.AddSingleton<IExternalLoginStateStore, ExternalLoginStateStore>();
 
         // Principal service in Application layer
         services.AddScoped<IExternalLoginService, ExternalLoginService>();
