@@ -25,7 +25,7 @@ public class UserRepository : IUserRepository, IUserAuthRepository
             INSERT INTO 
                 Users (Id, Email, FirstName, LastName, IsActive)
             VALUES 
-                (@Id, @Email, @FirstName, @LastName, @IsActivea)
+                (@Id, @Email, @FirstName, @LastName, @IsActive)
 
         """;
 
