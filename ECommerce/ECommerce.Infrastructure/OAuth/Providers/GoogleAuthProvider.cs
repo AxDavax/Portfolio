@@ -10,6 +10,15 @@ namespace ECommerce.Infrastructure.OAuth.Providers;
 
 public class GoogleAuthProvider : IExternalAuthProvider
 {
+    private static readonly string[] GoogleScopes = new[]
+    {
+        "openid",
+        "email",
+        "profile",
+        "https://www.googleapis.com/auth/userinfo.email",
+        "https://www.googleapis.com/auth/userinfo.profile"
+    };
+
     private readonly ProviderSettings _settings;
     private readonly HttpClient _http;
 
@@ -29,7 +38,7 @@ public class GoogleAuthProvider : IExternalAuthProvider
                 ["client_id"] = _settings.ClientId,
                 ["redirect_uri"] = _settings.RedirectUri,
                 ["response_type"] = "code",
-                ["scope"] = "openid email profile",
+                ["scope"] = string.Join(" ", GoogleScopes),
                 ["state"] = state,
                 ["access_type"] = "offline",
                 ["prompt"] = "consent"
@@ -54,6 +63,8 @@ public class GoogleAuthProvider : IExternalAuthProvider
 
         if (!tokenResponse.IsSuccessStatusCode)
             return null;
+
+        var raw = await tokenResponse.Content.ReadAsStringAsync();
 
         var tokenJson = await tokenResponse.Content.ReadFromJsonAsync<ProviderTokenResponse>();
         if (tokenJson == null || string.IsNullOrWhiteSpace(tokenJson.AccessToken))
