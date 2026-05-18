@@ -44,22 +44,32 @@ public class LoginVM : AuthVMBase
             _nav.NavigateTo("/");
     }
 
-    public void OnInitialized()
+    public async Task OnInitializedAsync()
     {
-        var uri = _nav.ToAbsoluteUri(_nav.Uri);
-        var query = System.Web.HttpUtility.ParseQueryString(uri.Query);
-
-        var error = query["error"];
-
-        if (string.IsNullOrEmpty(error))
-            return;
-
-        ErrorMessage = error switch
+        await RunCommandAsync(() => IsProcessing, async () =>
         {
-            "invalid_oauth_response" => "The OAuth provider returned an invalid response.",
-            "oauth_callback_failed" => "OAuth login failed. Please try again.",
-            "oauth_redirect_failed" => "Unable to contact the OAuth provider.",
-            _ => "An unknown authentication error occurred."
-        };
+            try
+            {
+                var uri = _nav.ToAbsoluteUri(_nav.Uri);
+                var query = System.Web.HttpUtility.ParseQueryString(uri.Query);
+
+                var error = query["error"];
+
+                if (string.IsNullOrEmpty(error))
+                    return;
+
+                ErrorMessage = error switch
+                {
+                    "invalid_oauth_response" => "The OAuth provider returned an invalid response.",
+                    "oauth_callback_failed" => "OAuth login failed. Please try again.",
+                    "oauth_redirect_failed" => "Unable to contact the OAuth provider.",
+                    _ => "An unknown authentication error occurred."
+                };
+            }
+            catch (Exception ex)
+            {
+                ErrorMessage = $"Unexpected error: {ex.Message}";
+            }
+        });
     }
 }

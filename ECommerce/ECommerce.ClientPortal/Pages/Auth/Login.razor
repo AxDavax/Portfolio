@@ -71,10 +71,10 @@
 @code {
     private void StateHasChangedSafe() => InvokeAsync(StateHasChanged);
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
         VM.StateChanged += StateHasChangedSafe;
-        VM.OnInitialized();
+        await VM.OnInitializedAsync();
     }
 
     public void Dispose()
