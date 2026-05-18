@@ -20,7 +20,7 @@ public class UserLoginRepository : IUserLoginRepository
             SELECT 
                 * 
             FROM 
-                UserLogin 
+                UserLogins
             WHERE 
                 Provider = @Provider AND ProviderUserId = @ProviderUserId
                         
@@ -40,7 +40,7 @@ public class UserLoginRepository : IUserLoginRepository
             SELECT 
                 * 
             FROM 
-                UserLogin 
+                UserLogins 
             WHERE 
                 UserId = @UserId
                         
@@ -53,7 +53,7 @@ public class UserLoginRepository : IUserLoginRepository
     {
         const string sql = """
              
-            INSERT INTO UserLogin (Id, UserId, Provider, ProviderUserId, CreatedAt) 
+            INSERT INTO UserLogins (Id, UserId, Provider, ProviderUserId, CreatedAt) 
             VALUES (@Id, @UserId, @Provider, @ProviderUserId, @CreatedAt)
                         
         """;
