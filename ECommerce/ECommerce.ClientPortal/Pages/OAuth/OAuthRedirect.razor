@@ -7,8 +7,16 @@
     [Parameter] 
     public string Provider { get; set; }
 
+    private void StateHasChangedSafe() => InvokeAsync(StateHasChanged);
+
     protected override async Task OnInitializedAsync()
     {
+        VM.StateChanged += StateHasChangedSafe;
         await VM.InitializedAsync(Provider);
+    }
+
+    public void Dispose()
+    {
+        VM.StateChanged -= StateHasChangedSafe;
     }
 }
